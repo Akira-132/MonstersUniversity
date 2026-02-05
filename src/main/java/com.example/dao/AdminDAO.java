@@ -7,16 +7,9 @@ import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Classe DAO (Data Access Object) para a entidade Admin.
- * Mantém exatamente os mesmos métodos do DAO de referência,
- * apenas adaptando atributos e entidade.
- */
+
 public class AdminDAO {
 
-    /*
-     * Cria um novo registro de admin no banco de dados.
-     */
     public boolean create(Admin admin) throws SQLException {
         String sql = "INSERT INTO admin (usuario_id) VALUES (?)";
         Conexao conexao = new Conexao();
@@ -29,9 +22,7 @@ public class AdminDAO {
         }
     }
 
-    /*
-     * Busca todos os registros.
-     */
+
     public List<Admin> read() throws SQLException {
         String sql = "SELECT * FROM admin ORDER BY id ASC";
         Conexao conexao = new Conexao();
@@ -52,10 +43,6 @@ public class AdminDAO {
         return lista;
     }
 
-    /*
-     * Busca registros filtrando por "nome".
-     * Adaptação: o parâmetro nome representa o usuario_id.
-     */
     public List<Admin> read(String nome, String orderBy, String direction) throws SQLException {
         Conexao conexao = new Conexao();
         List<Admin> lista = new LinkedList<>();
@@ -99,9 +86,6 @@ public class AdminDAO {
         return lista;
     }
 
-    /*
-     * Busca um admin pelo ID.
-     */
     public Admin read(int id) throws SQLException {
         String sql = "SELECT * FROM admin WHERE id = ?";
         Conexao conexao = new Conexao();
@@ -124,10 +108,6 @@ public class AdminDAO {
         return admin;
     }
 
-    /*
-     * Método mantido por compatibilidade.
-     * Adaptação: email representa usuario_id e senha é ignorada.
-     */
     public Admin read(String email, String senha) throws SQLException {
         String sql = "SELECT * FROM admin WHERE usuario_id = ?";
         Conexao conexao = new Conexao();
@@ -150,9 +130,6 @@ public class AdminDAO {
         return admin;
     }
 
-    /*
-     * Atualiza um admin baseado no objeto.
-     */
     public int update(Admin admin) throws SQLException {
         String sql = "UPDATE admin SET usuario_id = ? WHERE id = ?";
         Conexao conexao = new Conexao();
@@ -167,10 +144,6 @@ public class AdminDAO {
         }
     }
 
-    /*
-     * Atualiza um admin baseado em parâmetros.
-     * Adaptação: nome/email/senha viram usuario_id.
-     */
     public int update(String nome, String email, String senha, int id) throws SQLException {
         String sql = "UPDATE admin SET usuario_id = ? WHERE id = ?";
         Conexao conexao = new Conexao();
@@ -185,9 +158,6 @@ public class AdminDAO {
         }
     }
 
-    /*
-     * Exclui pelo ID.
-     */
     public int delete(int id) throws SQLException {
         String sql = "DELETE FROM admin WHERE id = ?";
         Conexao conexao = new Conexao();
@@ -200,10 +170,6 @@ public class AdminDAO {
         }
     }
 
-    /*
-     * Exclui pelo "nome".
-     * Adaptação: nome representa usuario_id.
-     */
     public int delete(String nome) throws SQLException {
         String sql = "DELETE FROM admin WHERE usuario_id = ?";
         Conexao conexao = new Conexao();
