@@ -7,10 +7,11 @@ public class Usuario {
     private int id;
     private String nome;
     private String email;
+    private String sobrenome;
     private String senha;
     private String telefone;
 
-    public Usuario(int id, String nome, String email, String telefone) {
+    public Usuario(int id, String nome, String sobrenome, String email, String senha, String telefone) {
         this.setId(id);
         this.setNome(nome);
         this.setEmail(email);
@@ -18,7 +19,7 @@ public class Usuario {
         this.setTelefone(telefone);
     }
 
-    public Usuario(String nome, String email, String telefone) {
+    public Usuario(String nome, String sobrenome, String email, String senha, String telefone) {
         this.setNome(nome);
         this.setEmail(email);
         this.setSenha(senha);
@@ -28,6 +29,7 @@ public class Usuario {
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("O ID não pode ser negativo");
@@ -38,6 +40,7 @@ public class Usuario {
     public String getNome() {
         return nome;
     }
+
     public void setNome(String nome) {
         if (nome == null) {
             throw new NullPointerException("O nome não pode ser nulo.");
@@ -48,11 +51,26 @@ public class Usuario {
         this.nome = nome;
     }
 
+    public String getSobrenome() {
+        return sobrenome;
+    }
+
+    public void setSobrenome(String sobrenome) {
+        if (sobrenome == null) {
+            throw new NullPointerException("O sobrenome não pode ser nulo.");
+        }
+        if (sobrenome.trim().isEmpty()) {
+            throw new IllegalArgumentException("O sobrenome não pode estar em branco.");
+        }
+        this.sobrenome = sobrenome;
+    }
+
     public String getEmail() {
         return email;
     }
-    public void setEmail(String email){
-        if (email == null) { // Exceção: verifica se o email é nulo
+
+    public void setEmail(String email) {
+        if (email == null) {
             throw new NullPointerException("O e-mail não pode ser nulo.");
         }
         validateEmail(email);
@@ -62,11 +80,12 @@ public class Usuario {
     public String getSenha() {
         return senha;
     }
+
     public void setSenha(String senha) {
-        if (senha == null) { // Exceção: verifica se a senha é nula
+        if (senha == null) {
             throw new NullPointerException("A senha não pode ser nula.");
         }
-        if (senha.trim().isEmpty()) { // Exceção: verifica se a senha só contém espaço
+        if (senha.trim().isEmpty()) {
             throw new IllegalArgumentException("A senha não pode estar em branco.");
         }
         validateSenha(senha);
@@ -76,6 +95,7 @@ public class Usuario {
     public String getTelefone() {
         return telefone;
     }
+
     public void setTelefone(String telefone) {
         if (telefone == null) {
             throw new NullPointerException("O telefone não pode ser nulo.");
@@ -97,13 +117,13 @@ public class Usuario {
 
     private void validateEmail(String email) {
         Matcher matcher = PATTERN_EMAIL.matcher(email);
-        if (!matcher.matches()) { // Exceção: verifica se o e-mail tem formato válido.
+        if (!matcher.matches()) {
             throw new IllegalArgumentException("O formato do e-mail é inválido: '" + email + "'.");
         }
     }
 
     private void validateSenha(String senha) {
-        if (senha.length() < 8) { // Exceção: verifica se a senha tem no mínimo 8 caracteres
+        if (senha.length() < 8) {
             throw new IllegalArgumentException("A senha deve ter no mínimo 8 caracteres.");
         }
         if (!PATTERN_MINUSCULA.matcher(senha).find()) {
