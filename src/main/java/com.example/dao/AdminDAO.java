@@ -43,7 +43,7 @@ public class AdminDAO {
         return lista;
     }
 
-    public Admin read(int id) throws SQLException {
+    public Admin readById(int id) throws SQLException {
         String sql = "SELECT * FROM admin WHERE id = ?";
         Conexao conexao = new Conexao();
         Admin admin = null;
@@ -103,7 +103,7 @@ public class AdminDAO {
     }
 
 
-    public int delete(int id) throws SQLException {
+    public int deleteById(int id) throws SQLException {
         String sql = "DELETE FROM admin WHERE id = ?";
         Conexao conexao = new Conexao();
 
