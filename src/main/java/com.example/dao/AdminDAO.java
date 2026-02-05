@@ -140,7 +140,7 @@ public class AdminDAO {
             pstmt.setInt(1, admin.getUsuarioId());
             pstmt.setInt(2, admin.getId());
 
-            return pstmt.executeUpdate() > 0 ? 1 : 0;
+            return pstmt.executeUpdate();
         }
     }
 
@@ -154,7 +154,7 @@ public class AdminDAO {
             pstmt.setInt(1, Integer.parseInt(nome));
             pstmt.setInt(2, id);
 
-            return pstmt.executeUpdate() > 0 ? 1 : 0;
+            return pstmt.executeUpdate();
         }
     }
 
@@ -166,7 +166,7 @@ public class AdminDAO {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, id);
-            return pstmt.executeUpdate() > 0 ? 1 : 0;
+            return pstmt.executeUpdate();
         }
     }
 
@@ -178,7 +178,7 @@ public class AdminDAO {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, Integer.parseInt(nome));
-            return pstmt.executeUpdate() > 0 ? 1 : 0;
+            return pstmt.executeUpdate();
         }
     }
 }

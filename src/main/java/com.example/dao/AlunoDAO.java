@@ -149,7 +149,7 @@ public class AlunoDAO {
             pstmt.setInt(2, aluno.getUsuarioId());
             pstmt.setInt(3, aluno.getId());
 
-            return pstmt.executeUpdate() > 0 ? 1 : 0;
+            return pstmt.executeUpdate();
         }
     }
 
@@ -164,7 +164,7 @@ public class AlunoDAO {
             pstmt.setInt(2, Integer.parseInt(email));
             pstmt.setInt(3, id);
 
-            return pstmt.executeUpdate() > 0 ? 1 : 0;
+            return pstmt.executeUpdate();
         }
     }
 
@@ -176,7 +176,7 @@ public class AlunoDAO {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, id);
-            return pstmt.executeUpdate() > 0 ? 1 : 0;
+            return pstmt.executeUpdate();
         }
     }
 
@@ -188,7 +188,7 @@ public class AlunoDAO {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, nome);
-            return pstmt.executeUpdate() > 0 ? 1 : 0;
+            return pstmt.executeUpdate();
         }
     }
 }
