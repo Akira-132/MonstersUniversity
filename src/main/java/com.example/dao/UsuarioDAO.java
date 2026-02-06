@@ -11,6 +11,7 @@ public class UsuarioDAO {
 
     public boolean create(Usuario usuario) throws SQLException {
         String sql = "INSERT INTO usuario (nome, sobrenome, email, senha, telefone) VALUES (?, ?, ?, ?, ?)";
+
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
@@ -27,84 +28,33 @@ public class UsuarioDAO {
     }
 
     public List<Usuario> read() throws SQLException {
-        String sql = "SELECT * FROM usuario ORDER BY id ASC";
+        String sql = "SELECT id, nome, sobrenome, email, senha, telefone FROM usuario ORDER BY id ASC";
+
         Conexao conexao = new Conexao();
-        List<Usuario> listaUsuario = new LinkedList<>();
+        List<Usuario> lista = new LinkedList<>();
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rset = pstmt.executeQuery()) {
 
             while (rset.next()) {
-                Usuario usuario = new Usuario(
+                lista.add(new Usuario(
                         rset.getInt("id"),
                         rset.getString("nome"),
                         rset.getString("sobrenome"),
                         rset.getString("email"),
                         rset.getString("senha"),
                         rset.getString("telefone")
-                );
-                listaUsuario.add(usuario);
+                ));
             }
         }
-        return listaUsuario;
+        return lista;
     }
 
-    public List<Usuario> read(String nome, String orderBy, String direction) throws SQLException {
+    public Usuario readById(int id) throws SQLException {
+        String sql = "SELECT id, nome, sobrenome, email, senha, telefone FROM usuario WHERE id = ?";
+
         Conexao conexao = new Conexao();
-        List<Usuario> listaUsuario = new LinkedList<>();
-
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM usuario");
-        List<Object> parametros = new LinkedList<>();
-
-        if (nome != null && !nome.trim().isEmpty()) {
-            sqlBuilder.append(" WHERE nome ILIKE ?");
-            parametros.add("%" + nome.trim() + "%");
-        }
-
-        String colunaOrdenacao = "id";
-        if (orderBy != null) {
-            if (orderBy.equalsIgnoreCase("nome")) {
-                colunaOrdenacao = "nome";
-            } else if (orderBy.equalsIgnoreCase("email")) {
-                colunaOrdenacao = "email";
-            }
-        }
-
-        String dir = "ASC";
-        if (direction != null && direction.equalsIgnoreCase("DESC")) {
-            dir = "DESC";
-        }
-
-        sqlBuilder.append(" ORDER BY ").append(colunaOrdenacao).append(" ").append(dir);
-
-        try (Connection conn = conexao.conectar();
-             PreparedStatement pstmt = conn.prepareStatement(sqlBuilder.toString())) {
-
-            for (int i = 0; i < parametros.size(); i++) {
-                pstmt.setObject(i + 1, parametros.get(i));
-            }
-
-            try (ResultSet rset = pstmt.executeQuery()) {
-                while (rset.next()) {
-                    listaUsuario.add(new Usuario(
-                            rset.getInt("id"),
-                            rset.getString("nome"),
-                            rset.getString("sobrenome"),
-                            rset.getString("email"),
-                            rset.getString("senha"),
-                            rset.getString("telefone")
-                    ));
-                }
-            }
-        }
-        return listaUsuario;
-    }
-
-    public Usuario read(int id) throws SQLException {
-        String sql = "SELECT * FROM usuario WHERE id = ?";
-        Conexao conexao = new Conexao();
-        Usuario usuario = null;
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -113,7 +63,7 @@ public class UsuarioDAO {
 
             try (ResultSet rset = pstmt.executeQuery()) {
                 if (rset.next()) {
-                    usuario = new Usuario(
+                    return new Usuario(
                             rset.getInt("id"),
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
@@ -124,13 +74,13 @@ public class UsuarioDAO {
                 }
             }
         }
-        return usuario;
+        return null;
     }
 
-    public Usuario read(String email, String senha) throws SQLException {
-        String sql = "SELECT * FROM usuario WHERE email = ?";
+    public Usuario readByEmail(String email) throws SQLException {
+        String sql = "SELECT id, nome, sobrenome, email, senha, telefone FROM usuario WHERE email = ?";
+
         Conexao conexao = new Conexao();
-        Usuario usuario = null;
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -139,7 +89,7 @@ public class UsuarioDAO {
 
             try (ResultSet rset = pstmt.executeQuery()) {
                 if (rset.next()) {
-                    usuario = new Usuario(
+                    return new Usuario(
                             rset.getInt("id"),
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
@@ -150,11 +100,39 @@ public class UsuarioDAO {
                 }
             }
         }
-        return usuario;
+        return null;
+    }
+
+    public Usuario login(String email, String senha) throws SQLException {
+        String sql = "SELECT id, nome, sobrenome, email, senha, telefone FROM usuario WHERE email = ? AND senha = ?";
+
+        Conexao conexao = new Conexao();
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+            pstmt.setString(2, senha);
+
+            try (ResultSet rset = pstmt.executeQuery()) {
+                if (rset.next()) {
+                    return new Usuario(
+                            rset.getInt("id"),
+                            rset.getString("nome"),
+                            rset.getString("sobrenome"),
+                            rset.getString("email"),
+                            rset.getString("senha"),
+                            rset.getString("telefone")
+                    );
+                }
+            }
+        }
+        return null;
     }
 
     public int update(Usuario usuario) throws SQLException {
         String sql = "UPDATE usuario SET nome = ?, sobrenome = ?, email = ?, senha = ?, telefone = ? WHERE id = ?";
+
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
@@ -171,42 +149,15 @@ public class UsuarioDAO {
         }
     }
 
-    public int update(String nome, String email, String senha, int id) throws SQLException {
-        String sql = "UPDATE usuario SET nome = ?, email = ?, senha = ? WHERE id = ?";
-        Conexao conexao = new Conexao();
-
-        try (Connection conn = conexao.conectar();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, nome);
-            pstmt.setString(2, email);
-            pstmt.setString(3, senha);
-            pstmt.setInt(4, id);
-
-            return pstmt.executeUpdate();
-        }
-    }
-
-    public int delete(int id) throws SQLException {
+    public int deleteById(int id) throws SQLException {
         String sql = "DELETE FROM usuario WHERE id = ?";
+
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, id);
-            return pstmt.executeUpdate();
-        }
-    }
-
-    public int delete(String nome) throws SQLException {
-        String sql = "DELETE FROM usuario WHERE nome = ?";
-        Conexao conexao = new Conexao();
-
-        try (Connection conn = conexao.conectar();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, nome);
             return pstmt.executeUpdate();
         }
     }
