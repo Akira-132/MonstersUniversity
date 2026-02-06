@@ -24,78 +24,28 @@ public class DisciplinaDAO {
     }
 
     public List<Disciplina> read() throws SQLException {
-        String sql = "SELECT * FROM disciplina ORDER BY id ASC";
+        String sql = "SELECT id, nome, professor_id FROM disciplina ORDER BY id ASC";
         Conexao conexao = new Conexao();
-        List<Disciplina> listaDisciplina = new LinkedList<>();
+        List<Disciplina> lista = new LinkedList<>();
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rset = pstmt.executeQuery()) {
 
             while (rset.next()) {
-                Disciplina disciplina = new Disciplina(
+                lista.add(new Disciplina(
                         rset.getInt("id"),
                         rset.getString("nome"),
                         rset.getInt("professor_id")
-                );
-                listaDisciplina.add(disciplina);
+                ));
             }
         }
-        return listaDisciplina;
+        return lista;
     }
 
-    public List<Disciplina> read(String nome, String orderBy, String direction) throws SQLException {
+    public Disciplina readById(int id) throws SQLException {
+        String sql = "SELECT id, nome, professor_id FROM disciplina WHERE id = ?";
         Conexao conexao = new Conexao();
-        List<Disciplina> listaDisciplina = new LinkedList<>();
-
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM disciplina");
-        List<Object> parametros = new LinkedList<>();
-
-        if (nome != null && !nome.trim().isEmpty()) {
-            sqlBuilder.append(" WHERE nome ILIKE ?");
-            parametros.add("%" + nome.trim() + "%");
-        }
-
-        String colunaOrdenacao = "id";
-        if (orderBy != null) {
-            if (orderBy.equalsIgnoreCase("nome")) {
-                colunaOrdenacao = "nome";
-            } else if (orderBy.equalsIgnoreCase("professor_id")) {
-                colunaOrdenacao = "professor_id";
-            }
-        }
-
-        String dir = "ASC";
-        if (direction != null && direction.equalsIgnoreCase("DESC")) {
-            dir = "DESC";
-        }
-
-        sqlBuilder.append(" ORDER BY ").append(colunaOrdenacao).append(" ").append(dir);
-
-        try (Connection conn = conexao.conectar();
-             PreparedStatement pstmt = conn.prepareStatement(sqlBuilder.toString())) {
-
-            for (int i = 0; i < parametros.size(); i++) {
-                pstmt.setObject(i + 1, parametros.get(i));
-            }
-
-            try (ResultSet rset = pstmt.executeQuery()) {
-                while (rset.next()) {
-                    listaDisciplina.add(new Disciplina(
-                            rset.getInt("id"),
-                            rset.getString("nome"),
-                            rset.getInt("professor_id")
-                    ));
-                }
-            }
-        }
-        return listaDisciplina;
-    }
-
-    public Disciplina read(int id) throws SQLException {
-        String sql = "SELECT * FROM disciplina WHERE id = ?";
-        Conexao conexao = new Conexao();
-        Disciplina disciplina = null;
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -104,7 +54,7 @@ public class DisciplinaDAO {
 
             try (ResultSet rset = pstmt.executeQuery()) {
                 if (rset.next()) {
-                    disciplina = new Disciplina(
+                    return new Disciplina(
                             rset.getInt("id"),
                             rset.getString("nome"),
                             rset.getInt("professor_id")
@@ -112,30 +62,56 @@ public class DisciplinaDAO {
                 }
             }
         }
-        return disciplina;
+        return null;
     }
 
-    public Disciplina read(String email, String senha) throws SQLException {
-        String sql = "SELECT * FROM disciplina WHERE nome = ?";
+    public List<Disciplina> readByNome(String nome, String orderBy, String direction) throws SQLException {
         Conexao conexao = new Conexao();
-        Disciplina disciplina = null;
+        List<Disciplina> lista = new LinkedList<>();
+
+        StringBuilder sql = new StringBuilder(
+                "SELECT id, nome, professor_id FROM disciplina"
+        );
+
+        List<Object> parametros = new LinkedList<>();
+
+        if (nome != null && !nome.trim().isEmpty()) {
+            sql.append(" WHERE nome ILIKE ?");
+            parametros.add("%" + nome.trim() + "%");
+        }
+
+        String colunaOrdenacao = "id";
+        if ("nome".equalsIgnoreCase(orderBy)) {
+            colunaOrdenacao = "nome";
+        } else if ("professor_id".equalsIgnoreCase(orderBy)) {
+            colunaOrdenacao = "professor_id";
+        }
+
+        String direcao = "ASC";
+        if ("DESC".equalsIgnoreCase(direction)) {
+            direcao = "DESC";
+        }
+
+        sql.append(" ORDER BY ").append(colunaOrdenacao).append(" ").append(direcao);
 
         try (Connection conn = conexao.conectar();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
 
-            pstmt.setString(1, email);
+            for (int i = 0; i < parametros.size(); i++) {
+                pstmt.setObject(i + 1, parametros.get(i));
+            }
 
             try (ResultSet rset = pstmt.executeQuery()) {
-                if (rset.next()) {
-                    disciplina = new Disciplina(
+                while (rset.next()) {
+                    lista.add(new Disciplina(
                             rset.getInt("id"),
                             rset.getString("nome"),
                             rset.getInt("professor_id")
-                    );
+                    ));
                 }
             }
         }
-        return disciplina;
+        return lista;
     }
 
     public int update(Disciplina disciplina) throws SQLException {
@@ -153,22 +129,7 @@ public class DisciplinaDAO {
         }
     }
 
-    public int update(String nome, String email, String senha, int id) throws SQLException {
-        String sql = "UPDATE disciplina SET nome = ?, professor_id = ? WHERE id = ?";
-        Conexao conexao = new Conexao();
-
-        try (Connection conn = conexao.conectar();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, nome);
-            pstmt.setInt(2, Integer.parseInt(email));
-            pstmt.setInt(3, id);
-
-            return pstmt.executeUpdate();
-        }
-    }
-
-    public int delete(int id) throws SQLException {
+    public int deleteById(int id) throws SQLException {
         String sql = "DELETE FROM disciplina WHERE id = ?";
         Conexao conexao = new Conexao();
 
@@ -180,7 +141,7 @@ public class DisciplinaDAO {
         }
     }
 
-    public int delete(String nome) throws SQLException {
+    public int deleteByNome(String nome) throws SQLException {
         String sql = "DELETE FROM disciplina WHERE nome = ?";
         Conexao conexao = new Conexao();
 
