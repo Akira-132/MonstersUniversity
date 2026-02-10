@@ -9,21 +9,24 @@ public class Usuario {
     private String email;
     private String sobrenome;
     private String senha;
-    private String telefone;
+    private int fkTelefoneId;
+    private String tipo;
 
-    public Usuario(int id, String nome, String sobrenome, String email, String senha, String telefone) {
+    public Usuario(int id, String nome, String sobrenome, String email, String senha, int fkTelefoneId, String tipo) {
         this.setId(id);
         this.setNome(nome);
         this.setEmail(email);
         this.setSenha(senha);
-        this.setTelefone(telefone);
+        this.setFkTelefoneId(fkTelefoneId);
+        this.setTipo(tipo);
     }
 
-    public Usuario(String nome, String sobrenome, String email, String senha, String telefone) {
+    public Usuario(String nome, String sobrenome, String email, String senha, int fkTelefoneId, String tipo) {
         this.setNome(nome);
         this.setEmail(email);
         this.setSenha(senha);
-        this.setTelefone(telefone);
+        this.setFkTelefoneId(fkTelefoneId);
+        this.setTipo(tipo);
     }
 
     public int getId() {
@@ -80,7 +83,6 @@ public class Usuario {
     public String getSenha() {
         return senha;
     }
-
     public void setSenha(String senha) {
         if (senha == null) {
             throw new NullPointerException("A senha não pode ser nula.");
@@ -92,19 +94,32 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public String getTelefone() {
-        return telefone;
+    public int getFkTelefoneId() {
+        return fkTelefoneId;
     }
-
-    public void setTelefone(String telefone) {
-        if (telefone == null) {
-            throw new NullPointerException("O telefone não pode ser nulo.");
+    public void setFkTelefoneId(int fkTelefoneId) {
+        if (fkTelefoneId <= 0) {
+            throw new IllegalArgumentException("O ID de telefone não pode ser negativo");
         }
-        String telefoneLimpo = telefone.replaceAll("[^\\d]", "");
-        validateTelefone(telefoneLimpo);
-        this.telefone = telefoneLimpo;
+        this.fkTelefoneId = fkTelefoneId;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+    public void setTipo(String tipo) {
+        if (tipo == null) {
+            throw new NullPointerException("O tipo de usuário não pode ser nulo.");
+        }
+        if (tipo.trim().isEmpty()) {
+            throw new IllegalArgumentException("O tipo de usuário não pode estar em branco.");
+        }
+        String tipoLower = tipo.toLowerCase();
+        if (!tipoLower.equals("aluno") && !tipoLower.equals("admin") && !tipoLower.equals("professor")) {
+            throw new IllegalArgumentException("Tipo de usuário não aceitado: " + tipo);
+        }
+        this.tipo = tipo;
+    }
 
     private static final Pattern PATTERN_EMAIL = Pattern.compile(
             "^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@" +
@@ -137,13 +152,6 @@ public class Usuario {
         }
         if (!PATTERN_ESPECIAL.matcher(senha).find()) {
             throw new IllegalArgumentException("A senha deve ter no mínimo 1 caractere especial.");
-        }
-    }
-
-    private void validateTelefone(String telefoneLimpo) {
-        int len = telefoneLimpo.length();
-        if (len != 10 && len != 11) {
-            throw new IllegalArgumentException("Telefone inválido. Deve conter 10 ou 11 dígitos (com DDD). Recebido: '" + telefoneLimpo + "'");
         }
     }
 }
