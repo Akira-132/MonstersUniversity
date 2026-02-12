@@ -2,7 +2,6 @@ package com.example.dao;
 
 import com.example.controllers.Conexao;
 import com.example.models.Admin;
-
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;

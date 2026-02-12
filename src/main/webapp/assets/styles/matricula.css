@@ -1,0 +1,40 @@
+#fundo {
+    position: relative;
+}
+
+#login-box {
+    position: relative;
+    align-self: center;
+    text-align: center;
+    margin-right: 1rem;
+    width: 50rem;
+    height: 30rem;
+    z-index: 2;
+}
+
+#montros_escuro {
+    position: absolute;
+    z-index: 15;
+    right: 4.7%;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+#btn-enviar {
+    background-color: #4289F9;
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 0.9rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+#btn-enviar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.3rem 0.8rem rgba(66, 137, 249, 0.4);
+}

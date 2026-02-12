@@ -1,0 +1,92 @@
+#fundo {
+    position: relative;
+}
+
+#login-box {
+    position: relative;
+    margin-right: 1rem;
+}
+
+#jake_fita {
+    position: absolute;
+    z-index: 20;
+    top: 11rem;
+    right: 17.2%;
+}
+
+#componentes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    justify-content: center;
+}
+
+h1 {
+    font-size: 2.8rem;
+}
+
+form {
+    padding: 0;
+}
+
+p {
+    align-self: flex-start;
+}
+
+#inputs {
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+    margin: 1.5rem 0 2rem 0;
+    width: 100%;
+}
+
+input {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+#inputs input {
+    height: 4rem;
+}
+
+a {
+    color: #0491FC;
+    text-decoration: none;
+    font-size: 1rem;
+    text-align: left;
+    margin-bottom: 0.5rem;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#buttons {
+    display: flex;
+    gap: 4rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+#btn-voltar {
+    text-decoration: none;
+    border: #C6BEBE 2px solid;
+    color: black;
+    padding: 1rem 3rem;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+#btn-voltar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(104, 104, 105, 0.4);
+}
+
+#btn-login {
+    padding: 1rem 3rem;
+    margin-top: 1.3rem;
+}
