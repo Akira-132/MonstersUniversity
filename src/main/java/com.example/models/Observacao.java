@@ -50,7 +50,6 @@ public class Observacao {
     public LocalDateTime getDataEnvio() {
         return dataEnvio;
     }
-
     public void setDataEnvio(LocalDateTime dataEnvio) {
         if (dataEnvio == null) {
             throw new NullPointerException("A data de envio não pode ser nula.");
@@ -61,7 +60,6 @@ public class Observacao {
     public int getFkProfessorId() {
         return fkProfessorId;
     }
-
     public void setFkProfessorId(int fkProfessorId) {
         if (fkProfessorId <= 0) {
             throw new IllegalArgumentException("O ID do professor deve ser positivo.");
@@ -72,7 +70,6 @@ public class Observacao {
     public int getFkAlunoId() {
         return fkALunoId;
     }
-
     public void setFkAlunoId(int fkALunoId) {
         if (fkALunoId <= 0) {
             throw new IllegalArgumentException("O ID do aluno deve ser positivo.");

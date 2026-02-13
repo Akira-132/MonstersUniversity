@@ -34,7 +34,6 @@ public class Aluno {
     public String getCpf() {
         return cpf;
     }
-
     public void setCpf(String cpf) {
         if (cpf == null) {
             throw new NullPointerException("O CPF não pode ser nulo.");

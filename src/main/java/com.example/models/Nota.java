@@ -3,6 +3,7 @@ public class Nota {
     private int id;
     private String tipo;
     private int semestre;
+    private int ano;
     private double nota;
     private int fkAlunoId;
     private int fkDisciplinaId;
@@ -66,6 +67,16 @@ public class Nota {
             throw new IllegalArgumentException("O semestre só pode ser 1 ou 2");
         }
         this.semestre = semestre;
+    }
+
+    public int getAno() {
+        return ano;
+    }
+    public void setAno(int ano) {
+        if (ano < 1313 || ano > 2100) {
+            throw new IllegalArgumentException("Ano inválido");
+        }
+        this.ano = ano;
     }
 
     public int getFkAlunoId() {

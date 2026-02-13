@@ -9,30 +9,28 @@ public class Usuario {
     private String email;
     private String sobrenome;
     private String senha;
-    private int fkTelefoneId;
     private String tipo;
 
-    public Usuario(int id, String nome, String sobrenome, String email, String senha, int fkTelefoneId, String tipo) {
+    public Usuario(int id, String nome, String sobrenome, String email, String senha, String tipo) {
         this.setId(id);
         this.setNome(nome);
+        this.setSobrenome(sobrenome);
         this.setEmail(email);
         this.setSenha(senha);
-        this.setFkTelefoneId(fkTelefoneId);
         this.setTipo(tipo);
     }
 
-    public Usuario(String nome, String sobrenome, String email, String senha, int fkTelefoneId, String tipo) {
+    public Usuario(String nome, String sobrenome, String email, String senha, String tipo) {
         this.setNome(nome);
+        this.setSobrenome(sobrenome);
         this.setEmail(email);
         this.setSenha(senha);
-        this.setFkTelefoneId(fkTelefoneId);
         this.setTipo(tipo);
     }
 
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("O ID não pode ser negativo");
@@ -43,7 +41,6 @@ public class Usuario {
     public String getNome() {
         return nome;
     }
-
     public void setNome(String nome) {
         if (nome == null) {
             throw new NullPointerException("O nome não pode ser nulo.");
@@ -57,7 +54,6 @@ public class Usuario {
     public String getSobrenome() {
         return sobrenome;
     }
-
     public void setSobrenome(String sobrenome) {
         if (sobrenome == null) {
             throw new NullPointerException("O sobrenome não pode ser nulo.");
@@ -71,7 +67,6 @@ public class Usuario {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         if (email == null) {
             throw new NullPointerException("O e-mail não pode ser nulo.");
@@ -92,16 +87,6 @@ public class Usuario {
         }
         validateSenha(senha);
         this.senha = senha;
-    }
-
-    public int getFkTelefoneId() {
-        return fkTelefoneId;
-    }
-    public void setFkTelefoneId(int fkTelefoneId) {
-        if (fkTelefoneId <= 0) {
-            throw new IllegalArgumentException("O ID de telefone não pode ser negativo");
-        }
-        this.fkTelefoneId = fkTelefoneId;
     }
 
     public String getTipo() {

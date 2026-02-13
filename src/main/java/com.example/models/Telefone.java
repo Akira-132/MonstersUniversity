@@ -19,7 +19,6 @@ public class Telefone {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("O ID não pode ser negativo");
@@ -30,7 +29,6 @@ public class Telefone {
     public String getTelefone() {
         return telefone;
     }
-
     public void setTelefone(String telefone) {
         if (telefone == null) {
             throw new NullPointerException("O telefone não pode ser nulo.");
@@ -40,13 +38,9 @@ public class Telefone {
         this.telefone = telefoneLimpo;
     }
 
-    public int getFkUsuarioId() {
-        return fkUsuarioId;
-    }
+    public int getFkUsuarioId() { return fkUsuarioId; }
     public void setFkUsuarioId(int fkUsuarioId) {
-        if (fkUsuarioId <= 0) {
-            throw new IllegalArgumentException("O ID de usuário não pode ser negativo");
-        }
+        if (fkUsuarioId <= 0) throw new IllegalArgumentException("O ID de usuário deve ser positivo.");
         this.fkUsuarioId = fkUsuarioId;
     }
 

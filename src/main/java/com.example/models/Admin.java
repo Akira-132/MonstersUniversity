@@ -16,7 +16,6 @@ public class Admin {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("O ID não pode ser negativo");
@@ -27,7 +26,6 @@ public class Admin {
     public int getFkUsuarioId() {
         return fkUsuarioId;
     }
-
     public void setFkUsuarioId(int fkUsuarioId) {
         if (fkUsuarioId <= 0) {
             throw new IllegalArgumentException("O ID de usuário não pode ser negativo");
