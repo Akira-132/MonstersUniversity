@@ -1,23 +1,16 @@
 package com.example.models;
 
-import java.util.UUID;
-
 public class Aluno {
     private int id;
-    private String cpf;
-    private String matricula;
     private int fkUsuarioId;
+    private Usuario usuario;
 
-    public Aluno(String cpf, int fkUsuarioId) {
-        this.setCpf(cpf);
+    public Aluno(int fkUsuarioId) {
         this.setFkUsuarioId(fkUsuarioId);
-        this.matricula = UUID.randomUUID().toString();
     }
 
-    public Aluno(int id, String cpf, String matricula, int fkUsuarioId) {
+    public Aluno(int id, int fkUsuarioId) {
         this.setId(id);
-        this.setCpf(cpf);
-        this.matricula = matricula;
         this.setFkUsuarioId(fkUsuarioId);
     }
 
@@ -31,22 +24,6 @@ public class Aluno {
         this.id = id;
     }
 
-    public String getCpf() {
-        return cpf;
-    }
-    public void setCpf(String cpf) {
-        if (cpf == null) {
-            throw new NullPointerException("O CPF não pode ser nulo.");
-        }
-        String cpfLimpo = cpf.replaceAll("[^\\d]", "");
-        validateCpf(cpfLimpo);
-        this.cpf = cpfLimpo;
-    }
-
-    public String getMatricula() {
-        return matricula;
-    }
-
     public int getFkUsuarioId() {
         return fkUsuarioId;
     }
@@ -57,9 +34,10 @@ public class Aluno {
         this.fkUsuarioId = fkUsuarioId;
     }
 
-    private void validateCpf(String cpfLimpo) {
-        if (cpfLimpo.length() != 11) {
-            throw new IllegalArgumentException("CPF inválido. Deve conter 11 dígitos (após remover formatação). Recebido: '" + cpfLimpo + "'.");
-        }
+    public Usuario getUsuario() {
+        return usuario;
+    }
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }
