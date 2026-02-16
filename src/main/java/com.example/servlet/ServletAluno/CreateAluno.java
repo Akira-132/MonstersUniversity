@@ -28,6 +28,7 @@ public class CreateAluno extends HttpServlet {
         String sobrenome = request.getParameter("sobrenome");
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
+        String cpf = request.getParameter("cpf");
         String tipo = "aluno";
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
@@ -37,14 +38,13 @@ public class CreateAluno extends HttpServlet {
 
         try {
             Usuario novoUsuario = new Usuario(nome, sobrenome, email, senha, tipo);
-
             boolean usuarioCriado = usuarioDAO.create(novoUsuario);
 
             if (usuarioCriado) {
                 Usuario usuarioBanco = usuarioDAO.readByEmail(email);
 
                 if (usuarioBanco != null) {
-                    Aluno novoAluno = new Aluno(usuarioBanco.getId());
+                    Aluno novoAluno = new Aluno(cpf, usuarioBanco.getId());
                     success = alunoDAO.create(novoAluno);
                 } else {
                     erro = "Erro: Usuário criado mas ID não encontrado.";
@@ -59,7 +59,7 @@ public class CreateAluno extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             if (e.getMessage().contains("Duplicate entry") || e.getMessage().contains("UNIQUE")) {
-                erro = "Erro: E-mail já cadastrado.";
+                erro = "Erro: E-mail ou CPF já cadastrados.";
             } else {
                 erro = "Erro de banco: " + e.getMessage();
             }
@@ -78,6 +78,7 @@ public class CreateAluno extends HttpServlet {
         request.setAttribute("nome_previo", nome);
         request.setAttribute("sobrenome_previo", sobrenome);
         request.setAttribute("email_previo", email);
+        request.setAttribute("cpf_previo", cpf);
 
         List<Aluno> listaAlunos = new ArrayList<>();
         try {

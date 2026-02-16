@@ -40,6 +40,7 @@ public class UpdateAluno extends HttpServlet {
         String sobrenome = request.getParameter("sobrenome");
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
+        String cpf = request.getParameter("cpf");
 
         boolean success = false;
         String erro = null;
@@ -50,8 +51,9 @@ public class UpdateAluno extends HttpServlet {
             int idUsuario = Integer.parseInt(idUsuarioStr);
 
             Usuario usuarioParaAtualizar = usuarioDAO.readById(idUsuario);
+            Aluno alunoParaAtualizar = alunoDAO.readById(idAluno);
 
-            if (usuarioParaAtualizar != null) {
+            if (usuarioParaAtualizar != null && alunoParaAtualizar != null) {
                 usuarioParaAtualizar.setNome(nome);
                 usuarioParaAtualizar.setSobrenome(sobrenome);
                 usuarioParaAtualizar.setEmail(email);
@@ -60,22 +62,29 @@ public class UpdateAluno extends HttpServlet {
                     usuarioParaAtualizar.setSenha(senha);
                 }
 
-                int result = usuarioDAO.update(usuarioParaAtualizar);
+                alunoParaAtualizar.setCpf(cpf);
 
-                if (result > 0) {
+                int resultUsuario = usuarioDAO.update(usuarioParaAtualizar);
+                int resultAluno = alunoDAO.update(alunoParaAtualizar);
+
+                if (resultUsuario > 0 && resultAluno > 0) {
                     success = true;
                 } else {
-                    erro = "Erro ao atualizar dados do usuário.";
+                    erro = "Erro ao atualizar dados.";
                 }
             } else {
-                erro = "Usuário vinculado não encontrado.";
+                erro = "Aluno ou Usuário não encontrado.";
             }
 
         } catch (IllegalArgumentException e) {
             erro = "Erro de validação: " + e.getMessage();
         } catch (SQLException e) {
             e.printStackTrace();
-            erro = "Erro de banco: " + e.getMessage();
+            if (e.getMessage().contains("UNIQUE")) {
+                erro = "E-mail ou CPF já existente.";
+            } else {
+                erro = "Erro de banco: " + e.getMessage();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             erro = "Erro: " + e.getMessage();
@@ -90,6 +99,7 @@ public class UpdateAluno extends HttpServlet {
         request.setAttribute("nome_previo", nome);
         request.setAttribute("sobrenome_previo", sobrenome);
         request.setAttribute("email_previo", email);
+        request.setAttribute("cpf_previo", cpf);
         request.setAttribute("modalAtivo", "update");
 
         List<Aluno> listaAlunos = new ArrayList<>();

@@ -1,16 +1,24 @@
 package com.example.models;
 
+import java.util.UUID;
+
 public class Aluno {
     private int id;
+    private String cpf;
+    private String matricula;
     private int fkUsuarioId;
     private Usuario usuario;
 
-    public Aluno(int fkUsuarioId) {
+    public Aluno(String cpf, int fkUsuarioId) {
+        this.setCpf(cpf);
+        this.matricula = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         this.setFkUsuarioId(fkUsuarioId);
     }
 
-    public Aluno(int id, int fkUsuarioId) {
+    public Aluno(int id, String cpf, String matricula, int fkUsuarioId) {
         this.setId(id);
+        this.setCpf(cpf);
+        this.setMatricula(matricula);
         this.setFkUsuarioId(fkUsuarioId);
     }
 
@@ -22,6 +30,25 @@ public class Aluno {
             throw new IllegalArgumentException("O ID não pode ser negativo");
         }
         this.id = id;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+    public void setCpf(String cpf) {
+        if (cpf == null) {
+            throw new NullPointerException("O CPF não pode ser nulo.");
+        }
+        String cpfLimpo = cpf.replaceAll("[^\\d]", "");
+        validateCpf(cpfLimpo);
+        this.cpf = cpfLimpo;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
     }
 
     public int getFkUsuarioId() {
@@ -39,5 +66,11 @@ public class Aluno {
     }
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    private void validateCpf(String cpfLimpo) {
+        if (cpfLimpo.length() != 11) {
+            throw new IllegalArgumentException("CPF inválido. Deve conter 11 dígitos.");
+        }
     }
 }
