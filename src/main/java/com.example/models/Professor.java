@@ -3,9 +3,10 @@ package com.example.models;
 public class Professor {
     private int id;
     private int fkUsuarioId;
+    private Usuario usuario;
 
     public Professor(int fkUsuarioId) {
-        this.fkUsuarioId = fkUsuarioId;
+        this.setFkUsuarioId(fkUsuarioId);
     }
 
     public Professor(int id, int fkUsuarioId) {
@@ -31,5 +32,12 @@ public class Professor {
             throw new IllegalArgumentException("O ID de usuário não pode ser negativo");
         }
         this.fkUsuarioId = fkUsuarioId;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }
