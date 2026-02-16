@@ -1,7 +1,9 @@
 package com.example.servlet.ServletProfessor;
 
 import com.example.dao.ProfessorDAO;
+import com.example.dao.UsuarioDAO;
 import com.example.models.Professor;
+import com.example.models.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -51,21 +53,29 @@ public class DeleteProfessor extends HttpServlet {
         }
 
         if (success) {
-            response.sendRedirect(request.getContextPath() + "/professores-crud");
+            response.sendRedirect(request.getContextPath() + "/professor-read");
             return;
         }
 
         request.setAttribute("erro", erro);
+        request.setAttribute("modalAtivo", "delete");
 
         List<Professor> lista = new ArrayList<>();
         try { lista = dao.read(); } catch (Exception e) {}
         request.setAttribute("listaProfessores", lista);
 
         if (id > 0) {
-            try { request.setAttribute("professorModal", dao.readById(id)); } catch (Exception e) {}
+            try {
+                Professor p = dao.readById(id);
+                if (p != null) {
+                    UsuarioDAO uDao = new UsuarioDAO();
+                    Usuario u = uDao.readById(p.getFkUsuarioId());
+                    p.setUsuario(u);
+                    request.setAttribute("professorModal", p);
+                }
+            } catch (Exception e) {}
         }
 
-        request.setAttribute("abrirModal", "delete");
         request.getRequestDispatcher("/WEB-INF/pages/professores.jsp").forward(request, response);
     }
 }

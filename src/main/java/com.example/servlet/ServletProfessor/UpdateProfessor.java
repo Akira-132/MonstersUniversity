@@ -22,7 +22,7 @@ public class UpdateProfessor extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.sendRedirect(request.getContextPath() + "/professores-crud");
+        response.sendRedirect(request.getContextPath() + "/professor-read");
     }
 
     @Override
@@ -83,13 +83,15 @@ public class UpdateProfessor extends HttpServlet {
         }
 
         if (success) {
-            response.sendRedirect(request.getContextPath() + "/professores-crud");
+            response.sendRedirect(request.getContextPath() + "/professor-read");
             return;
         }
 
         request.setAttribute("erro", erro);
         request.setAttribute("nome_previo", nome);
+        request.setAttribute("sobrenome_previo", sobrenome);
         request.setAttribute("email_previo", email);
+        request.setAttribute("modalAtivo", "update");
 
         List<Professor> listaProfessores = new ArrayList<>();
         try {
@@ -108,7 +110,6 @@ public class UpdateProfessor extends HttpServlet {
             } catch(Exception e) {}
         }
 
-        request.setAttribute("abrirModal", "update");
         request.getRequestDispatcher("/WEB-INF/pages/professores.jsp").forward(request, response);
     }
 }

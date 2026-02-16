@@ -70,7 +70,7 @@ public class CreateProfessor extends HttpServlet {
         }
 
         if (success) {
-            response.sendRedirect(request.getContextPath() + "/professores-crud");
+            response.sendRedirect(request.getContextPath() + "/professor-read");
             return;
         }
 
@@ -87,7 +87,7 @@ public class CreateProfessor extends HttpServlet {
         }
         request.setAttribute("listaProfessores", listaProfessores);
 
-        request.setAttribute("abrirModal", "create");
+        request.setAttribute("modalAtivo", "create");
         request.getRequestDispatcher("/WEB-INF/pages/professores.jsp").forward(request, response);
     }
 }
