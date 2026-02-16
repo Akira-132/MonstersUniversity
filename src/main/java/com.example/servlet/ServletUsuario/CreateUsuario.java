@@ -1,9 +1,7 @@
 package com.example.servlet.ServletUsuario;
 
 import com.example.dao.UsuarioDAO;
-import com.example.dao.TelefoneDAO;
 import com.example.models.Usuario;
-import com.example.models.Telefone;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,8 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/usuario-create")
 public class CreateUsuario extends HttpServlet {
@@ -29,55 +27,39 @@ public class CreateUsuario extends HttpServlet {
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
         String tipo = request.getParameter("tipo");
-        String telefoneStr = request.getParameter("telefone");
 
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        TelefoneDAO telefoneDAO = new TelefoneDAO();
+        UsuarioDAO dao = new UsuarioDAO();
         boolean success = false;
         String erro = null;
 
         try {
-            Usuario novoUsuario = new Usuario(
-                    nome,
-                    sobrenome,
-                    email,
-                    senha,
-                    tipo
-            );
+            Usuario novoUsuario = new Usuario(nome, sobrenome, email, senha, tipo);
+            int idGerado = dao.create(novoUsuario);
 
-            int idUsuarioGerado = usuarioDAO.create(novoUsuario);
-
-            if (idUsuarioGerado > 0) {
-                Telefone novoTelefone = new Telefone(telefoneStr, idUsuarioGerado);
-                boolean telSuccess = telefoneDAO.create(novoTelefone);
-
-                if (telSuccess) {
-                    success = true;
-                } else {
-                    erro = "Usuário criado, mas erro ao salvar telefone.";
-                }
+            if (idGerado > 0) {
+                success = true;
             } else {
-                erro = "Erro ao cadastrar usuário (DAO retornou ID inválido).";
+                erro = "Erro ao cadastrar usuário.";
             }
 
-        } catch (IllegalArgumentException | NullPointerException e) {
+        } catch (IllegalArgumentException e) {
             erro = "Erro de validação: " + e.getMessage();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            if (e.getMessage().contains("Duplicate entry") || e.getMessage().contains("UNIQUE constraint failed")) {
-                erro = "Erro: Já existe um usuário com este e-mail.";
+            if (e.getMessage().contains("Duplicate entry") || e.getMessage().contains("UNIQUE")) {
+                erro = "Erro: E-mail já cadastrado.";
             } else {
-                erro = "Erro de banco de dados ao criar usuário: " + e.getMessage();
+                erro = "Erro de banco: " + e.getMessage();
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            erro = "Erro inesperado ao criar usuário: " + e.getMessage();
+            erro = "Erro inesperado: " + e.getMessage();
         }
 
         if (success) {
-            response.sendRedirect(request.getContextPath() + "/usuarios-crud");
+            response.sendRedirect(request.getContextPath() + "/usuario-read");
             return;
         }
 
@@ -86,18 +68,16 @@ public class CreateUsuario extends HttpServlet {
         request.setAttribute("sobrenome_previo", sobrenome);
         request.setAttribute("email_previo", email);
         request.setAttribute("tipo_previo", tipo);
-        request.setAttribute("telefone_previo", telefoneStr);
 
         List<Usuario> listaUsuarios = new ArrayList<>();
         try {
-            listaUsuarios = usuarioDAO.read();
-        } catch (SQLException readEx) {
-            readEx.printStackTrace();
-            request.setAttribute("erro", erro + " | Falha ao recarregar lista.");
+            listaUsuarios = dao.read();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         request.setAttribute("listaUsuarios", listaUsuarios);
 
-        request.setAttribute("abrirModal", "create");
+        request.setAttribute("modalAtivo", "create");
         request.getRequestDispatcher("/WEB-INF/pages/usuarios.jsp").forward(request, response);
     }
 }
