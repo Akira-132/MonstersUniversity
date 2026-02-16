@@ -3,6 +3,7 @@ package com.example.models;
 public class Admin {
     private int id;
     private int fkUsuarioId;
+    private Usuario usuario;
 
     public Admin(int fkUsuarioId) {
         this.setFkUsuarioId(fkUsuarioId);
@@ -31,5 +32,12 @@ public class Admin {
             throw new IllegalArgumentException("O ID de usuário não pode ser negativo");
         }
         this.fkUsuarioId = fkUsuarioId;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }
