@@ -3,7 +3,6 @@ package com.example.servlet.ServletTelefone;
 import com.example.dao.TelefoneDAO;
 import com.example.dao.UsuarioDAO;
 import com.example.models.Telefone;
-import com.example.models.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -33,24 +32,26 @@ public class CreateTelefone extends HttpServlet {
 
         try {
             int idUsuario = Integer.parseInt(idUsuarioStr);
-
             Telefone novoTelefone = new Telefone(telefoneStr, idUsuario);
 
             success = dao.create(novoTelefone);
 
             if (!success) {
-                erro = "Erro ao cadastrar telefone (DAO retornou false).";
+                erro = "Erro ao cadastrar telefone.";
             }
 
-        } catch (IllegalArgumentException | NullPointerException e) {
+        } catch (NumberFormatException | NullPointerException e) {
+            erro = "Erro de validação: Dados inválidos.";
+
+        } catch (IllegalArgumentException e) {
             erro = "Erro de validação: " + e.getMessage();
 
         } catch (SQLException e) {
             e.printStackTrace();
             if (e.getMessage().contains("violates foreign key constraint")) {
-                erro = "Erro: Usuário inválido.";
+                erro = "Erro: Usuário selecionado não existe.";
             } else {
-                erro = "Erro de banco de dados: " + e.getMessage();
+                erro = "Erro de banco: " + e.getMessage();
             }
 
         } catch (Exception e) {
@@ -59,7 +60,7 @@ public class CreateTelefone extends HttpServlet {
         }
 
         if (success) {
-            response.sendRedirect(request.getContextPath() + "/telefones-crud");
+            response.sendRedirect(request.getContextPath() + "/telefone-read");
             return;
         }
 
@@ -82,7 +83,7 @@ public class CreateTelefone extends HttpServlet {
             e.printStackTrace();
         }
 
-        request.setAttribute("abrirModal", "create");
+        request.setAttribute("modalAtivo", "create");
         request.getRequestDispatcher("/WEB-INF/pages/telefones.jsp").forward(request, response);
     }
 }

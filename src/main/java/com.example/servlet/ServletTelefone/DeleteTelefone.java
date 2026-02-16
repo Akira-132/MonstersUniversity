@@ -18,49 +18,6 @@ import java.util.ArrayList;
 public class DeleteTelefone extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        TelefoneDAO dao = new TelefoneDAO();
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        List<Telefone> listaTelefones = new ArrayList<>();
-        String erro = null;
-        String idParam = request.getParameter("id");
-
-        try {
-            listaTelefones = dao.read();
-            request.setAttribute("listaUsuarios", usuarioDAO.read());
-
-            Telefone telefoneModal = null;
-            if (idParam != null && !idParam.isEmpty()) {
-                int id = Integer.parseInt(idParam);
-                telefoneModal = dao.readById(id);
-
-                if (telefoneModal != null) {
-                    request.setAttribute("telefoneModal", telefoneModal);
-                    request.setAttribute("abrirModal", "delete");
-                } else {
-                    erro = "Telefone ID " + id + " não encontrado.";
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            erro = "Erro de banco: " + e.getMessage();
-        } catch (NumberFormatException e) {
-            erro = "ID inválido: " + idParam;
-        } catch (Exception e) {
-            e.printStackTrace();
-            erro = "Erro inesperado: " + e.getMessage();
-        }
-
-        if (erro != null) request.setAttribute("erro", erro);
-        request.setAttribute("listaTelefones", listaTelefones);
-
-        request.getRequestDispatcher("/WEB-INF/pages/telefones.jsp").forward(request, response);
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -78,43 +35,41 @@ public class DeleteTelefone extends HttpServlet {
             if (resultado > 0) {
                 success = true;
             } else {
-                erro = "Não foi possível deletar o telefone (ID: " + id + ").";
+                erro = "Não foi possível deletar o telefone.";
             }
 
         } catch (NumberFormatException e) {
-            erro = "ID inválido fornecido para exclusão.";
-
+            erro = "ID inválido.";
         } catch (SQLException e) {
             e.printStackTrace();
-            erro = "Erro de banco ao excluir: " + e.getMessage();
-
+            erro = "Erro de banco: " + e.getMessage();
         } catch (Exception e) {
-            e.printStackTrace();
             erro = "Erro inesperado: " + e.getMessage();
         }
 
         if (success) {
-            response.sendRedirect(request.getContextPath() + "/telefones-crud");
+            response.sendRedirect(request.getContextPath() + "/telefone-read");
             return;
         }
 
         request.setAttribute("erro", erro);
+        request.setAttribute("modalAtivo", "delete");
 
-        List<Telefone> listaTelefones = new ArrayList<>();
+        List<Telefone> lista = new ArrayList<>();
         try {
-            listaTelefones = dao.read();
+            lista = dao.read();
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             request.setAttribute("listaUsuarios", usuarioDAO.read());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        request.setAttribute("listaTelefones", listaTelefones);
+        } catch (Exception e) {}
+        request.setAttribute("listaTelefones", lista);
 
         if (id > 0) {
-            try { request.setAttribute("telefoneModal", dao.readById(id)); } catch (Exception e) { }
+            try {
+                Telefone t = dao.readById(id);
+                if(t != null) request.setAttribute("telefoneModal", t);
+            } catch (Exception e) {}
         }
 
-        request.setAttribute("abrirModal", "delete");
         request.getRequestDispatcher("/WEB-INF/pages/telefones.jsp").forward(request, response);
     }
 }
