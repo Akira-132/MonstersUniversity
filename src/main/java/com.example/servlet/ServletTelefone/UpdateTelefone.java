@@ -11,17 +11,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.ArrayList;
 
 @WebServlet("/telefone-update")
 public class UpdateTelefone extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/telefone-read");
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -75,21 +67,17 @@ public class UpdateTelefone extends HttpServlet {
         }
 
         request.setAttribute("erro", erro);
-        request.setAttribute("telefone_previo", telefoneStr);
-        request.setAttribute("idUsuario_previo", idUsuarioStr);
         request.setAttribute("modalAtivo", "update");
 
-        List<Telefone> listaTelefones = new ArrayList<>();
         try {
-            listaTelefones = dao.read();
+            request.setAttribute("listaTelefones", dao.read());
             request.setAttribute("listaUsuarios", usuarioDAO.read());
         } catch (Exception e) {}
-        request.setAttribute("listaTelefones", listaTelefones);
 
         if (id > 0) {
             try {
                 Telefone t = dao.readById(id);
-                if(t != null) request.setAttribute("telefoneModal", t);
+                request.setAttribute("telefoneModal", t);
             } catch (Exception e) {}
         }
 

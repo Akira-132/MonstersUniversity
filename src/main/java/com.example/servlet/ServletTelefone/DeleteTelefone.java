@@ -11,8 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.ArrayList;
 
 @WebServlet("/telefone-delete")
 public class DeleteTelefone extends HttpServlet {
@@ -55,18 +53,16 @@ public class DeleteTelefone extends HttpServlet {
         request.setAttribute("erro", erro);
         request.setAttribute("modalAtivo", "delete");
 
-        List<Telefone> lista = new ArrayList<>();
         try {
-            lista = dao.read();
+            request.setAttribute("listaTelefones", dao.read());
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             request.setAttribute("listaUsuarios", usuarioDAO.read());
         } catch (Exception e) {}
-        request.setAttribute("listaTelefones", lista);
 
         if (id > 0) {
             try {
                 Telefone t = dao.readById(id);
-                if(t != null) request.setAttribute("telefoneModal", t);
+                request.setAttribute("telefoneModal", t);
             } catch (Exception e) {}
         }
 

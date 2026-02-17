@@ -4,6 +4,7 @@ public class Telefone {
     private int id;
     private String telefone;
     private int fkUsuarioId;
+    private Usuario usuario;
 
     public Telefone(String telefone, int fkUsuarioId) {
         this.setTelefone(telefone);
@@ -38,16 +39,25 @@ public class Telefone {
         this.telefone = telefoneLimpo;
     }
 
-    public int getFkUsuarioId() { return fkUsuarioId; }
+    public int getFkUsuarioId() {
+        return fkUsuarioId;
+    }
     public void setFkUsuarioId(int fkUsuarioId) {
         if (fkUsuarioId <= 0) throw new IllegalArgumentException("O ID de usuário deve ser positivo.");
         this.fkUsuarioId = fkUsuarioId;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     private void validateTelefone(String telefoneLimpo) {
         int len = telefoneLimpo.length();
         if (len != 10 && len != 11) {
-            throw new IllegalArgumentException("Telefone inválido. Deve conter 10 ou 11 dígitos (com DDD). Recebido: '" + telefoneLimpo + "'");
+            throw new IllegalArgumentException("Telefone inválido. Deve conter 10 ou 11 dígitos.");
         }
     }
 }

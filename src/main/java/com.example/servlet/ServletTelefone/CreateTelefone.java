@@ -11,8 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 @WebServlet("/telefone-create")
 public class CreateTelefone extends HttpServlet {
@@ -41,18 +39,14 @@ public class CreateTelefone extends HttpServlet {
             }
 
         } catch (NumberFormatException | NullPointerException e) {
-            erro = "Erro de validação: Dados inválidos.";
+            erro = "Erro: Selecione um usuário válido.";
 
         } catch (IllegalArgumentException e) {
             erro = "Erro de validação: " + e.getMessage();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            if (e.getMessage().contains("violates foreign key constraint")) {
-                erro = "Erro: Usuário selecionado não existe.";
-            } else {
-                erro = "Erro de banco: " + e.getMessage();
-            }
+            erro = "Erro de banco: " + e.getMessage();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,18 +62,11 @@ public class CreateTelefone extends HttpServlet {
         request.setAttribute("telefone_previo", telefoneStr);
         request.setAttribute("idUsuario_previo", idUsuarioStr);
 
-        List<Telefone> listaTelefones = new ArrayList<>();
         try {
-            listaTelefones = dao.read();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        request.setAttribute("listaTelefones", listaTelefones);
-
-        try {
+            request.setAttribute("listaTelefones", dao.read());
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             request.setAttribute("listaUsuarios", usuarioDAO.read());
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
