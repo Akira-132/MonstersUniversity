@@ -2,7 +2,6 @@ package com.example.servlet.ServletTelefone;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.ArrayList;
 
 import com.example.models.Telefone;
 import com.example.dao.TelefoneDAO;
