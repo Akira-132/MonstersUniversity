@@ -4,6 +4,7 @@ public class Disciplina {
     private int id;
     private String nome;
     private int fkProfessorId;
+    private Professor professor;
 
     public Disciplina(String nome, int fkProfessorId) {
         this.setNome(nome);
@@ -47,5 +48,12 @@ public class Disciplina {
             throw new IllegalArgumentException("O ID de professor não pode ser negativo");
         }
         this.fkProfessorId = fkProfessorId;
+    }
+
+    public Professor getProfessor() {
+        return professor;
+    }
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
     }
 }

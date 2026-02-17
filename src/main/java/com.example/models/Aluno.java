@@ -7,17 +7,18 @@ public class Aluno {
     private String cpf;
     private String matricula;
     private int fkUsuarioId;
+    private Usuario usuario;
 
     public Aluno(String cpf, int fkUsuarioId) {
         this.setCpf(cpf);
+        this.matricula = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         this.setFkUsuarioId(fkUsuarioId);
-        this.matricula = UUID.randomUUID().toString();
     }
 
     public Aluno(int id, String cpf, String matricula, int fkUsuarioId) {
         this.setId(id);
         this.setCpf(cpf);
-        this.matricula = matricula;
+        this.setMatricula(matricula);
         this.setFkUsuarioId(fkUsuarioId);
     }
 
@@ -46,6 +47,9 @@ public class Aluno {
     public String getMatricula() {
         return matricula;
     }
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
 
     public int getFkUsuarioId() {
         return fkUsuarioId;
@@ -57,9 +61,16 @@ public class Aluno {
         this.fkUsuarioId = fkUsuarioId;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     private void validateCpf(String cpfLimpo) {
         if (cpfLimpo.length() != 11) {
-            throw new IllegalArgumentException("CPF inválido. Deve conter 11 dígitos (após remover formatação). Recebido: '" + cpfLimpo + "'.");
+            throw new IllegalArgumentException("CPF inválido. Deve conter 11 dígitos.");
         }
     }
 }
