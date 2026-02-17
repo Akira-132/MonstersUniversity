@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/admin-create")
@@ -32,62 +31,60 @@ public class CreateAdmin extends HttpServlet {
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         AdminDAO adminDAO = new AdminDAO();
-        boolean success = false;
         String erro = null;
 
         try {
             Usuario novoUsuario = new Usuario(nome, sobrenome, email, senha, tipo);
 
-            boolean usuarioCriado = usuarioDAO.create(novoUsuario);
-
-            if (usuarioCriado) {
-                Usuario usuarioBanco = usuarioDAO.readByEmail(email);
-
-                if (usuarioBanco != null) {
-                    Admin novoAdmin = new Admin(usuarioBanco.getId());
-                    success = adminDAO.create(novoAdmin);
-                } else {
-                    erro = "Erro: Usuário criado mas ID não encontrado.";
-                }
-            } else {
-                erro = "Erro ao criar o usuário base.";
+            if (!usuarioDAO.create(novoUsuario)) {
+                throw new SQLException("Falha ao criar o usuário base.");
             }
 
-        } catch (IllegalArgumentException e) {
-            erro = "Erro de validação: " + e.getMessage();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            if (e.getMessage().contains("Duplicate entry") || e.getMessage().contains("UNIQUE")) {
-                erro = "Erro: E-mail já cadastrado.";
-            } else {
-                erro = "Erro de banco: " + e.getMessage();
+            Usuario usuarioBanco = usuarioDAO.readByEmail(email);
+            if (usuarioBanco == null) {
+                throw new SQLException("Erro crítico: Usuário criado, mas ID não encontrado.");
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            erro = "Erro inesperado: " + e.getMessage();
-        }
+            Admin novoAdmin = new Admin(usuarioBanco.getId());
 
-        if (success) {
+            if (!adminDAO.create(novoAdmin)) {
+                usuarioDAO.deleteById(usuarioBanco.getId());
+                throw new SQLException("Erro ao vincular perfil de administrador.");
+            }
+
             response.sendRedirect(request.getContextPath() + "/admin-read");
             return;
+
+        } catch (IllegalArgumentException e) {
+            erro = "Validação: " + e.getMessage();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            if (e.getMessage().contains("Duplicate") || e.getMessage().contains("UNIQUE")) {
+                erro = "Este e-mail já está em uso.";
+            } else {
+                erro = "Erro de banco de dados.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            erro = "Erro inesperado ao processar a solicitação.";
         }
 
         request.setAttribute("erro", erro);
         request.setAttribute("nome_previo", nome);
         request.setAttribute("sobrenome_previo", sobrenome);
         request.setAttribute("email_previo", email);
+        request.setAttribute("modalAtivo", "create");
 
-        List<Admin> listaAdmins = new ArrayList<>();
         try {
-            listaAdmins = adminDAO.read();
-        } catch (SQLException e) {
+            List<Admin> lista = adminDAO.read();
+            for (Admin a : lista) {
+                a.setUsuario(usuarioDAO.readById(a.getFkUsuarioId()));
+            }
+            request.setAttribute("listaAdmins", lista);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        request.setAttribute("listaAdmins", listaAdmins);
 
-        request.setAttribute("modalAtivo", "create");
         request.getRequestDispatcher("/WEB-INF/pages/admins.jsp").forward(request, response);
     }
 }

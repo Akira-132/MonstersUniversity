@@ -4,7 +4,6 @@ public class TurmaAluno {
     private int id;
     private int fkAlunoId;
     private int fkTurmaId;
-
     private Aluno aluno;
     private Turma turma;
 

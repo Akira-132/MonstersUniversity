@@ -13,16 +13,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.ArrayList;
 
 @WebServlet("/admin-update")
 public class UpdateAdmin extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/admin-read");
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -30,83 +23,76 @@ public class UpdateAdmin extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
 
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        AdminDAO adminDAO = new AdminDAO();
-
         String idAdminStr = request.getParameter("id");
         String idUsuarioStr = request.getParameter("idUsuario");
-
         String nome = request.getParameter("nome");
         String sobrenome = request.getParameter("sobrenome");
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
 
-        boolean success = false;
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        AdminDAO adminDAO = new AdminDAO();
         String erro = null;
-        int idAdmin = 0;
 
         try {
-            idAdmin = Integer.parseInt(idAdminStr);
             int idUsuario = Integer.parseInt(idUsuarioStr);
+            Usuario usuario = usuarioDAO.readById(idUsuario);
 
-            Usuario usuarioParaAtualizar = usuarioDAO.readById(idUsuario);
+            if (usuario == null) {
+                throw new SQLException("Usuário original não encontrado.");
+            }
 
-            if (usuarioParaAtualizar != null) {
-                usuarioParaAtualizar.setNome(nome);
-                usuarioParaAtualizar.setSobrenome(sobrenome);
-                usuarioParaAtualizar.setEmail(email);
+            usuario.setNome(nome);
+            usuario.setSobrenome(sobrenome);
+            usuario.setEmail(email);
 
-                if (senha != null && !senha.trim().isEmpty()) {
-                    usuarioParaAtualizar.setSenha(senha);
-                }
+            if (senha != null && !senha.trim().isEmpty()) {
+                usuario.setSenha(senha);
+            }
 
-                int result = usuarioDAO.update(usuarioParaAtualizar);
-
-                if (result > 0) {
-                    success = true;
-                } else {
-                    erro = "Erro ao atualizar dados do usuário.";
-                }
+            if (usuarioDAO.update(usuario) > 0) {
+                response.sendRedirect(request.getContextPath() + "/admin-read");
+                return;
             } else {
-                erro = "Usuário vinculado não encontrado.";
+                erro = "Não foi possível atualizar o banco de dados.";
             }
 
         } catch (IllegalArgumentException e) {
-            erro = "Erro de validação: " + e.getMessage();
+            erro = "Validação: " + e.getMessage();
         } catch (SQLException e) {
             e.printStackTrace();
-            erro = "Erro de banco: " + e.getMessage();
+            if (e.getMessage().contains("Duplicate") || e.getMessage().contains("UNIQUE")) {
+                erro = "Este e-mail já pertence a outro usuário.";
+            } else {
+                erro = "Erro ao atualizar dados no banco.";
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            erro = "Erro: " + e.getMessage();
-        }
-
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/admin-read");
-            return;
+            erro = "Erro inesperado ao atualizar.";
         }
 
         request.setAttribute("erro", erro);
+        request.setAttribute("modalAtivo", "update");
         request.setAttribute("nome_previo", nome);
         request.setAttribute("sobrenome_previo", sobrenome);
         request.setAttribute("email_previo", email);
-        request.setAttribute("modalAtivo", "update");
 
-        List<Admin> listaAdmins = new ArrayList<>();
         try {
-            listaAdmins = adminDAO.read();
-        } catch (Exception e) {}
-        request.setAttribute("listaAdmins", listaAdmins);
+            List<Admin> lista = adminDAO.read();
+            for (Admin a : lista) a.setUsuario(usuarioDAO.readById(a.getFkUsuarioId()));
+            request.setAttribute("listaAdmins", lista);
 
-        if (idAdmin > 0) {
-            try {
+            if (idAdminStr != null) {
+                int idAdmin = Integer.parseInt(idAdminStr);
                 Admin a = adminDAO.readById(idAdmin);
-                if(a != null) {
-                    Usuario u = usuarioDAO.readById(a.getFkUsuarioId());
-                    a.setUsuario(u);
+                if (a != null) {
+                    a.setUsuario(usuarioDAO.readById(a.getFkUsuarioId()));
                     request.setAttribute("adminModal", a);
                 }
-            } catch(Exception e) {}
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (erro == null) request.setAttribute("erro", "Erro inesperado ao recarregar a lista.");
         }
 
         request.getRequestDispatcher("/WEB-INF/pages/admins.jsp").forward(request, response);
