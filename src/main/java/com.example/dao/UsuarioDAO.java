@@ -10,8 +10,7 @@ import java.util.List;
 public class UsuarioDAO {
 
     public boolean create(Usuario usuario) throws SQLException {
-        String sql = "INSERT INTO usuario (nome, sobrenome, email, senha, telefone) VALUES (?, ?, ?, ?, ?)";
-
+        String sql = "INSERT INTO usuario (nome, sobrenome, email, senha, tipo) VALUES (?, ?, ?, ?, ?)";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
@@ -21,40 +20,45 @@ public class UsuarioDAO {
             pstmt.setString(2, usuario.getSobrenome());
             pstmt.setString(3, usuario.getEmail());
             pstmt.setString(4, usuario.getSenha());
-            pstmt.setString(5, usuario.getTelefone());
+            pstmt.setString(5, usuario.getTipo());
 
             return pstmt.executeUpdate() > 0;
         }
     }
 
     public List<Usuario> read() throws SQLException {
-        String sql = "SELECT id, nome, sobrenome, email, senha, telefone FROM usuario ORDER BY id ASC";
+        String sql = "SELECT id_usuario, nome, sobrenome, email, senha, tipo FROM usuario ORDER BY id_usuario ASC";
 
         Conexao conexao = new Conexao();
-        List<Usuario> lista = new LinkedList<>();
+        List<Usuario> listaUsuario = new LinkedList<>();
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rset = pstmt.executeQuery()) {
 
             while (rset.next()) {
-                lista.add(new Usuario(
-                        rset.getInt("id"),
+
+                Usuario usuario = new Usuario(
+                        rset.getInt("id_usuario"),
                         rset.getString("nome"),
                         rset.getString("sobrenome"),
                         rset.getString("email"),
                         rset.getString("senha"),
-                        rset.getString("telefone")
-                ));
+                        rset.getString("tipo")
+                );
+
+                listaUsuario.add(usuario);
             }
         }
-        return lista;
+
+        return listaUsuario;
     }
 
     public Usuario readById(int id) throws SQLException {
-        String sql = "SELECT id, nome, sobrenome, email, senha, telefone FROM usuario WHERE id = ?";
+        String sql = "SELECT id_usuario, nome, sobrenome, email, senha, tipo FROM usuario WHERE id_usuario = ?";
 
         Conexao conexao = new Conexao();
+        Usuario usuario = null;
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -62,25 +66,29 @@ public class UsuarioDAO {
             pstmt.setInt(1, id);
 
             try (ResultSet rset = pstmt.executeQuery()) {
+
                 if (rset.next()) {
-                    return new Usuario(
-                            rset.getInt("id"),
+
+                    usuario = new Usuario(
+                            rset.getInt("id_usuario"),
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
                             rset.getString("senha"),
-                            rset.getString("telefone")
+                            rset.getString("tipo")
                     );
                 }
             }
         }
-        return null;
+
+        return usuario;
     }
 
     public Usuario readByEmail(String email) throws SQLException {
-        String sql = "SELECT id, nome, sobrenome, email, senha, telefone FROM usuario WHERE email = ?";
+        String sql = "SELECT id_usuario, nome, sobrenome, email, senha, tipo FROM usuario WHERE email = ?";
 
         Conexao conexao = new Conexao();
+        Usuario usuario = null;
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -88,25 +96,29 @@ public class UsuarioDAO {
             pstmt.setString(1, email);
 
             try (ResultSet rset = pstmt.executeQuery()) {
+
                 if (rset.next()) {
-                    return new Usuario(
-                            rset.getInt("id"),
+
+                    usuario = new Usuario(
+                            rset.getInt("id_usuario"),
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
                             rset.getString("senha"),
-                            rset.getString("telefone")
+                            rset.getString("tipo")
                     );
                 }
             }
         }
-        return null;
+
+        return usuario;
     }
 
     public Usuario login(String email, String senha) throws SQLException {
-        String sql = "SELECT id, nome, sobrenome, email, senha, telefone FROM usuario WHERE email = ? AND senha = ?";
+        String sql = "SELECT id_usuario, nome, sobrenome, email, senha, tipo FROM usuario WHERE email = ? AND senha = ?";
 
         Conexao conexao = new Conexao();
+        Usuario usuario = null;
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -115,24 +127,26 @@ public class UsuarioDAO {
             pstmt.setString(2, senha);
 
             try (ResultSet rset = pstmt.executeQuery()) {
+
                 if (rset.next()) {
-                    return new Usuario(
-                            rset.getInt("id"),
+
+                    usuario = new Usuario(
+                            rset.getInt("id_usuario"),
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
                             rset.getString("senha"),
-                            rset.getString("telefone")
+                            rset.getString("tipo")
                     );
                 }
             }
         }
-        return null;
+
+        return usuario;
     }
 
     public int update(Usuario usuario) throws SQLException {
-        String sql = "UPDATE usuario SET nome = ?, sobrenome = ?, email = ?, senha = ?, telefone = ? WHERE id = ?";
-
+        String sql = "UPDATE usuario SET nome = ?, sobrenome = ?, email = ?, senha = ?, tipo = ? WHERE id_usuario = ?";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
@@ -142,7 +156,7 @@ public class UsuarioDAO {
             pstmt.setString(2, usuario.getSobrenome());
             pstmt.setString(3, usuario.getEmail());
             pstmt.setString(4, usuario.getSenha());
-            pstmt.setString(5, usuario.getTelefone());
+            pstmt.setString(5, usuario.getTipo());
             pstmt.setInt(6, usuario.getId());
 
             return pstmt.executeUpdate();
@@ -150,8 +164,7 @@ public class UsuarioDAO {
     }
 
     public int deleteById(int id) throws SQLException {
-        String sql = "DELETE FROM usuario WHERE id = ?";
-
+        String sql = "DELETE FROM usuario WHERE id_usuario = ?";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
@@ -161,4 +174,17 @@ public class UsuarioDAO {
             return pstmt.executeUpdate();
         }
     }
+
+    public int deleteByEmail(String email) throws SQLException {
+        String sql = "DELETE FROM usuario WHERE email = ?";
+        Conexao conexao = new Conexao();
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+            return pstmt.executeUpdate();
+        }
+    }
+
 }
