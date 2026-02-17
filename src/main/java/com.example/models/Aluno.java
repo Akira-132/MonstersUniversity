@@ -7,6 +7,7 @@ public class Aluno {
     private String cpf;
     private String matricula;
     private int fkUsuarioId;
+    private Usuario usuario;
 
     public Aluno(String cpf, int fkUsuarioId) {
         this.setCpf(cpf);
@@ -24,6 +25,7 @@ public class Aluno {
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("O ID não pode ser negativo");
@@ -34,10 +36,12 @@ public class Aluno {
     public String getCpf() {
         return cpf;
     }
+
     public void setCpf(String cpf) {
         if (cpf == null) {
             throw new NullPointerException("O CPF não pode ser nulo.");
         }
+
         String cpfLimpo = cpf.replaceAll("[^\\d]", "");
         validateCpf(cpfLimpo);
         this.cpf = cpfLimpo;
@@ -50,6 +54,7 @@ public class Aluno {
     public int getFkUsuarioId() {
         return fkUsuarioId;
     }
+
     public void setFkUsuarioId(int fkUsuarioId) {
         if (fkUsuarioId <= 0) {
             throw new IllegalArgumentException("O ID de usuário não pode ser negativo");
@@ -57,9 +62,20 @@ public class Aluno {
         this.fkUsuarioId = fkUsuarioId;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     private void validateCpf(String cpfLimpo) {
         if (cpfLimpo.length() != 11) {
-            throw new IllegalArgumentException("CPF inválido. Deve conter 11 dígitos (após remover formatação). Recebido: '" + cpfLimpo + "'.");
+            throw new IllegalArgumentException(
+                    "CPF inválido. Deve conter 11 dígitos (após remover formatação). Recebido: '"
+                            + cpfLimpo + "'."
+            );
         }
     }
 }
