@@ -11,21 +11,20 @@ public class Aluno {
 
     public Aluno(String cpf, int fkUsuarioId) {
         this.setCpf(cpf);
+        this.matricula = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         this.setFkUsuarioId(fkUsuarioId);
-        this.matricula = UUID.randomUUID().toString();
     }
 
     public Aluno(int id, String cpf, String matricula, int fkUsuarioId) {
         this.setId(id);
         this.setCpf(cpf);
-        this.matricula = matricula;
+        this.setMatricula(matricula);
         this.setFkUsuarioId(fkUsuarioId);
     }
 
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("O ID não pode ser negativo");
@@ -36,12 +35,10 @@ public class Aluno {
     public String getCpf() {
         return cpf;
     }
-
     public void setCpf(String cpf) {
         if (cpf == null) {
             throw new NullPointerException("O CPF não pode ser nulo.");
         }
-
         String cpfLimpo = cpf.replaceAll("[^\\d]", "");
         validateCpf(cpfLimpo);
         this.cpf = cpfLimpo;
@@ -50,11 +47,13 @@ public class Aluno {
     public String getMatricula() {
         return matricula;
     }
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
 
     public int getFkUsuarioId() {
         return fkUsuarioId;
     }
-
     public void setFkUsuarioId(int fkUsuarioId) {
         if (fkUsuarioId <= 0) {
             throw new IllegalArgumentException("O ID de usuário não pode ser negativo");
@@ -65,17 +64,13 @@ public class Aluno {
     public Usuario getUsuario() {
         return usuario;
     }
-
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 
     private void validateCpf(String cpfLimpo) {
         if (cpfLimpo.length() != 11) {
-            throw new IllegalArgumentException(
-                    "CPF inválido. Deve conter 11 dígitos (após remover formatação). Recebido: '"
-                            + cpfLimpo + "'."
-            );
+            throw new IllegalArgumentException("CPF inválido. Deve conter 11 dígitos.");
         }
     }
 }

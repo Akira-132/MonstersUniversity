@@ -1,11 +1,12 @@
-package com.example.servlet.ServletTelefone;
+package com.example.servlet.ServletDisciplina;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
-import com.example.models.Telefone;
-import com.example.dao.TelefoneDAO;
-import com.example.dao.UsuarioDAO;
+import com.example.models.Disciplina;
+import com.example.dao.DisciplinaDAO;
+import com.example.dao.ProfessorDAO;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,38 +14,38 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/telefone-read")
-public class ReadTelefone extends HttpServlet {
+@WebServlet("/disciplina-read")
+public class ReadDisciplina extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        TelefoneDAO telefoneDAO = new TelefoneDAO();
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
+        ProfessorDAO professorDAO = new ProfessorDAO();
 
         String acao = request.getParameter("acao");
         String idStr = request.getParameter("id");
 
         try {
-            List<Telefone> lista = telefoneDAO.read();
-            request.setAttribute("listaTelefones", lista);
+            List<Disciplina> lista = disciplinaDAO.read();
+            request.setAttribute("listaDisciplinas", lista);
 
-            request.setAttribute("listaUsuarios", usuarioDAO.read());
+            request.setAttribute("listaProfessores", professorDAO.read());
 
             if ("prepararUpdate".equals(acao) && idStr != null) {
                 int id = Integer.parseInt(idStr);
-                Telefone t = telefoneDAO.readById(id);
-                if (t != null) {
-                    request.setAttribute("telefoneModal", t);
+                Disciplina d = disciplinaDAO.readById(id);
+                if (d != null) {
+                    request.setAttribute("disciplinaModal", d);
                     request.setAttribute("modalAtivo", "update");
                 }
             }
             else if ("prepararDelete".equals(acao) && idStr != null) {
                 int id = Integer.parseInt(idStr);
-                Telefone t = telefoneDAO.readById(id);
-                if (t != null) {
-                    request.setAttribute("telefoneModal", t);
+                Disciplina d = disciplinaDAO.readById(id);
+                if (d != null) {
+                    request.setAttribute("disciplinaModal", d);
                     request.setAttribute("modalAtivo", "delete");
                 }
             }
@@ -57,6 +58,6 @@ public class ReadTelefone extends HttpServlet {
             request.setAttribute("erro", "Erro ao processar dados: " + e.getMessage());
         }
 
-        request.getRequestDispatcher("/WEB-INF/pages/telefones.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/disciplinas.jsp").forward(request, response);
     }
 }

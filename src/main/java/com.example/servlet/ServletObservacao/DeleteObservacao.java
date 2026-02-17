@@ -1,8 +1,9 @@
-package com.example.servlet.ServletTelefone;
+package com.example.servlet.ServletObservacao;
 
-import com.example.dao.TelefoneDAO;
-import com.example.dao.UsuarioDAO;
-import com.example.models.Telefone;
+import com.example.dao.ObservacaoDAO;
+import com.example.dao.ProfessorDAO;
+import com.example.dao.AlunoDAO;
+import com.example.models.Observacao;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,14 +13,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/telefone-delete")
-public class DeleteTelefone extends HttpServlet {
+@WebServlet("/observacao-delete")
+public class DeleteObservacao extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        TelefoneDAO dao = new TelefoneDAO();
+        ObservacaoDAO dao = new ObservacaoDAO();
         int id = 0;
         boolean success = false;
         String erro = null;
@@ -33,7 +34,7 @@ public class DeleteTelefone extends HttpServlet {
             if (resultado > 0) {
                 success = true;
             } else {
-                erro = "Não foi possível deletar o telefone.";
+                erro = "Não foi possível deletar a observação.";
             }
 
         } catch (NumberFormatException e) {
@@ -46,7 +47,7 @@ public class DeleteTelefone extends HttpServlet {
         }
 
         if (success) {
-            response.sendRedirect(request.getContextPath() + "/telefone-read");
+            response.sendRedirect(request.getContextPath() + "/observacao-read");
             return;
         }
 
@@ -54,18 +55,16 @@ public class DeleteTelefone extends HttpServlet {
         request.setAttribute("modalAtivo", "delete");
 
         try {
-            request.setAttribute("listaTelefones", dao.read());
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
-            request.setAttribute("listaUsuarios", usuarioDAO.read());
+            request.setAttribute("listaObservacoes", dao.read());
         } catch (Exception e) {}
 
         if (id > 0) {
             try {
-                Telefone t = dao.readById(id);
-                request.setAttribute("telefoneModal", t);
+                Observacao obs = dao.readById(id);
+                request.setAttribute("observacaoModal", obs);
             } catch (Exception e) {}
         }
 
-        request.getRequestDispatcher("/WEB-INF/pages/telefones.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/observacoes.jsp").forward(request, response);
     }
 }

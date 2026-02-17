@@ -1,10 +1,10 @@
-package com.example.servlet.ServletAdmin;
+package com.example.servlet.ServletAluno;
 
 import java.io.IOException;
 import java.util.List;
-import com.example.models.Admin;
+import com.example.models.Aluno;
 import com.example.models.Usuario;
-import com.example.dao.AdminDAO;
+import com.example.dao.AlunoDAO;
 import com.example.dao.UsuarioDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,39 +12,39 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/admin-read")
-public class ReadAdmin extends HttpServlet {
+@WebServlet("/aluno-read")
+public class ReadAluno extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        AdminDAO adminDAO = new AdminDAO();
+        AlunoDAO alunoDAO = new AlunoDAO();
         UsuarioDAO usuarioDAO = new UsuarioDAO();
 
         String acao = request.getParameter("acao");
         String idStr = request.getParameter("id");
 
         try {
-            List<Admin> lista = adminDAO.read();
-            for (Admin a : lista) {
+            List<Aluno> lista = alunoDAO.read();
+            for (Aluno a : lista) {
                 Usuario u = usuarioDAO.readById(a.getFkUsuarioId());
                 a.setUsuario(u);
             }
-            request.setAttribute("listaAdmins", lista);
+            request.setAttribute("listaAlunos", lista);
 
             if ("prepararCreate".equals(acao)) {
                 request.setAttribute("modalAtivo", "create");
             }
             else if (idStr != null) {
                 int id = Integer.parseInt(idStr);
-                Admin adminSelecionado = adminDAO.readById(id);
+                Aluno alunoSelecionado = alunoDAO.readById(id);
 
-                if (adminSelecionado != null) {
-                    Usuario u = usuarioDAO.readById(adminSelecionado.getFkUsuarioId());
-                    adminSelecionado.setUsuario(u);
+                if (alunoSelecionado != null) {
+                    Usuario u = usuarioDAO.readById(alunoSelecionado.getFkUsuarioId());
+                    alunoSelecionado.setUsuario(u);
 
-                    request.setAttribute("adminModal", adminSelecionado);
+                    request.setAttribute("alunoModal", alunoSelecionado);
 
                     if ("prepararUpdate".equals(acao)) {
                         request.setAttribute("modalAtivo", "update");
@@ -56,9 +56,9 @@ public class ReadAdmin extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("erro", "Erro inesperado ao carregar dados.");
+            request.setAttribute("erro", "Erro ao carregar lista.");
         }
 
-        request.getRequestDispatcher("/WEB-INF/pages/admins.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/alunos.jsp").forward(request, response);
     }
 }

@@ -1,8 +1,8 @@
-package com.example.servlet.ServletAdmin;
+package com.example.servlet.ServletAluno;
 
-import com.example.dao.AdminDAO;
+import com.example.dao.AlunoDAO;
 import com.example.dao.UsuarioDAO;
-import com.example.models.Admin;
+import com.example.models.Aluno;
 import com.example.models.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,8 +14,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/admin-create")
-public class CreateAdmin extends HttpServlet {
+@WebServlet("/aluno-create")
+public class CreateAluno extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -27,64 +27,60 @@ public class CreateAdmin extends HttpServlet {
         String sobrenome = request.getParameter("sobrenome");
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
-        String tipo = "admin";
+        String cpf = request.getParameter("cpf");
+        String tipo = "aluno";
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        AdminDAO adminDAO = new AdminDAO();
+        AlunoDAO alunoDAO = new AlunoDAO();
         String erro = null;
 
         try {
             Usuario novoUsuario = new Usuario(nome, sobrenome, email, senha, tipo);
 
             if (!usuarioDAO.create(novoUsuario)) {
-                throw new SQLException("Falha ao criar o usuário base.");
+                throw new SQLException("Falha ao criar usuário base.");
             }
 
             Usuario usuarioBanco = usuarioDAO.readByEmail(email);
-            if (usuarioBanco == null) {
-                throw new SQLException("Erro crítico: Usuário criado, mas ID não encontrado.");
-            }
 
-            Admin novoAdmin = new Admin(usuarioBanco.getId());
+            Aluno novoAluno = new Aluno(cpf, usuarioBanco.getId());
 
-            if (!adminDAO.create(novoAdmin)) {
+            if (!alunoDAO.create(novoAluno)) {
                 usuarioDAO.deleteById(usuarioBanco.getId());
-                throw new SQLException("Erro ao vincular perfil de administrador.");
+                throw new SQLException("Erro ao criar perfil de aluno.");
             }
 
-            response.sendRedirect(request.getContextPath() + "/admin-read");
+            response.sendRedirect(request.getContextPath() + "/aluno-read");
             return;
 
         } catch (IllegalArgumentException e) {
             erro = "Validação: " + e.getMessage();
         } catch (SQLException e) {
-            e.printStackTrace();
-            if (e.getMessage().contains("Duplicate") || e.getMessage().contains("UNIQUE")) {
-                erro = "Este e-mail já está em uso.";
+            if (e.getMessage().contains("Duplicate")) {
+                erro = "E-mail ou CPF já cadastrado.";
             } else {
-                erro = "Erro de banco de dados.";
+                e.printStackTrace();
+                erro = "Erro no banco de dados.";
             }
         } catch (Exception e) {
             e.printStackTrace();
-            erro = "Erro inesperado ao processar a solicitação.";
+            erro = "Erro inesperado.";
         }
 
         request.setAttribute("erro", erro);
+        request.setAttribute("modalAtivo", "create");
+
         request.setAttribute("nome_previo", nome);
         request.setAttribute("sobrenome_previo", sobrenome);
         request.setAttribute("email_previo", email);
-        request.setAttribute("modalAtivo", "create");
+        request.setAttribute("cpf_previo", cpf);
 
         try {
-            List<Admin> lista = adminDAO.read();
-            for (Admin a : lista) {
-                a.setUsuario(usuarioDAO.readById(a.getFkUsuarioId()));
-            }
-            request.setAttribute("listaAdmins", lista);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            List<Aluno> lista = alunoDAO.read();
+            for (Aluno a : lista) a.setUsuario(usuarioDAO.readById(a.getFkUsuarioId()));
+            request.setAttribute("listaAlunos", lista);
+        } catch (Exception e) { e.printStackTrace(); }
 
-        request.getRequestDispatcher("/WEB-INF/pages/admins.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/alunos.jsp").forward(request, response);
     }
 }

@@ -7,21 +7,23 @@ public class Observacao {
     private String texto;
     private LocalDateTime dataEnvio;
     private int fkProfessorId;
-    private int fkALunoId;
+    private int fkAlunoId;
+    private Professor professor;
+    private Aluno aluno;
 
-    public Observacao(String texto, int fkProfessorId, int fkALunoId) {
+    public Observacao(String texto, int fkProfessorId, int fkAlunoId) {
         this.setTexto(texto);
         this.setFkProfessorId(fkProfessorId);
-        this.setFkAlunoId(fkALunoId);
+        this.setFkAlunoId(fkAlunoId);
         this.setDataEnvio(LocalDateTime.now());
     }
 
-    public Observacao(int id, String texto, LocalDateTime dataEnvio, int fkProfessorId, int fkALunoId) {
+    public Observacao(int id, String texto, LocalDateTime dataEnvio, int fkProfessorId, int fkAlunoId) {
         this.setId(id);
         this.setTexto(texto);
         this.setDataEnvio(dataEnvio);
         this.setFkProfessorId(fkProfessorId);
-        this.setFkAlunoId(fkALunoId);
+        this.setFkAlunoId(fkAlunoId);
     }
 
     public int getId() {
@@ -68,12 +70,26 @@ public class Observacao {
     }
 
     public int getFkAlunoId() {
-        return fkALunoId;
+        return fkAlunoId;
     }
-    public void setFkAlunoId(int fkALunoId) {
-        if (fkALunoId <= 0) {
+    public void setFkAlunoId(int fkAlunoId) {
+        if (fkAlunoId <= 0) {
             throw new IllegalArgumentException("O ID do aluno deve ser positivo.");
         }
-        this.fkALunoId = fkALunoId;
+        this.fkAlunoId = fkAlunoId;
+    }
+
+    public Professor getProfessor() {
+        return professor;
+    }
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+    }
+
+    public Aluno getAluno() {
+        return aluno;
+    }
+    public void setAluno(Aluno aluno) {
+        this.aluno = aluno;
     }
 }

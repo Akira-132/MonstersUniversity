@@ -5,6 +5,7 @@ public class Turma {
     private String periodo;
     private String sala;
     private int fkDisciplinaId;
+    private Disciplina disciplina;
 
     public Turma(String periodo, String sala, int fkDisciplinaId) {
         this.setPeriodo(periodo);
@@ -33,15 +34,12 @@ public class Turma {
         return periodo;
     }
     public void setPeriodo(String periodo) {
-        if (periodo == null) {
-            throw new NullPointerException("O período não pode ser nulo.");
-        }
-        if (periodo.trim().isEmpty()) {
+        if (periodo == null || periodo.trim().isEmpty()) {
             throw new IllegalArgumentException("O período não pode estar em branco.");
         }
-        String periodoLower = periodo.toLowerCase();
-        if (!periodoLower.equals("manhã") && !periodoLower.equals("tarde") && !periodoLower.equals("noite")) {
-            throw new IllegalArgumentException("O período escolhido não é uma opção válida");
+        String p = periodo.toLowerCase();
+        if (!p.equals("manhã") && !p.equals("tarde") && !p.equals("noite")) {
+            throw new IllegalArgumentException("Período inválido. Escolha Manhã, Tarde ou Noite.");
         }
         this.periodo = periodo;
     }
@@ -50,10 +48,7 @@ public class Turma {
         return sala;
     }
     public void setSala(String sala) {
-        if (sala == null) {
-            throw new NullPointerException("A sala não pode ser nulo.");
-        }
-        if (sala.trim().isEmpty()) {
+        if (sala == null || sala.trim().isEmpty()) {
             throw new IllegalArgumentException("A sala não pode estar em branco.");
         }
         if (sala.length() > 2) {
@@ -67,8 +62,15 @@ public class Turma {
     }
     public void setFkDisciplinaId(int fkDisciplinaId) {
         if (fkDisciplinaId <= 0) {
-            throw new IllegalArgumentException("O ID de disciplina não pode ser negativo");
+            throw new IllegalArgumentException("O ID de disciplina inválido");
         }
         this.fkDisciplinaId = fkDisciplinaId;
+    }
+
+    public Disciplina getDisciplina() {
+        return disciplina;
+    }
+    public void setDisciplina(Disciplina disciplina) {
+        this.disciplina = disciplina;
     }
 }

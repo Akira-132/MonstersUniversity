@@ -74,4 +74,11 @@ public class Disciplina {
         this.professor = professor;
         this.fkProfessorId = professor.getId(); // sincroniza automaticamente
     }
+
+    public Professor getProfessor() {
+        return professor;
+    }
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+    }
 }
