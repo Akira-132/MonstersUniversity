@@ -3,17 +3,17 @@ package com.example.models;
 public class Disciplina {
     private int id;
     private String nome;
-    private int professorId;
+    private int fkProfessorId;
 
-    public Disciplina(String nome, int professorId) {
+    public Disciplina(String nome, int fkProfessorId) {
         this.setNome(nome);
-        this.setProfessorId(professorId);
+        this.setFkProfessorId(fkProfessorId);
     }
 
-    public Disciplina(int id, String nome, int professorId) {
+    public Disciplina(int id, String nome, int fkProfessorId) {
         this.setId(id);
         this.setNome(nome);
-        this.setProfessorId(professorId);
+        this.setFkProfessorId(fkProfessorId);
     }
 
     public int getId() {
@@ -39,13 +39,13 @@ public class Disciplina {
         this.nome = nome;
     }
 
-    public int getProfessorId() {
-        return professorId;
+    public int getFkProfessorId() {
+        return fkProfessorId;
     }
-    public void setProfessorId(int professorId) {
-        if (professorId <= 0) {
+    public void setFkProfessorId(int fkProfessorId) {
+        if (fkProfessorId <= 0) {
             throw new IllegalArgumentException("O ID de professor não pode ser negativo");
         }
-        this.professorId = professorId;
+        this.fkProfessorId = fkProfessorId;
     }
 }

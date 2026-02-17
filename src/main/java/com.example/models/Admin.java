@@ -2,21 +2,20 @@ package com.example.models;
 
 public class Admin {
     private int id;
-    private int usuarioId;
+    private int fkUsuarioId;
 
-    public Admin(int usuarioId) {
-        this.usuarioId = usuarioId;
+    public Admin(int fkUsuarioId) {
+        this.setFkUsuarioId(fkUsuarioId);
     }
 
-    public Admin(int id, int usuarioId) {
+    public Admin(int id, int fkUsuarioId) {
         this.setId(id);
-        this.setUsuarioId(usuarioId);
+        this.setFkUsuarioId(fkUsuarioId);
     }
 
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("O ID não pode ser negativo");
@@ -24,14 +23,13 @@ public class Admin {
         this.id = id;
     }
 
-    public int getUsuarioId() {
-        return usuarioId;
+    public int getFkUsuarioId() {
+        return fkUsuarioId;
     }
-
-    public void setUsuarioId(int usuarioId) {
-        if (usuarioId <= 0) {
+    public void setFkUsuarioId(int fkUsuarioId) {
+        if (fkUsuarioId <= 0) {
             throw new IllegalArgumentException("O ID de usuário não pode ser negativo");
         }
-        this.usuarioId = usuarioId;
+        this.fkUsuarioId = fkUsuarioId;
     }
 }
