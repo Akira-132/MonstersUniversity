@@ -11,18 +11,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.ArrayList;
 
 @WebServlet("/aluno-update")
 public class UpdateAluno extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/aluno-read");
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -30,94 +22,52 @@ public class UpdateAluno extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
 
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        AlunoDAO alunoDAO = new AlunoDAO();
-
         String idAlunoStr = request.getParameter("id");
         String idUsuarioStr = request.getParameter("idUsuario");
-
         String nome = request.getParameter("nome");
         String sobrenome = request.getParameter("sobrenome");
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
         String cpf = request.getParameter("cpf");
 
-        boolean success = false;
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        AlunoDAO alunoDAO = new AlunoDAO();
         String erro = null;
-        int idAluno = 0;
 
         try {
-            idAluno = Integer.parseInt(idAlunoStr);
             int idUsuario = Integer.parseInt(idUsuarioStr);
+            int idAluno = Integer.parseInt(idAlunoStr);
 
-            Usuario usuarioParaAtualizar = usuarioDAO.readById(idUsuario);
-            Aluno alunoParaAtualizar = alunoDAO.readById(idAluno);
-
-            if (usuarioParaAtualizar != null && alunoParaAtualizar != null) {
-                usuarioParaAtualizar.setNome(nome);
-                usuarioParaAtualizar.setSobrenome(sobrenome);
-                usuarioParaAtualizar.setEmail(email);
-
-                if (senha != null && !senha.trim().isEmpty()) {
-                    usuarioParaAtualizar.setSenha(senha);
-                }
-
-                alunoParaAtualizar.setCpf(cpf);
-
-                int resultUsuario = usuarioDAO.update(usuarioParaAtualizar);
-                int resultAluno = alunoDAO.update(alunoParaAtualizar);
-
-                if (resultUsuario > 0 && resultAluno > 0) {
-                    success = true;
-                } else {
-                    erro = "Erro ao atualizar dados.";
-                }
-            } else {
-                erro = "Aluno ou Usuário não encontrado.";
+            Usuario usuario = usuarioDAO.readById(idUsuario);
+            usuario.setNome(nome);
+            usuario.setSobrenome(sobrenome);
+            usuario.setEmail(email);
+            if (senha != null && !senha.trim().isEmpty()) {
+                usuario.setSenha(senha);
             }
 
-        } catch (IllegalArgumentException e) {
-            erro = "Erro de validação: " + e.getMessage();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            if (e.getMessage().contains("UNIQUE")) {
-                erro = "E-mail ou CPF já existente.";
-            } else {
-                erro = "Erro de banco: " + e.getMessage();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            erro = "Erro: " + e.getMessage();
-        }
+            Aluno aluno = alunoDAO.readById(idAluno);
+            aluno.setCpf(cpf);
 
-        if (success) {
+            usuarioDAO.update(usuario);
+            alunoDAO.update(aluno);
+
             response.sendRedirect(request.getContextPath() + "/aluno-read");
             return;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            erro = "Erro ao atualizar: " + e.getMessage();
         }
 
         request.setAttribute("erro", erro);
-        request.setAttribute("nome_previo", nome);
-        request.setAttribute("sobrenome_previo", sobrenome);
-        request.setAttribute("email_previo", email);
-        request.setAttribute("cpf_previo", cpf);
         request.setAttribute("modalAtivo", "update");
 
-        List<Aluno> listaAlunos = new ArrayList<>();
         try {
-            listaAlunos = alunoDAO.read();
+            List<Aluno> lista = alunoDAO.read();
+            for (Aluno a : lista) a.setUsuario(usuarioDAO.readById(a.getFkUsuarioId()));
+            request.setAttribute("listaAlunos", lista);
         } catch (Exception e) {}
-        request.setAttribute("listaAlunos", listaAlunos);
-
-        if (idAluno > 0) {
-            try {
-                Aluno a = alunoDAO.readById(idAluno);
-                if(a != null) {
-                    Usuario u = usuarioDAO.readById(a.getFkUsuarioId());
-                    a.setUsuario(u);
-                    request.setAttribute("alunoModal", a);
-                }
-            } catch(Exception e) {}
-        }
 
         request.getRequestDispatcher("/WEB-INF/pages/alunos.jsp").forward(request, response);
     }

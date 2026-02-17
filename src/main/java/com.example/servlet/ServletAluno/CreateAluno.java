@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/aluno-create")
@@ -33,62 +32,55 @@ public class CreateAluno extends HttpServlet {
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         AlunoDAO alunoDAO = new AlunoDAO();
-        boolean success = false;
         String erro = null;
 
         try {
             Usuario novoUsuario = new Usuario(nome, sobrenome, email, senha, tipo);
-            boolean usuarioCriado = usuarioDAO.create(novoUsuario);
 
-            if (usuarioCriado) {
-                Usuario usuarioBanco = usuarioDAO.readByEmail(email);
-
-                if (usuarioBanco != null) {
-                    Aluno novoAluno = new Aluno(cpf, usuarioBanco.getId());
-                    success = alunoDAO.create(novoAluno);
-                } else {
-                    erro = "Erro: Usuário criado mas ID não encontrado.";
-                }
-            } else {
-                erro = "Erro ao criar o usuário base.";
+            if (!usuarioDAO.create(novoUsuario)) {
+                throw new SQLException("Falha ao criar usuário base.");
             }
 
-        } catch (IllegalArgumentException e) {
-            erro = "Erro de validação: " + e.getMessage();
+            Usuario usuarioBanco = usuarioDAO.readByEmail(email);
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            if (e.getMessage().contains("Duplicate entry") || e.getMessage().contains("UNIQUE")) {
-                erro = "Erro: E-mail ou CPF já cadastrados.";
-            } else {
-                erro = "Erro de banco: " + e.getMessage();
+            Aluno novoAluno = new Aluno(cpf, usuarioBanco.getId());
+
+            if (!alunoDAO.create(novoAluno)) {
+                usuarioDAO.deleteById(usuarioBanco.getId());
+                throw new SQLException("Erro ao criar perfil de aluno.");
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            erro = "Erro inesperado: " + e.getMessage();
-        }
-
-        if (success) {
             response.sendRedirect(request.getContextPath() + "/aluno-read");
             return;
+
+        } catch (IllegalArgumentException e) {
+            erro = "Validação: " + e.getMessage();
+        } catch (SQLException e) {
+            if (e.getMessage().contains("Duplicate")) {
+                erro = "E-mail ou CPF já cadastrado.";
+            } else {
+                e.printStackTrace();
+                erro = "Erro no banco de dados.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            erro = "Erro inesperado.";
         }
 
         request.setAttribute("erro", erro);
+        request.setAttribute("modalAtivo", "create");
+
         request.setAttribute("nome_previo", nome);
         request.setAttribute("sobrenome_previo", sobrenome);
         request.setAttribute("email_previo", email);
         request.setAttribute("cpf_previo", cpf);
 
-        List<Aluno> listaAlunos = new ArrayList<>();
         try {
-            listaAlunos = alunoDAO.read();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        request.setAttribute("listaAlunos", listaAlunos);
+            List<Aluno> lista = alunoDAO.read();
+            for (Aluno a : lista) a.setUsuario(usuarioDAO.readById(a.getFkUsuarioId()));
+            request.setAttribute("listaAlunos", lista);
+        } catch (Exception e) { e.printStackTrace(); }
 
-        request.setAttribute("modalAtivo", "create");
         request.getRequestDispatcher("/WEB-INF/pages/alunos.jsp").forward(request, response);
     }
 }
