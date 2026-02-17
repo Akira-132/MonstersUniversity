@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BoletimDAO {
+public class NotaDAO {
 
     public boolean create(Nota nota) throws SQLException {
         String sql = "INSERT INTO nota (tipo, semestre, ano, nota, id_aluno, id_disciplina) VALUES (?, ?, ?, ?, ?, ?)";
