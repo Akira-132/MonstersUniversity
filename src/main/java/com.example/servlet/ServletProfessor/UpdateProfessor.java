@@ -12,18 +12,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.ArrayList;
 
 @WebServlet("/professor-update")
 public class UpdateProfessor extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        response.sendRedirect(request.getContextPath() + "/professor-read");
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -31,83 +22,72 @@ public class UpdateProfessor extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
 
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        ProfessorDAO professorDAO = new ProfessorDAO();
-
         String idProfessorStr = request.getParameter("id");
         String idUsuarioStr = request.getParameter("idUsuario");
-
         String nome = request.getParameter("nome");
         String sobrenome = request.getParameter("sobrenome");
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
 
-        boolean success = false;
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        ProfessorDAO professorDAO = new ProfessorDAO();
         String erro = null;
-        int idProfessor = 0;
 
         try {
-            idProfessor = Integer.parseInt(idProfessorStr);
             int idUsuario = Integer.parseInt(idUsuarioStr);
+            Usuario usuario = usuarioDAO.readById(idUsuario);
 
-            Usuario usuarioParaAtualizar = usuarioDAO.readById(idUsuario);
+            if (usuario == null) {
+                throw new SQLException("Usuário original não encontrado.");
+            }
 
-            if (usuarioParaAtualizar != null) {
-                usuarioParaAtualizar.setNome(nome);
-                usuarioParaAtualizar.setSobrenome(sobrenome);
-                usuarioParaAtualizar.setEmail(email);
+            usuario.setNome(nome);
+            usuario.setSobrenome(sobrenome);
+            usuario.setEmail(email);
 
-                if (senha != null && !senha.trim().isEmpty()) {
-                    usuarioParaAtualizar.setSenha(senha);
-                }
+            if (senha != null && !senha.trim().isEmpty()) {
+                usuario.setSenha(senha);
+            }
 
-                int result = usuarioDAO.update(usuarioParaAtualizar);
-
-                if (result > 0) {
-                    success = true;
-                } else {
-                    erro = "Erro ao atualizar dados do usuário.";
-                }
+            if (usuarioDAO.update(usuario) > 0) {
+                response.sendRedirect(request.getContextPath() + "/professor-read");
+                return;
             } else {
-                erro = "Usuário vinculado não encontrado.";
+                erro = "Não foi possível atualizar os dados.";
             }
 
         } catch (IllegalArgumentException e) {
-            erro = "Erro de validação: " + e.getMessage();
+            erro = "Validação: " + e.getMessage();
         } catch (SQLException e) {
             e.printStackTrace();
-            erro = "Erro de banco: " + e.getMessage();
+            if (e.getMessage().contains("Duplicate") || e.getMessage().contains("UNIQUE")) {
+                erro = "Este e-mail já pertence a outro usuário.";
+            } else {
+                erro = "Erro de banco de dados ao atualizar.";
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            erro = "Erro: " + e.getMessage();
-        }
-
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/professor-read");
-            return;
+            erro = "Erro inesperado ao atualizar professor.";
         }
 
         request.setAttribute("erro", erro);
+        request.setAttribute("modalAtivo", "update");
         request.setAttribute("nome_previo", nome);
         request.setAttribute("sobrenome_previo", sobrenome);
         request.setAttribute("email_previo", email);
-        request.setAttribute("modalAtivo", "update");
 
-        List<Professor> listaProfessores = new ArrayList<>();
         try {
-            listaProfessores = professorDAO.read();
-        } catch (Exception e) {}
-        request.setAttribute("listaProfessores", listaProfessores);
+            request.setAttribute("listaProfessores", professorDAO.read());
 
-        if (idProfessor > 0) {
-            try {
-                Professor p = professorDAO.readById(idProfessor);
-                if(p != null) {
-                    Usuario u = usuarioDAO.readById(p.getFkUsuarioId());
-                    p.setUsuario(u);
-                    request.setAttribute("professorModal", p);
-                }
-            } catch(Exception e) {}
+            if (idProfessorStr != null) {
+                int id = Integer.parseInt(idProfessorStr);
+                request.setAttribute("professorModal", professorDAO.readById(id));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (request.getAttribute("erro") == null) {
+                request.setAttribute("erro", "Erro ao recarregar a lista de professores.");
+            }
         }
 
         request.getRequestDispatcher("/WEB-INF/pages/professores.jsp").forward(request, response);
