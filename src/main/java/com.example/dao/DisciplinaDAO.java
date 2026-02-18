@@ -26,13 +26,24 @@ public class DisciplinaDAO {
     }
 
     public List<Disciplina> read() throws SQLException {
-        String sql = "SELECT d.id_disciplina, d.nome, d.id_professor, " +
-                "p.id_professor, p.id_usuario, " +
-                "u.id_usuario, u.nome, u.sobrenome, u.email, u.senha, u.tipo " +
-                "FROM disciplina d " +
-                "INNER JOIN professor p ON d.id_professor = p.id_professor " +
-                "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
-                "ORDER BY d.id_disciplina ASC";
+
+        String sql =
+                "SELECT " +
+                        "d.id_disciplina, " +
+                        "d.nome AS disciplina_nome, " +
+                        "d.id_professor AS disciplina_professor_id, " +
+                        "p.id_professor AS professor_id, " +
+                        "p.id_usuario AS professor_usuario_id, " +
+                        "u.id_usuario AS usuario_id, " +
+                        "u.nome AS usuario_nome, " +
+                        "u.sobrenome, " +
+                        "u.email, " +
+                        "u.senha, " +
+                        "u.tipo " +
+                        "FROM disciplina d " +
+                        "INNER JOIN professor p ON d.id_professor = p.id_professor " +
+                        "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
+                        "ORDER BY d.id_disciplina ASC";
 
         Conexao conexao = new Conexao();
         List<Disciplina> lista = new LinkedList<>();
@@ -44,8 +55,8 @@ public class DisciplinaDAO {
             while (rset.next()) {
 
                 Usuario usuario = new Usuario(
-                        rset.getInt("id_usuario"),
-                        rset.getString("nome"),
+                        rset.getInt("usuario_id"),
+                        rset.getString("usuario_nome"),
                         rset.getString("sobrenome"),
                         rset.getString("email"),
                         rset.getString("senha"),
@@ -53,16 +64,16 @@ public class DisciplinaDAO {
                 );
 
                 Professor professor = new Professor(
-                        rset.getInt("id_professor"),
-                        rset.getInt("id_usuario")
+                        rset.getInt("professor_id"),
+                        rset.getInt("professor_usuario_id")
                 );
 
                 professor.setUsuario(usuario);
 
                 Disciplina disciplina = new Disciplina(
                         rset.getInt("id_disciplina"),
-                        rset.getString("nome"),
-                        rset.getInt("id_professor")
+                        rset.getString("disciplina_nome"),
+                        rset.getInt("disciplina_professor_id")
                 );
 
                 disciplina.setProfessor(professor);
@@ -75,13 +86,24 @@ public class DisciplinaDAO {
     }
 
     public Disciplina readById(int id) throws SQLException {
-        String sql = "SELECT d.id_disciplina, d.nome, d.id_professor, " +
-                "p.id_professor, p.id_usuario, " +
-                "u.id_usuario, u.nome, u.sobrenome, u.email, u.senha, u.tipo " +
-                "FROM disciplina d " +
-                "INNER JOIN professor p ON d.id_professor = p.id_professor " +
-                "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
-                "WHERE d.id_disciplina = ?";
+
+        String sql =
+                "SELECT " +
+                        "d.id_disciplina, " +
+                        "d.nome AS disciplina_nome, " +
+                        "d.id_professor AS disciplina_professor_id, " +
+                        "p.id_professor AS professor_id, " +
+                        "p.id_usuario AS professor_usuario_id, " +
+                        "u.id_usuario AS usuario_id, " +
+                        "u.nome AS usuario_nome, " +
+                        "u.sobrenome, " +
+                        "u.email, " +
+                        "u.senha, " +
+                        "u.tipo " +
+                        "FROM disciplina d " +
+                        "INNER JOIN professor p ON d.id_professor = p.id_professor " +
+                        "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
+                        "WHERE d.id_disciplina = ?";
 
         Conexao conexao = new Conexao();
         Disciplina disciplina = null;
@@ -96,8 +118,8 @@ public class DisciplinaDAO {
                 if (rset.next()) {
 
                     Usuario usuario = new Usuario(
-                            rset.getInt("id_usuario"),
-                            rset.getString("nome"),
+                            rset.getInt("usuario_id"),
+                            rset.getString("usuario_nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
                             rset.getString("senha"),
@@ -105,16 +127,16 @@ public class DisciplinaDAO {
                     );
 
                     Professor professor = new Professor(
-                            rset.getInt("id_professor"),
-                            rset.getInt("id_usuario")
+                            rset.getInt("professor_id"),
+                            rset.getInt("professor_usuario_id")
                     );
 
                     professor.setUsuario(usuario);
 
                     disciplina = new Disciplina(
                             rset.getInt("id_disciplina"),
-                            rset.getString("nome"),
-                            rset.getInt("id_professor")
+                            rset.getString("disciplina_nome"),
+                            rset.getInt("disciplina_professor_id")
                     );
 
                     disciplina.setProfessor(professor);
@@ -126,13 +148,24 @@ public class DisciplinaDAO {
     }
 
     public Disciplina readByNome(String nome) throws SQLException {
-        String sql = "SELECT d.id_disciplina, d.nome, d.id_professor, " +
-                "p.id_professor, p.id_usuario, " +
-                "u.id_usuario, u.nome, u.sobrenome, u.email, u.senha, u.tipo " +
-                "FROM disciplina d " +
-                "INNER JOIN professor p ON d.id_professor = p.id_professor " +
-                "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
-                "WHERE d.nome = ?";
+
+        String sql =
+                "SELECT " +
+                        "d.id_disciplina, " +
+                        "d.nome AS disciplina_nome, " +
+                        "d.id_professor AS disciplina_professor_id, " +
+                        "p.id_professor AS professor_id, " +
+                        "p.id_usuario AS professor_usuario_id, " +
+                        "u.id_usuario AS usuario_id, " +
+                        "u.nome AS usuario_nome, " +
+                        "u.sobrenome, " +
+                        "u.email, " +
+                        "u.senha, " +
+                        "u.tipo " +
+                        "FROM disciplina d " +
+                        "INNER JOIN professor p ON d.id_professor = p.id_professor " +
+                        "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
+                        "WHERE d.nome = ?";
 
         Conexao conexao = new Conexao();
         Disciplina disciplina = null;
@@ -147,8 +180,8 @@ public class DisciplinaDAO {
                 if (rset.next()) {
 
                     Usuario usuario = new Usuario(
-                            rset.getInt("id_usuario"),
-                            rset.getString("nome"),
+                            rset.getInt("usuario_id"),
+                            rset.getString("usuario_nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
                             rset.getString("senha"),
@@ -156,16 +189,16 @@ public class DisciplinaDAO {
                     );
 
                     Professor professor = new Professor(
-                            rset.getInt("id_professor"),
-                            rset.getInt("id_usuario")
+                            rset.getInt("professor_id"),
+                            rset.getInt("professor_usuario_id")
                     );
 
                     professor.setUsuario(usuario);
 
                     disciplina = new Disciplina(
                             rset.getInt("id_disciplina"),
-                            rset.getString("nome"),
-                            rset.getInt("id_professor")
+                            rset.getString("disciplina_nome"),
+                            rset.getInt("disciplina_professor_id")
                     );
 
                     disciplina.setProfessor(professor);
