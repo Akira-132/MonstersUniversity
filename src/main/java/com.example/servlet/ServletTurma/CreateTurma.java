@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet("/turma-create")
 public class CreateTurma extends HttpServlet {
@@ -23,38 +22,45 @@ public class CreateTurma extends HttpServlet {
 
         String periodo = request.getParameter("periodo");
         String sala = request.getParameter("sala");
-        String fkDisciplinaIdStr = request.getParameter("fkDisciplinaId");
+        String idDisciplinaStr = request.getParameter("fkDisciplinaId");
 
         TurmaDAO turmaDAO = new TurmaDAO();
-        boolean success = false;
+        DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
         String erro = null;
 
         try {
-            int fkDisciplinaId = Integer.parseInt(fkDisciplinaIdStr);
+            int fkDisciplinaId = Integer.parseInt(idDisciplinaStr);
+
             Turma novaTurma = new Turma(periodo, sala, fkDisciplinaId);
-            success = turmaDAO.create(novaTurma);
 
-            if (!success) erro = "Erro ao cadastrar turma.";
+            if (turmaDAO.create(novaTurma)) {
+                response.sendRedirect(request.getContextPath() + "/turma-read");
+                return;
+            } else {
+                erro = "Erro ao cadastrar a turma no banco.";
+            }
 
+        } catch (NumberFormatException e) {
+            erro = "Selecione uma disciplina válida.";
+        } catch (IllegalArgumentException e) {
+            erro = "Validação: " + e.getMessage();
         } catch (Exception e) {
-            erro = "Erro: " + e.getMessage();
-        }
-
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/turma-read");
-            return;
+            e.printStackTrace();
+            erro = "Erro inesperado ao cadastrar turma.";
         }
 
         request.setAttribute("erro", erro);
+        request.setAttribute("modalAtivo", "create");
         request.setAttribute("periodo_previo", periodo);
         request.setAttribute("sala_previo", sala);
-        request.setAttribute("fkDisciplinaId_previo", fkDisciplinaIdStr);
-        request.setAttribute("modalAtivo", "create");
 
         try {
             request.setAttribute("listaTurmas", turmaDAO.read());
-            request.setAttribute("listaDisciplinas", new DisciplinaDAO().read());
-        } catch (SQLException e) {}
+            request.setAttribute("listaDisciplinas", disciplinaDAO.read());
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("erro", "Erro crítico: Não foi possível carregar as listas.");
+        }
 
         request.getRequestDispatcher("/WEB-INF/pages/turmas.jsp").forward(request, response);
     }
