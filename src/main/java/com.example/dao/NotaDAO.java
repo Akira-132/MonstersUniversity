@@ -1,7 +1,7 @@
 package com.example.dao;
 
 import com.example.controllers.Conexao;
-import com.example.models.Nota;
+import com.example.models.*;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -28,10 +28,25 @@ public class NotaDAO {
     }
 
     public List<Nota> read() throws SQLException {
-        String sql = "SELECT id_nota, tipo, semestre, ano, nota, id_aluno, id_disciplina FROM nota ORDER BY id_nota ASC";
+
+        String sql =
+                "SELECT " +
+                        "n.id_nota, n.tipo, n.semestre, n.ano, n.nota, n.id_aluno, n.id_disciplina, " +
+                        "a.id_aluno, a.cpf, a.matricula, a.id_usuario AS aluno_usuario_id, " +
+                        "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha, ua.tipo AS aluno_tipo, " +
+                        "d.id_disciplina, d.nome AS disciplina_nome, d.id_professor, " +
+                        "p.id_professor, p.id_usuario AS professor_usuario_id, " +
+                        "up.id_usuario AS usuario_professor_id, up.nome AS professor_nome, up.sobrenome AS professor_sobrenome, up.email AS professor_email, up.senha AS professor_senha, up.tipo AS professor_tipo " +
+                        "FROM nota n " +
+                        "INNER JOIN aluno a ON n.id_aluno = a.id_aluno " +
+                        "INNER JOIN usuario ua ON a.id_usuario = ua.id_usuario " +
+                        "INNER JOIN disciplina d ON n.id_disciplina = d.id_disciplina " +
+                        "INNER JOIN professor p ON d.id_professor = p.id_professor " +
+                        "INNER JOIN usuario up ON p.id_usuario = up.id_usuario " +
+                        "ORDER BY n.id_nota ASC";
 
         Conexao conexao = new Conexao();
-        List<Nota> listaNota = new LinkedList<>();
+        List<Nota> lista = new LinkedList<>();
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -39,26 +54,82 @@ public class NotaDAO {
 
             while (rset.next()) {
 
+                Usuario usuarioAluno = new Usuario(
+                        rset.getInt("usuario_aluno_id"),
+                        rset.getString("aluno_nome"),
+                        rset.getString("aluno_sobrenome"),
+                        rset.getString("aluno_email"),
+                        rset.getString("aluno_senha"),
+                        rset.getString("aluno_tipo")
+                );
+
+                Aluno aluno = new Aluno(
+                        rset.getInt("id_aluno"),
+                        rset.getString("cpf"),
+                        rset.getString("matricula"),
+                        rset.getInt("aluno_usuario_id")
+                );
+                aluno.setUsuario(usuarioAluno);
+
+                Usuario usuarioProfessor = new Usuario(
+                        rset.getInt("usuario_professor_id"),
+                        rset.getString("professor_nome"),
+                        rset.getString("professor_sobrenome"),
+                        rset.getString("professor_email"),
+                        rset.getString("professor_senha"),
+                        rset.getString("professor_tipo")
+                );
+
+                Professor professor = new Professor(
+                        rset.getInt("id_professor"),
+                        rset.getInt("professor_usuario_id")
+                );
+                professor.setUsuario(usuarioProfessor);
+
+                Disciplina disciplina = new Disciplina(
+                        rset.getInt("id_disciplina"),
+                        rset.getString("disciplina_nome"),
+                        rset.getInt("id_professor")
+                );
+                disciplina.setProfessor(professor);
+
                 Nota nota = new Nota(
                         rset.getInt("id_nota"),
                         rset.getString("tipo"),
                         rset.getInt("semestre"),
+                        rset.getInt("ano"),
                         rset.getDouble("nota"),
                         rset.getInt("id_aluno"),
                         rset.getInt("id_disciplina")
                 );
 
-                nota.setAno(rset.getInt("ano"));
+                nota.setAluno(aluno);
+                nota.setDisciplina(disciplina);
 
-                listaNota.add(nota);
+                lista.add(nota);
             }
         }
 
-        return listaNota;
+        return lista;
     }
 
     public Nota readById(int id) throws SQLException {
-        String sql = "SELECT id_nota, tipo, semestre, ano, nota, id_aluno, id_disciplina FROM nota WHERE id_nota = ?";
+
+        String sql =
+                "SELECT " +
+                        "n.id_nota, n.tipo, n.semestre, n.ano, n.nota, n.id_aluno, n.id_disciplina, " +
+                        "a.id_aluno, a.cpf, a.matricula, a.id_usuario AS aluno_usuario_id, " +
+                        "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha, ua.tipo AS aluno_tipo, " +
+                        "d.id_disciplina, d.nome AS disciplina_nome, d.id_professor, " +
+                        "p.id_professor, p.id_usuario AS professor_usuario_id, " +
+                        "up.id_usuario AS usuario_professor_id, up.nome AS professor_nome, up.sobrenome AS professor_sobrenome, up.email AS professor_email, up.senha AS professor_senha, up.tipo AS professor_tipo " +
+                        "FROM nota n " +
+                        "INNER JOIN aluno a ON n.id_aluno = a.id_aluno " +
+                        "INNER JOIN usuario ua ON a.id_usuario = ua.id_usuario " +
+                        "INNER JOIN disciplina d ON n.id_disciplina = d.id_disciplina " +
+                        "INNER JOIN professor p ON d.id_professor = p.id_professor " +
+                        "INNER JOIN usuario up ON p.id_usuario = up.id_usuario " +
+                        "WHERE n.id_nota = ?";
 
         Conexao conexao = new Conexao();
         Nota nota = null;
@@ -72,16 +143,57 @@ public class NotaDAO {
 
                 if (rset.next()) {
 
+                    Usuario usuarioAluno = new Usuario(
+                            rset.getInt("usuario_aluno_id"),
+                            rset.getString("aluno_nome"),
+                            rset.getString("aluno_sobrenome"),
+                            rset.getString("aluno_email"),
+                            rset.getString("aluno_senha"),
+                            rset.getString("aluno_tipo")
+                    );
+
+                    Aluno aluno = new Aluno(
+                            rset.getInt("id_aluno"),
+                            rset.getString("cpf"),
+                            rset.getString("matricula"),
+                            rset.getInt("aluno_usuario_id")
+                    );
+                    aluno.setUsuario(usuarioAluno);
+
+                    Usuario usuarioProfessor = new Usuario(
+                            rset.getInt("usuario_professor_id"),
+                            rset.getString("professor_nome"),
+                            rset.getString("professor_sobrenome"),
+                            rset.getString("professor_email"),
+                            rset.getString("professor_senha"),
+                            rset.getString("professor_tipo")
+                    );
+
+                    Professor professor = new Professor(
+                            rset.getInt("id_professor"),
+                            rset.getInt("professor_usuario_id")
+                    );
+                    professor.setUsuario(usuarioProfessor);
+
+                    Disciplina disciplina = new Disciplina(
+                            rset.getInt("id_disciplina"),
+                            rset.getString("disciplina_nome"),
+                            rset.getInt("id_professor")
+                    );
+                    disciplina.setProfessor(professor);
+
                     nota = new Nota(
                             rset.getInt("id_nota"),
                             rset.getString("tipo"),
                             rset.getInt("semestre"),
+                            rset.getInt("ano"),
                             rset.getDouble("nota"),
                             rset.getInt("id_aluno"),
                             rset.getInt("id_disciplina")
                     );
 
-                    nota.setAno(rset.getInt("ano"));
+                    nota.setAluno(aluno);
+                    nota.setDisciplina(disciplina);
                 }
             }
         }
@@ -89,16 +201,19 @@ public class NotaDAO {
         return nota;
     }
 
-    public List<Nota> readBySemestre(int semestre) throws SQLException {
-        String sql = "SELECT id_nota, tipo, semestre, ano, nota, id_aluno, id_disciplina FROM nota WHERE semestre = ? ORDER BY id_nota ASC";
+    public List<Nota> readByAno(int ano) throws SQLException {
+
+        String sql =
+                "SELECT n.id_nota, n.tipo, n.semestre, n.ano, n.nota, n.id_aluno, n.id_disciplina " +
+                        "FROM nota n WHERE n.ano = ? ORDER BY n.id_nota ASC";
 
         Conexao conexao = new Conexao();
-        List<Nota> listaNota = new LinkedList<>();
+        List<Nota> lista = new LinkedList<>();
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, semestre);
+            pstmt.setInt(1, ano);
 
             try (ResultSet rset = pstmt.executeQuery()) {
 
@@ -108,24 +223,22 @@ public class NotaDAO {
                             rset.getInt("id_nota"),
                             rset.getString("tipo"),
                             rset.getInt("semestre"),
+                            rset.getInt("ano"),
                             rset.getDouble("nota"),
                             rset.getInt("id_aluno"),
                             rset.getInt("id_disciplina")
                     );
 
-                    nota.setAno(rset.getInt("ano"));
-
-                    listaNota.add(nota);
+                    lista.add(nota);
                 }
             }
         }
 
-        return listaNota;
+        return lista;
     }
 
     public int update(Nota nota) throws SQLException {
         String sql = "UPDATE nota SET tipo = ?, semestre = ?, ano = ?, nota = ?, id_aluno = ?, id_disciplina = ? WHERE id_nota = ?";
-
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
@@ -155,14 +268,14 @@ public class NotaDAO {
         }
     }
 
-    public int deleteBySemestre(int semestre) throws SQLException {
-        String sql = "DELETE FROM nota WHERE semestre = ?";
+    public int deleteByAno(int ano) throws SQLException {
+        String sql = "DELETE FROM nota WHERE ano = ?";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, semestre);
+            pstmt.setInt(1, ano);
             return pstmt.executeUpdate();
         }
     }
