@@ -30,10 +30,11 @@ public class ReadAluno extends HttpServlet {
             }
             else if (idStr != null) {
                 int id = Integer.parseInt(idStr);
-                Aluno aluno = alunoDAO.readById(id);
+                Aluno alunoSelecionado = alunoDAO.readById(id);
 
-                if (aluno != null) {
-                    request.setAttribute("alunoModal", aluno);
+                if (alunoSelecionado != null) {
+                    request.setAttribute("alunoModal", alunoSelecionado);
+
                     if ("prepararUpdate".equals(acao)) {
                         request.setAttribute("modalAtivo", "update");
                     } else if ("prepararDelete".equals(acao)) {
@@ -44,7 +45,7 @@ public class ReadAluno extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("erro", "Erro ao carregar dados.");
+            request.setAttribute("erro", "Erro inesperado ao carregar dados dos alunos.");
         }
 
         request.getRequestDispatcher("/WEB-INF/pages/alunos.jsp").forward(request, response);
