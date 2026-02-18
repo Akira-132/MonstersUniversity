@@ -3,8 +3,6 @@ package com.example.servlet.ServletNota;
 import java.io.IOException;
 import java.util.List;
 import com.example.models.Nota;
-import com.example.models.Aluno;
-import com.example.models.Disciplina;
 import com.example.dao.NotaDAO;
 import com.example.dao.AlunoDAO;
 import com.example.dao.DisciplinaDAO;
@@ -33,11 +31,8 @@ public class ReadNota extends HttpServlet {
             request.setAttribute("listaNotas", lista);
 
             if ("prepararCreate".equals(acao) || "prepararUpdate".equals(acao)) {
-                List<Aluno> listaAlunos = alunoDAO.read();
-                request.setAttribute("listaAlunos", listaAlunos);
-
-                List<Disciplina> listaDisciplinas = disciplinaDAO.read();
-                request.setAttribute("listaDisciplinas", listaDisciplinas);
+                request.setAttribute("listaAlunos", alunoDAO.read());
+                request.setAttribute("listaDisciplinas", disciplinaDAO.read());
             }
 
             if ("prepararCreate".equals(acao)) {
@@ -49,6 +44,7 @@ public class ReadNota extends HttpServlet {
 
                 if (nota != null) {
                     request.setAttribute("notaModal", nota);
+
                     if ("prepararUpdate".equals(acao)) {
                         request.setAttribute("modalAtivo", "update");
                     } else if ("prepararDelete".equals(acao)) {
@@ -59,7 +55,7 @@ public class ReadNota extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("erro", "Erro ao carregar dados.");
+            request.setAttribute("erro", "Erro inesperado ao carregar dados.");
         }
 
         request.getRequestDispatcher("/WEB-INF/pages/notas.jsp").forward(request, response);
