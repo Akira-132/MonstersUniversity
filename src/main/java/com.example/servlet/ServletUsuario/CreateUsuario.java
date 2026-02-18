@@ -10,8 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 @WebServlet("/usuario-create")
 public class CreateUsuario extends HttpServlet {
@@ -28,56 +26,47 @@ public class CreateUsuario extends HttpServlet {
         String senha = request.getParameter("senha");
         String tipo = request.getParameter("tipo");
 
-        UsuarioDAO dao = new UsuarioDAO();
-        boolean success = false;
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
         String erro = null;
 
         try {
             Usuario novoUsuario = new Usuario(nome, sobrenome, email, senha, tipo);
-            int idGerado = dao.create(novoUsuario);
 
-            if (idGerado > 0) {
-                success = true;
+            if (usuarioDAO.create(novoUsuario)) {
+                response.sendRedirect(request.getContextPath() + "/usuario-read");
+                return;
             } else {
-                erro = "Erro ao cadastrar usuário.";
+                erro = "Erro ao cadastrar usuário no banco.";
             }
 
         } catch (IllegalArgumentException e) {
-            erro = "Erro de validação: " + e.getMessage();
-
+            erro = "Validação: " + e.getMessage();
         } catch (SQLException e) {
             e.printStackTrace();
-            if (e.getMessage().contains("Duplicate entry") || e.getMessage().contains("UNIQUE")) {
-                erro = "Erro: E-mail já cadastrado.";
+            if (e.getMessage().contains("Duplicate") || e.getMessage().contains("UNIQUE")) {
+                erro = "Este e-mail já está em uso.";
             } else {
-                erro = "Erro de banco: " + e.getMessage();
+                erro = "Erro de banco de dados.";
             }
-
         } catch (Exception e) {
             e.printStackTrace();
-            erro = "Erro inesperado: " + e.getMessage();
-        }
-
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/usuario-read");
-            return;
+            erro = "Erro inesperado ao cadastrar usuário.";
         }
 
         request.setAttribute("erro", erro);
+        request.setAttribute("modalAtivo", "create");
         request.setAttribute("nome_previo", nome);
         request.setAttribute("sobrenome_previo", sobrenome);
         request.setAttribute("email_previo", email);
         request.setAttribute("tipo_previo", tipo);
 
-        List<Usuario> listaUsuarios = new ArrayList<>();
         try {
-            listaUsuarios = dao.read();
-        } catch (SQLException e) {
+            request.setAttribute("listaUsuarios", usuarioDAO.read());
+        } catch (Exception e) {
             e.printStackTrace();
+            request.setAttribute("erro", "Erro crítico: Não foi possível carregar a lista de usuários.");
         }
-        request.setAttribute("listaUsuarios", listaUsuarios);
 
-        request.setAttribute("modalAtivo", "create");
         request.getRequestDispatcher("/WEB-INF/pages/usuarios.jsp").forward(request, response);
     }
 }
