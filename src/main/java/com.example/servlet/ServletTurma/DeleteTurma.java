@@ -1,8 +1,6 @@
 package com.example.servlet.ServletTurma;
 
-import com.example.dao.DisciplinaDAO;
 import com.example.dao.TurmaDAO;
-import com.example.models.Turma;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,37 +16,44 @@ public class DeleteTurma extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        TurmaDAO dao = new TurmaDAO();
-        String idStr = request.getParameter("id");
-        boolean success = false;
+        TurmaDAO turmaDAO = new TurmaDAO();
         String erro = null;
 
         try {
-            int id = Integer.parseInt(idStr);
-            success = dao.deleteById(id) > 0;
-        } catch (Exception e) {
-            erro = e.getMessage();
-        }
+            int id = Integer.parseInt(request.getParameter("id"));
 
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/turma-read");
-            return;
+            if (turmaDAO.deleteById(id) > 0) {
+                response.sendRedirect(request.getContextPath() + "/turma-read");
+                return;
+            } else {
+                erro = "Não foi possível excluir a turma.";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (e.getMessage() != null && e.getMessage().contains("foreign key")) {
+                erro = "Não é possível excluir: Existem alunos matriculados nesta turma.";
+            } else {
+                erro = "Erro inesperado ao excluir.";
+            }
         }
 
         request.setAttribute("erro", erro);
         request.setAttribute("modalAtivo", "delete");
 
         try {
-            request.setAttribute("listaTurmas", dao.read());
+            request.setAttribute("listaTurmas", turmaDAO.read());
+
+            String idStr = request.getParameter("id");
             if (idStr != null) {
-                int id = Integer.parseInt(idStr);
-                Turma t = dao.readById(id);
-                if(t != null) {
-                    t.setDisciplina(new DisciplinaDAO().readById(t.getFkDisciplinaId()));
-                    request.setAttribute("turmaModal", t);
-                }
+                request.setAttribute("turmaModal", turmaDAO.readById(Integer.parseInt(idStr)));
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (request.getAttribute("erro") == null) {
+                request.setAttribute("erro", "Erro ao recarregar a lista.");
+            }
+        }
 
         request.getRequestDispatcher("/WEB-INF/pages/turmas.jsp").forward(request, response);
     }

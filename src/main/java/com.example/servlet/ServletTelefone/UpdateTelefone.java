@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet("/telefone-update")
 public class UpdateTelefone extends HttpServlet {
@@ -20,65 +19,57 @@ public class UpdateTelefone extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-        TelefoneDAO dao = new TelefoneDAO();
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
 
         String idStr = request.getParameter("id");
-        String telefoneStr = request.getParameter("telefone");
-        String idUsuarioStr = request.getParameter("idUsuario");
+        String numero = request.getParameter("telefone");
+        String idUsuarioStr = request.getParameter("fkUsuarioId");
 
-        boolean success = false;
+        TelefoneDAO telefoneDAO = new TelefoneDAO();
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
         String erro = null;
-        int id = 0;
 
         try {
-            id = Integer.parseInt(idStr);
-            int idUsuario = Integer.parseInt(idUsuarioStr);
+            int id = Integer.parseInt(idStr);
+            int fkUsuarioId = Integer.parseInt(idUsuarioStr);
 
-            Telefone telefoneAtual = dao.readById(id);
+            Telefone telefone = telefoneDAO.readById(id);
+            if (telefone == null) throw new Exception("Telefone não encontrado.");
 
-            if (telefoneAtual != null) {
-                telefoneAtual.setTelefone(telefoneStr);
-                telefoneAtual.setFkUsuarioId(idUsuario);
+            telefone.setTelefone(numero);
+            telefone.setFkUsuarioId(fkUsuarioId);
 
-                int result = dao.update(telefoneAtual);
-                if (result > 0) {
-                    success = true;
-                } else {
-                    erro = "Erro ao atualizar registro.";
-                }
+            if (telefoneDAO.update(telefone) > 0) {
+                response.sendRedirect(request.getContextPath() + "/telefone-read");
+                return;
             } else {
-                erro = "Telefone não encontrado.";
+                erro = "Erro ao atualizar telefone no banco.";
             }
 
+        } catch (NumberFormatException e) {
+            erro = "Dados inválidos.";
         } catch (IllegalArgumentException e) {
-            erro = "Erro de validação: " + e.getMessage();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            erro = "Erro de banco: " + e.getMessage();
+            erro = "Validação: " + e.getMessage();
         } catch (Exception e) {
             e.printStackTrace();
             erro = "Erro: " + e.getMessage();
-        }
-
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/telefone-read");
-            return;
         }
 
         request.setAttribute("erro", erro);
         request.setAttribute("modalAtivo", "update");
 
         try {
-            request.setAttribute("listaTelefones", dao.read());
+            request.setAttribute("listaTelefones", telefoneDAO.read());
             request.setAttribute("listaUsuarios", usuarioDAO.read());
-        } catch (Exception e) {}
 
-        if (id > 0) {
-            try {
-                Telefone t = dao.readById(id);
-                request.setAttribute("telefoneModal", t);
-            } catch (Exception e) {}
+            if (idStr != null) {
+                request.setAttribute("telefoneModal", telefoneDAO.readById(Integer.parseInt(idStr)));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (request.getAttribute("erro") == null) {
+                request.setAttribute("erro", "Erro ao recarregar as listas.");
+            }
         }
 
         request.getRequestDispatcher("/WEB-INF/pages/telefones.jsp").forward(request, response);

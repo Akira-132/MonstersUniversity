@@ -20,53 +20,72 @@ public class UpdateNota extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-        NotaDAO notaDAO = new NotaDAO();
 
         String idStr = request.getParameter("id");
         String tipo = request.getParameter("tipo");
         String semestreStr = request.getParameter("semestre");
         String anoStr = request.getParameter("ano");
-        String notaValStr = request.getParameter("nota");
-        String fkAlunoIdStr = request.getParameter("fkAlunoId");
-        String fkDisciplinaIdStr = request.getParameter("fkDisciplinaId");
+        String notaValorStr = request.getParameter("nota");
+        String idAlunoStr = request.getParameter("fkAlunoId");
+        String idDisciplinaStr = request.getParameter("fkDisciplinaId");
 
-        boolean success = false;
+        NotaDAO notaDAO = new NotaDAO();
+        AlunoDAO alunoDAO = new AlunoDAO();
+        DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
         String erro = null;
-        int id = 0;
 
         try {
-            id = Integer.parseInt(idStr);
-            Nota notaAtual = notaDAO.readById(id);
+            int id = Integer.parseInt(idStr);
+            int semestre = Integer.parseInt(semestreStr);
+            int ano = Integer.parseInt(anoStr);
+            double valor = Double.parseDouble(notaValorStr.replace(",", "."));
+            int fkAlunoId = Integer.parseInt(idAlunoStr);
+            int fkDisciplinaId = Integer.parseInt(idDisciplinaStr);
 
-            if (notaAtual != null) {
-                notaAtual.setTipo(tipo);
-                notaAtual.setSemestre(Integer.parseInt(semestreStr));
-                notaAtual.setAno(Integer.parseInt(anoStr));
-                notaAtual.setNota(Double.parseDouble(notaValStr));
-                notaAtual.setFkAlunoId(Integer.parseInt(fkAlunoIdStr));
-                notaAtual.setFkDisciplinaId(Integer.parseInt(fkDisciplinaIdStr));
+            Nota nota = notaDAO.readById(id);
+            if (nota == null) throw new Exception("Nota não encontrada.");
 
-                success = notaDAO.update(notaAtual) > 0;
+            nota.setTipo(tipo);
+            nota.setSemestre(semestre);
+            nota.setAno(ano);
+            nota.setNota(valor);
+            nota.setFkAlunoId(fkAlunoId);
+            nota.setFkDisciplinaId(fkDisciplinaId);
+
+            if (notaDAO.update(nota) > 0) {
+                response.sendRedirect(request.getContextPath() + "/nota-read");
+                return;
             } else {
-                erro = "Nota não encontrada.";
+                erro = "Erro ao atualizar nota no banco.";
             }
-        } catch (Exception e) {
-            erro = e.getMessage();
-        }
 
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/nota-read");
-            return;
+        } catch (NumberFormatException e) {
+            erro = "Valores numéricos inválidos.";
+        } catch (IllegalArgumentException e) {
+            erro = "Validação: " + e.getMessage();
+        } catch (Exception e) {
+            e.printStackTrace();
+            erro = "Erro: " + e.getMessage();
         }
 
         request.setAttribute("erro", erro);
         request.setAttribute("modalAtivo", "update");
+
         try {
             request.setAttribute("listaNotas", notaDAO.read());
-            request.setAttribute("listaAlunos", new AlunoDAO().read());
-            request.setAttribute("listaDisciplinas", new DisciplinaDAO().read());
-            if (id > 0) request.setAttribute("notaModal", notaDAO.readById(id));
-        } catch (Exception e) {}
+            request.setAttribute("listaAlunos", alunoDAO.read());
+            request.setAttribute("listaDisciplinas", disciplinaDAO.read());
+
+            if (idStr != null) {
+                request.setAttribute("notaModal", notaDAO.readById(Integer.parseInt(idStr)));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (request.getAttribute("erro") == null) {
+                request.setAttribute("erro", "Erro ao recarregar as listas.");
+            }
+        }
 
         request.getRequestDispatcher("/WEB-INF/pages/notas.jsp").forward(request, response);
     }

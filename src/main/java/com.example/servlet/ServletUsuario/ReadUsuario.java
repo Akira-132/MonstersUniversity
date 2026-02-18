@@ -2,11 +2,8 @@ package com.example.servlet.ServletUsuario;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.ArrayList;
-
 import com.example.models.Usuario;
 import com.example.dao.UsuarioDAO;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -20,37 +17,35 @@ public class ReadUsuario extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        UsuarioDAO dao = new UsuarioDAO();
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
         String acao = request.getParameter("acao");
         String idStr = request.getParameter("id");
 
         try {
-            List<Usuario> lista = dao.read();
+            List<Usuario> lista = usuarioDAO.read();
             request.setAttribute("listaUsuarios", lista);
 
-            if ("prepararUpdate".equals(acao) && idStr != null) {
-                int id = Integer.parseInt(idStr);
-                Usuario u = dao.readById(id);
-                if (u != null) {
-                    request.setAttribute("usuarioModal", u);
-                    request.setAttribute("modalAtivo", "update");
-                }
-            }
-            else if ("prepararDelete".equals(acao) && idStr != null) {
-                int id = Integer.parseInt(idStr);
-                Usuario u = dao.readById(id);
-                if (u != null) {
-                    request.setAttribute("usuarioModal", u);
-                    request.setAttribute("modalAtivo", "delete");
-                }
-            }
-            else if ("prepararCreate".equals(acao)) {
+            if ("prepararCreate".equals(acao)) {
                 request.setAttribute("modalAtivo", "create");
+            }
+            else if (idStr != null) {
+                int id = Integer.parseInt(idStr);
+                Usuario usuario = usuarioDAO.readById(id);
+
+                if (usuario != null) {
+                    request.setAttribute("usuarioModal", usuario);
+
+                    if ("prepararUpdate".equals(acao)) {
+                        request.setAttribute("modalAtivo", "update");
+                    } else if ("prepararDelete".equals(acao)) {
+                        request.setAttribute("modalAtivo", "delete");
+                    }
+                }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("erro", "Erro ao processar dados: " + e.getMessage());
+            request.setAttribute("erro", "Erro inesperado ao carregar usuários.");
         }
 
         request.getRequestDispatcher("/WEB-INF/pages/usuarios.jsp").forward(request, response);

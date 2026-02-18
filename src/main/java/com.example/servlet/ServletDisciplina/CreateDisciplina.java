@@ -11,9 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 @WebServlet("/disciplina-create")
 public class CreateDisciplina extends HttpServlet {
@@ -25,59 +22,45 @@ public class CreateDisciplina extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         String nome = request.getParameter("nome");
-        String fkProfessorIdStr = request.getParameter("fkProfessorId");
+        String idProfessorStr = request.getParameter("fkProfessorId");
 
         DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
-        boolean success = false;
+        ProfessorDAO professorDAO = new ProfessorDAO();
         String erro = null;
 
         try {
-            int fkProfessorId = Integer.parseInt(fkProfessorIdStr);
+            int fkProfessorId = Integer.parseInt(idProfessorStr);
+
             Disciplina novaDisciplina = new Disciplina(nome, fkProfessorId);
 
-            success = disciplinaDAO.create(novaDisciplina);
-
-            if (!success) {
-                erro = "Erro ao cadastrar disciplina.";
-            }
-
-        } catch (NumberFormatException | NullPointerException e) {
-            erro = "Erro de validação: Professor inválido.";
-
-        } catch (IllegalArgumentException e) {
-            erro = "Erro de validação: " + e.getMessage();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            if (e.getMessage().contains("UNIQUE")) {
-                erro = "Erro: Disciplina já cadastrada.";
+            if (disciplinaDAO.create(novaDisciplina)) {
+                response.sendRedirect(request.getContextPath() + "/disciplina-read");
+                return;
             } else {
-                erro = "Erro de banco: " + e.getMessage();
+                erro = "Erro ao cadastrar a disciplina no banco.";
             }
 
+        } catch (NumberFormatException e) {
+            erro = "Selecione um professor válido.";
+        } catch (IllegalArgumentException e) {
+            erro = "Validação: " + e.getMessage();
         } catch (Exception e) {
             e.printStackTrace();
-            erro = "Erro inesperado: " + e.getMessage();
-        }
-
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/disciplina-read");
-            return;
+            erro = "Erro inesperado ao cadastrar disciplina.";
         }
 
         request.setAttribute("erro", erro);
+        request.setAttribute("modalAtivo", "create");
         request.setAttribute("nome_previo", nome);
-        request.setAttribute("fkProfessorId_previo", fkProfessorIdStr);
 
         try {
             request.setAttribute("listaDisciplinas", disciplinaDAO.read());
-            ProfessorDAO professorDAO = new ProfessorDAO();
             request.setAttribute("listaProfessores", professorDAO.read());
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            request.setAttribute("erro", "Erro crítico: Não foi possível carregar as listas.");
         }
 
-        request.setAttribute("modalAtivo", "create");
         request.getRequestDispatcher("/WEB-INF/pages/disciplinas.jsp").forward(request, response);
     }
 }

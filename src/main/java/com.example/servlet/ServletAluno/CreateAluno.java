@@ -38,10 +38,13 @@ public class CreateAluno extends HttpServlet {
             Usuario novoUsuario = new Usuario(nome, sobrenome, email, senha, tipo);
 
             if (!usuarioDAO.create(novoUsuario)) {
-                throw new SQLException("Falha ao criar usuário base.");
+                throw new SQLException("Falha ao criar o usuário base.");
             }
 
             Usuario usuarioBanco = usuarioDAO.readByEmail(email);
+            if (usuarioBanco == null) {
+                throw new SQLException("Erro crítico: Usuário criado, mas ID não encontrado.");
+            }
 
             Aluno novoAluno = new Aluno(cpf, usuarioBanco.getId());
 
@@ -56,30 +59,34 @@ public class CreateAluno extends HttpServlet {
         } catch (IllegalArgumentException e) {
             erro = "Validação: " + e.getMessage();
         } catch (SQLException e) {
-            if (e.getMessage().contains("Duplicate")) {
-                erro = "E-mail ou CPF já cadastrado.";
+            e.printStackTrace();
+            if (e.getMessage().contains("Duplicate") || e.getMessage().contains("UNIQUE")) {
+                if (e.getMessage().contains("cpf")) {
+                    erro = "Este CPF já está cadastrado.";
+                } else {
+                    erro = "Este e-mail já está em uso.";
+                }
             } else {
-                e.printStackTrace();
-                erro = "Erro no banco de dados.";
+                erro = "Erro de banco de dados ao salvar aluno.";
             }
         } catch (Exception e) {
             e.printStackTrace();
-            erro = "Erro inesperado.";
+            erro = "Erro inesperado ao processar a solicitação.";
         }
 
         request.setAttribute("erro", erro);
         request.setAttribute("modalAtivo", "create");
-
         request.setAttribute("nome_previo", nome);
         request.setAttribute("sobrenome_previo", sobrenome);
         request.setAttribute("email_previo", email);
         request.setAttribute("cpf_previo", cpf);
 
         try {
-            List<Aluno> lista = alunoDAO.read();
-            for (Aluno a : lista) a.setUsuario(usuarioDAO.readById(a.getFkUsuarioId()));
-            request.setAttribute("listaAlunos", lista);
-        } catch (Exception e) { e.printStackTrace(); }
+            request.setAttribute("listaAlunos", alunoDAO.read());
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("erro", "Erro crítico: Não foi possível carregar a lista de alunos.");
+        }
 
         request.getRequestDispatcher("/WEB-INF/pages/alunos.jsp").forward(request, response);
     }

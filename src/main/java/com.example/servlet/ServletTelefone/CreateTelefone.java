@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet("/telefone-create")
 public class CreateTelefone extends HttpServlet {
@@ -21,56 +20,46 @@ public class CreateTelefone extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
 
-        String telefoneStr = request.getParameter("telefone");
-        String idUsuarioStr = request.getParameter("idUsuario");
+        String numero = request.getParameter("telefone");
+        String idUsuarioStr = request.getParameter("fkUsuarioId");
 
-        TelefoneDAO dao = new TelefoneDAO();
-        boolean success = false;
+        TelefoneDAO telefoneDAO = new TelefoneDAO();
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
         String erro = null;
 
         try {
-            int idUsuario = Integer.parseInt(idUsuarioStr);
-            Telefone novoTelefone = new Telefone(telefoneStr, idUsuario);
+            int fkUsuarioId = Integer.parseInt(idUsuarioStr);
 
-            success = dao.create(novoTelefone);
+            Telefone novoTelefone = new Telefone(numero, fkUsuarioId);
 
-            if (!success) {
-                erro = "Erro ao cadastrar telefone.";
+            if (telefoneDAO.create(novoTelefone)) {
+                response.sendRedirect(request.getContextPath() + "/telefone-read");
+                return;
+            } else {
+                erro = "Erro ao cadastrar telefone no banco.";
             }
 
-        } catch (NumberFormatException | NullPointerException e) {
-            erro = "Erro: Selecione um usuário válido.";
-
+        } catch (NumberFormatException e) {
+            erro = "Selecione um usuário válido.";
         } catch (IllegalArgumentException e) {
-            erro = "Erro de validação: " + e.getMessage();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            erro = "Erro de banco: " + e.getMessage();
-
+            erro = "Validação: " + e.getMessage();
         } catch (Exception e) {
             e.printStackTrace();
-            erro = "Erro inesperado: " + e.getMessage();
-        }
-
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/telefone-read");
-            return;
+            erro = "Erro inesperado ao cadastrar telefone.";
         }
 
         request.setAttribute("erro", erro);
-        request.setAttribute("telefone_previo", telefoneStr);
-        request.setAttribute("idUsuario_previo", idUsuarioStr);
+        request.setAttribute("modalAtivo", "create");
+        request.setAttribute("telefone_previo", numero);
 
         try {
-            request.setAttribute("listaTelefones", dao.read());
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            request.setAttribute("listaTelefones", telefoneDAO.read());
             request.setAttribute("listaUsuarios", usuarioDAO.read());
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            request.setAttribute("erro", "Erro crítico: Não foi possível carregar as listas.");
         }
 
-        request.setAttribute("modalAtivo", "create");
         request.getRequestDispatcher("/WEB-INF/pages/telefones.jsp").forward(request, response);
     }
 }

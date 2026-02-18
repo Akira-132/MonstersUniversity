@@ -10,24 +10,15 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.ArrayList;
 
 @WebServlet("/usuario-update")
 public class UpdateUsuario extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/usuario-read");
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-        UsuarioDAO dao = new UsuarioDAO();
 
         String idStr = request.getParameter("id");
         String nome = request.getParameter("nome");
@@ -36,69 +27,60 @@ public class UpdateUsuario extends HttpServlet {
         String senha = request.getParameter("senha");
         String tipo = request.getParameter("tipo");
 
-        boolean success = false;
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
         String erro = null;
-        int id = 0;
 
         try {
-            id = Integer.parseInt(idStr);
-            Usuario usuarioAtual = dao.readById(id);
+            int id = Integer.parseInt(idStr);
+            Usuario usuario = usuarioDAO.readById(id);
 
-            if (usuarioAtual != null) {
-                usuarioAtual.setNome(nome);
-                usuarioAtual.setSobrenome(sobrenome);
-                usuarioAtual.setEmail(email);
-                usuarioAtual.setTipo(tipo);
+            if (usuario == null) throw new Exception("Usuário não encontrado.");
 
-                if (senha != null && !senha.trim().isEmpty()) {
-                    usuarioAtual.setSenha(senha);
-                }
+            usuario.setNome(nome);
+            usuario.setSobrenome(sobrenome);
+            usuario.setEmail(email);
+            usuario.setTipo(tipo);
 
-                int result = dao.update(usuarioAtual);
-                if (result > 0) {
-                    success = true;
-                } else {
-                    erro = "Erro ao atualizar registro.";
-                }
+            if (senha != null && !senha.trim().isEmpty()) {
+                usuario.setSenha(senha);
+            }
+
+            if (usuarioDAO.update(usuario) > 0) {
+                response.sendRedirect(request.getContextPath() + "/usuario-read");
+                return;
             } else {
-                erro = "Usuário não encontrado.";
+                erro = "Erro ao atualizar usuário no banco.";
             }
 
         } catch (IllegalArgumentException e) {
-            erro = "Erro de validação: " + e.getMessage();
+            erro = "Validação: " + e.getMessage();
         } catch (SQLException e) {
             e.printStackTrace();
-            if (e.getMessage().contains("UNIQUE")) {
-                erro = "E-mail já cadastrado.";
+            if (e.getMessage().contains("Duplicate") || e.getMessage().contains("UNIQUE")) {
+                erro = "Este e-mail já está em uso.";
             } else {
-                erro = "Erro de banco: " + e.getMessage();
+                erro = "Erro de banco de dados ao atualizar.";
             }
         } catch (Exception e) {
             e.printStackTrace();
             erro = "Erro: " + e.getMessage();
         }
 
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/usuario-read");
-            return;
-        }
-
         request.setAttribute("erro", erro);
-        request.setAttribute("nome_previo", nome);
-        request.setAttribute("sobrenome_previo", sobrenome);
-        request.setAttribute("email_previo", email);
-        request.setAttribute("tipo_previo", tipo);
         request.setAttribute("modalAtivo", "update");
 
-        List<Usuario> lista = new ArrayList<>();
-        try { lista = dao.read(); } catch (Exception e) {}
-        request.setAttribute("listaUsuarios", lista);
+        try {
+            request.setAttribute("listaUsuarios", usuarioDAO.read());
 
-        if (id > 0) {
-            try {
-                Usuario u = dao.readById(id);
-                if(u != null) request.setAttribute("usuarioModal", u);
-            } catch (Exception e) {}
+            if (idStr != null) {
+                request.setAttribute("usuarioModal", usuarioDAO.readById(Integer.parseInt(idStr)));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (request.getAttribute("erro") == null) {
+                request.setAttribute("erro", "Erro ao recarregar a lista.");
+            }
         }
 
         request.getRequestDispatcher("/WEB-INF/pages/usuarios.jsp").forward(request, response);
