@@ -2,7 +2,6 @@ package com.example.servlet.ServletDisciplina;
 
 import com.example.dao.DisciplinaDAO;
 import com.example.dao.ProfessorDAO;
-import com.example.dao.UsuarioDAO;
 import com.example.models.Disciplina;
 import com.example.models.Professor;
 import jakarta.servlet.ServletException;
@@ -12,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet("/disciplina-create")
 public class CreateDisciplina extends HttpServlet {
@@ -28,7 +26,6 @@ public class CreateDisciplina extends HttpServlet {
 
         DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
         ProfessorDAO professorDAO = new ProfessorDAO();
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
         String erro = null;
 
         try {
@@ -49,7 +46,7 @@ public class CreateDisciplina extends HttpServlet {
             erro = "Validação: " + e.getMessage();
         } catch (Exception e) {
             e.printStackTrace();
-            erro = "Erro inesperado.";
+            erro = "Erro inesperado ao cadastrar disciplina.";
         }
 
         request.setAttribute("erro", erro);
@@ -57,21 +54,12 @@ public class CreateDisciplina extends HttpServlet {
         request.setAttribute("nome_previo", nome);
 
         try {
-            List<Disciplina> lista = disciplinaDAO.read();
-            for (Disciplina d : lista) {
-                Professor p = professorDAO.readById(d.getFkProfessorId());
-                if(p != null) p.setUsuario(usuarioDAO.readById(p.getFkUsuarioId()));
-                d.setProfessor(p);
-            }
-            request.setAttribute("listaDisciplinas", lista);
-
-            List<Professor> listaProfs = professorDAO.read();
-            for (Professor p : listaProfs) {
-                p.setUsuario(usuarioDAO.readById(p.getFkUsuarioId()));
-            }
-            request.setAttribute("listaProfessores", listaProfs);
-
-        } catch (Exception e) { e.printStackTrace(); }
+            request.setAttribute("listaDisciplinas", disciplinaDAO.read());
+            request.setAttribute("listaProfessores", professorDAO.read());
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("erro", "Erro crítico: Não foi possível carregar as listas.");
+        }
 
         request.getRequestDispatcher("/WEB-INF/pages/disciplinas.jsp").forward(request, response);
     }

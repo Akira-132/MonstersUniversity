@@ -43,6 +43,7 @@ public class ReadDisciplina extends HttpServlet {
 
                 if (disciplina != null) {
                     request.setAttribute("disciplinaModal", disciplina);
+
                     if ("prepararUpdate".equals(acao)) {
                         request.setAttribute("modalAtivo", "update");
                     } else if ("prepararDelete".equals(acao)) {
@@ -53,7 +54,7 @@ public class ReadDisciplina extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("erro", "Erro ao carregar dados.");
+            request.setAttribute("erro", "Erro inesperado ao carregar dados.");
         }
 
         request.getRequestDispatcher("/WEB-INF/pages/disciplinas.jsp").forward(request, response);
