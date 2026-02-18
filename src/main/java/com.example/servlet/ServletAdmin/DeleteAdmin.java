@@ -1,8 +1,6 @@
 package com.example.servlet.ServletAdmin;
 
 import com.example.dao.AdminDAO;
-import com.example.dao.UsuarioDAO;
-import com.example.models.Admin;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet("/admin-delete")
 public class DeleteAdmin extends HttpServlet {
@@ -29,15 +26,15 @@ public class DeleteAdmin extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/admin-read");
                 return;
             } else {
-                erro = "Não foi possível remover o registro.";
+                erro = "Não foi possível remover o registro. Tente novamente.";
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (e.getMessage().contains("foreign key")) {
-                erro = "Não é possível excluir: Este administrador possui vínculos ativos.";
+            if (e.getMessage() != null && e.getMessage().contains("foreign key")) {
+                erro = "Não é possível excluir: Este administrador possui vínculos no sistema.";
             } else {
-                erro = "Erro inesperado ao excluir.";
+                erro = "Erro inesperado ao excluir administrador.";
             }
         }
 
@@ -45,23 +42,17 @@ public class DeleteAdmin extends HttpServlet {
         request.setAttribute("modalAtivo", "delete");
 
         try {
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
-            List<Admin> lista = adminDAO.read();
-            for (Admin a : lista) a.setUsuario(usuarioDAO.readById(a.getFkUsuarioId()));
-            request.setAttribute("listaAdmins", lista);
+            request.setAttribute("listaAdmins", adminDAO.read());
 
             String idStr = request.getParameter("id");
             if (idStr != null) {
-                int id = Integer.parseInt(idStr);
-                Admin a = adminDAO.readById(id);
-                if (a != null) {
-                    a.setUsuario(usuarioDAO.readById(a.getFkUsuarioId()));
-                    request.setAttribute("adminModal", a);
-                }
+                request.setAttribute("adminModal", adminDAO.readById(Integer.parseInt(idStr)));
             }
         } catch (Exception e) {
             e.printStackTrace();
-            if (erro == null) request.setAttribute("erro", "Erro inesperado ao recarregar a lista.");
+            if (request.getAttribute("erro") == null) {
+                request.setAttribute("erro", "Erro ao recarregar a lista.");
+            }
         }
 
         request.getRequestDispatcher("/WEB-INF/pages/admins.jsp").forward(request, response);

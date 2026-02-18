@@ -30,10 +30,11 @@ public class ReadAdmin extends HttpServlet {
             }
             else if (idStr != null) {
                 int id = Integer.parseInt(idStr);
-                Admin admin = adminDAO.readById(id);
+                Admin adminSelecionado = adminDAO.readById(id);
 
-                if (admin != null) {
-                    request.setAttribute("adminModal", admin);
+                if (adminSelecionado != null) {
+                    request.setAttribute("adminModal", adminSelecionado);
+
                     if ("prepararUpdate".equals(acao)) {
                         request.setAttribute("modalAtivo", "update");
                     } else if ("prepararDelete".equals(acao)) {
@@ -44,7 +45,7 @@ public class ReadAdmin extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("erro", "Erro ao carregar dados.");
+            request.setAttribute("erro", "Erro inesperado ao carregar dados do sistema.");
         }
 
         request.getRequestDispatcher("/WEB-INF/pages/admins.jsp").forward(request, response);

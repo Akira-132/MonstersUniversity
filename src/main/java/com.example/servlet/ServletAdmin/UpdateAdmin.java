@@ -2,7 +2,6 @@ package com.example.servlet.ServletAdmin;
 
 import com.example.dao.AdminDAO;
 import com.example.dao.UsuarioDAO;
-import com.example.models.Admin;
 import com.example.models.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 @WebServlet("/admin-update")
 public class UpdateAdmin extends HttpServlet {
@@ -54,7 +52,7 @@ public class UpdateAdmin extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/admin-read");
                 return;
             } else {
-                erro = "Não foi possível atualizar o banco de dados.";
+                erro = "Não foi possível atualizar os dados.";
             }
 
         } catch (IllegalArgumentException e) {
@@ -64,7 +62,7 @@ public class UpdateAdmin extends HttpServlet {
             if (e.getMessage().contains("Duplicate") || e.getMessage().contains("UNIQUE")) {
                 erro = "Este e-mail já pertence a outro usuário.";
             } else {
-                erro = "Erro ao atualizar dados no banco.";
+                erro = "Erro de banco de dados ao atualizar.";
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,21 +76,18 @@ public class UpdateAdmin extends HttpServlet {
         request.setAttribute("email_previo", email);
 
         try {
-            List<Admin> lista = adminDAO.read();
-            for (Admin a : lista) a.setUsuario(usuarioDAO.readById(a.getFkUsuarioId()));
-            request.setAttribute("listaAdmins", lista);
+            request.setAttribute("listaAdmins", adminDAO.read());
 
             if (idAdminStr != null) {
                 int idAdmin = Integer.parseInt(idAdminStr);
-                Admin a = adminDAO.readById(idAdmin);
-                if (a != null) {
-                    a.setUsuario(usuarioDAO.readById(a.getFkUsuarioId()));
-                    request.setAttribute("adminModal", a);
-                }
+                request.setAttribute("adminModal", adminDAO.readById(idAdmin));
             }
+
         } catch (Exception e) {
             e.printStackTrace();
-            if (erro == null) request.setAttribute("erro", "Erro inesperado ao recarregar a lista.");
+            if (request.getAttribute("erro") == null) {
+                request.setAttribute("erro", "Erro ao recarregar a lista de administradores.");
+            }
         }
 
         request.getRequestDispatcher("/WEB-INF/pages/admins.jsp").forward(request, response);

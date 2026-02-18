@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 @WebServlet("/admin-create")
 public class CreateAdmin extends HttpServlet {
@@ -62,7 +61,7 @@ public class CreateAdmin extends HttpServlet {
             if (e.getMessage().contains("Duplicate") || e.getMessage().contains("UNIQUE")) {
                 erro = "Este e-mail já está em uso.";
             } else {
-                erro = "Erro de banco de dados.";
+                erro = "Erro de banco de dados ao salvar administrador.";
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,19 +69,16 @@ public class CreateAdmin extends HttpServlet {
         }
 
         request.setAttribute("erro", erro);
+        request.setAttribute("modalAtivo", "create");
         request.setAttribute("nome_previo", nome);
         request.setAttribute("sobrenome_previo", sobrenome);
         request.setAttribute("email_previo", email);
-        request.setAttribute("modalAtivo", "create");
 
         try {
-            List<Admin> lista = adminDAO.read();
-            for (Admin a : lista) {
-                a.setUsuario(usuarioDAO.readById(a.getFkUsuarioId()));
-            }
-            request.setAttribute("listaAdmins", lista);
+            request.setAttribute("listaAdmins", adminDAO.read());
         } catch (Exception e) {
             e.printStackTrace();
+            request.setAttribute("erro", "Erro crítico: Não foi possível carregar a lista de administradores.");
         }
 
         request.getRequestDispatcher("/WEB-INF/pages/admins.jsp").forward(request, response);
