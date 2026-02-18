@@ -11,76 +11,74 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @WebServlet("/observacao-update")
 public class UpdateObservacao extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/observacao-read");
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-        ObservacaoDAO observacaoDAO = new ObservacaoDAO();
 
         String idStr = request.getParameter("id");
         String texto = request.getParameter("texto");
-        String fkProfessorIdStr = request.getParameter("fkProfessorId");
-        String fkAlunoIdStr = request.getParameter("fkAlunoId");
+        String idProfessorStr = request.getParameter("fkProfessorId");
+        String idAlunoStr = request.getParameter("fkAlunoId");
 
-        boolean success = false;
+        ObservacaoDAO observacaoDAO = new ObservacaoDAO();
+        AlunoDAO alunoDAO = new AlunoDAO();
+        ProfessorDAO professorDAO = new ProfessorDAO();
         String erro = null;
-        int id = 0;
 
         try {
-            id = Integer.parseInt(idStr);
-            int fkProfessorId = Integer.parseInt(fkProfessorIdStr);
-            int fkAlunoId = Integer.parseInt(fkAlunoIdStr);
+            int id = Integer.parseInt(idStr);
+            int fkProfessorId = Integer.parseInt(idProfessorStr);
+            int fkAlunoId = Integer.parseInt(idAlunoStr);
 
-            Observacao observacaoAtual = observacaoDAO.readById(id);
+            Observacao observacao = observacaoDAO.readById(id);
+            if (observacao == null) throw new Exception("Observação não encontrada.");
 
-            if (observacaoAtual != null) {
-                observacaoAtual.setTexto(texto);
-                observacaoAtual.setFkProfessorId(fkProfessorId);
-                observacaoAtual.setFkAlunoId(fkAlunoId);
+            observacao.setTexto(texto);
+            observacao.setFkProfessorId(fkProfessorId);
+            observacao.setFkAlunoId(fkAlunoId);
+            observacao.setDataEnvio(LocalDateTime.now());
 
-                int result = observacaoDAO.update(observacaoAtual);
-                if (result > 0) success = true;
-                else erro = "Erro ao atualizar registro.";
+            if (observacaoDAO.update(observacao) > 0) {
+                response.sendRedirect(request.getContextPath() + "/observacao-read");
+                return;
             } else {
-                erro = "Observação não encontrada.";
+                erro = "Erro ao atualizar observação no banco.";
             }
 
+        } catch (NumberFormatException e) {
+            erro = "Dados inválidos.";
+        } catch (IllegalArgumentException e) {
+            erro = "Validação: " + e.getMessage();
         } catch (Exception e) {
             e.printStackTrace();
             erro = "Erro: " + e.getMessage();
         }
 
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/observacao-read");
-            return;
-        }
-
         request.setAttribute("erro", erro);
         request.setAttribute("modalAtivo", "update");
-        request.setAttribute("texto_previo", texto);
+
         try {
             request.setAttribute("listaObservacoes", observacaoDAO.read());
+            request.setAttribute("listaAlunos", alunoDAO.read());
+            request.setAttribute("listaProfessores", professorDAO.read());
 
-            ProfessorDAO pDao = new ProfessorDAO();
-            request.setAttribute("listaProfessores", pDao.read());
+            if (idStr != null) {
+                request.setAttribute("observacaoModal", observacaoDAO.readById(Integer.parseInt(idStr)));
+            }
 
-            AlunoDAO aDao = new AlunoDAO();
-            request.setAttribute("listaAlunos", aDao.read());
-
-            if (id > 0) request.setAttribute("observacaoModal", observacaoDAO.readById(id));
-
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (request.getAttribute("erro") == null) {
+                request.setAttribute("erro", "Erro ao recarregar as listas.");
+            }
+        }
 
         request.getRequestDispatcher("/WEB-INF/pages/observacoes.jsp").forward(request, response);
     }

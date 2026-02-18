@@ -11,8 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 @WebServlet("/observacao-create")
 public class CreateObservacao extends HttpServlet {
@@ -24,64 +22,48 @@ public class CreateObservacao extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         String texto = request.getParameter("texto");
-        String fkProfessorIdStr = request.getParameter("fkProfessorId");
-        String fkAlunoIdStr = request.getParameter("fkAlunoId");
+        String idProfessorStr = request.getParameter("fkProfessorId");
+        String idAlunoStr = request.getParameter("fkAlunoId");
 
         ObservacaoDAO observacaoDAO = new ObservacaoDAO();
-        boolean success = false;
+        AlunoDAO alunoDAO = new AlunoDAO();
+        ProfessorDAO professorDAO = new ProfessorDAO();
         String erro = null;
 
         try {
-            int fkProfessorId = Integer.parseInt(fkProfessorIdStr);
-            int fkAlunoId = Integer.parseInt(fkAlunoIdStr);
-
+            int fkProfessorId = Integer.parseInt(idProfessorStr);
+            int fkAlunoId = Integer.parseInt(idAlunoStr);
             Observacao novaObservacao = new Observacao(texto, fkProfessorId, fkAlunoId);
 
-            success = observacaoDAO.create(novaObservacao);
-
-            if (!success) {
-                erro = "Erro ao registrar observação.";
+            if (observacaoDAO.create(novaObservacao)) {
+                response.sendRedirect(request.getContextPath() + "/observacao-read");
+                return;
+            } else {
+                erro = "Erro ao registrar observação no banco de dados.";
             }
 
-        } catch (NumberFormatException | NullPointerException e) {
-            erro = "Erro de validação: Professor ou Aluno inválido.";
-
+        } catch (NumberFormatException e) {
+            erro = "Selecione um aluno e um professor válidos.";
         } catch (IllegalArgumentException e) {
-            erro = "Erro de validação: " + e.getMessage();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            erro = "Erro de banco: " + e.getMessage();
-
+            erro = "Validação: " + e.getMessage();
         } catch (Exception e) {
             e.printStackTrace();
-            erro = "Erro inesperado: " + e.getMessage();
-        }
-
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/observacao-read");
-            return;
+            erro = "Erro inesperado ao registrar observação.";
         }
 
         request.setAttribute("erro", erro);
+        request.setAttribute("modalAtivo", "create");
         request.setAttribute("texto_previo", texto);
-        request.setAttribute("fkProfessorId_previo", fkProfessorIdStr);
-        request.setAttribute("fkAlunoId_previo", fkAlunoIdStr);
 
         try {
             request.setAttribute("listaObservacoes", observacaoDAO.read());
-
-            ProfessorDAO professorDAO = new ProfessorDAO();
-            request.setAttribute("listaProfessores", professorDAO.read());
-
-            AlunoDAO alunoDAO = new AlunoDAO();
             request.setAttribute("listaAlunos", alunoDAO.read());
-
-        } catch (SQLException e) {
+            request.setAttribute("listaProfessores", professorDAO.read());
+        } catch (Exception e) {
             e.printStackTrace();
+            request.setAttribute("erro", "Erro crítico: Não foi possível carregar as listas.");
         }
 
-        request.setAttribute("modalAtivo", "create");
         request.getRequestDispatcher("/WEB-INF/pages/observacoes.jsp").forward(request, response);
     }
 }
