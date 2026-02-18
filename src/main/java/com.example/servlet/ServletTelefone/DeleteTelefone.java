@@ -1,8 +1,6 @@
 package com.example.servlet.ServletTelefone;
 
 import com.example.dao.TelefoneDAO;
-import com.example.dao.UsuarioDAO;
-import com.example.models.Telefone;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet("/telefone-delete")
 public class DeleteTelefone extends HttpServlet {
@@ -19,51 +16,39 @@ public class DeleteTelefone extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        TelefoneDAO dao = new TelefoneDAO();
-        int id = 0;
-        boolean success = false;
+        TelefoneDAO telefoneDAO = new TelefoneDAO();
         String erro = null;
 
         try {
-            String idParam = request.getParameter("id");
-            id = Integer.parseInt(idParam);
+            int id = Integer.parseInt(request.getParameter("id"));
 
-            int resultado = dao.deleteById(id);
-
-            if (resultado > 0) {
-                success = true;
+            if (telefoneDAO.deleteById(id) > 0) {
+                response.sendRedirect(request.getContextPath() + "/telefone-read");
+                return;
             } else {
-                erro = "Não foi possível deletar o telefone.";
+                erro = "Não foi possível excluir o telefone.";
             }
 
-        } catch (NumberFormatException e) {
-            erro = "ID inválido.";
-        } catch (SQLException e) {
-            e.printStackTrace();
-            erro = "Erro de banco: " + e.getMessage();
         } catch (Exception e) {
-            erro = "Erro inesperado: " + e.getMessage();
-        }
-
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/telefone-read");
-            return;
+            e.printStackTrace();
+            erro = "Erro inesperado ao excluir.";
         }
 
         request.setAttribute("erro", erro);
         request.setAttribute("modalAtivo", "delete");
 
         try {
-            request.setAttribute("listaTelefones", dao.read());
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
-            request.setAttribute("listaUsuarios", usuarioDAO.read());
-        } catch (Exception e) {}
+            request.setAttribute("listaTelefones", telefoneDAO.read());
 
-        if (id > 0) {
-            try {
-                Telefone t = dao.readById(id);
-                request.setAttribute("telefoneModal", t);
-            } catch (Exception e) {}
+            String idStr = request.getParameter("id");
+            if (idStr != null) {
+                request.setAttribute("telefoneModal", telefoneDAO.readById(Integer.parseInt(idStr)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (request.getAttribute("erro") == null) {
+                request.setAttribute("erro", "Erro ao recarregar a lista.");
+            }
         }
 
         request.getRequestDispatcher("/WEB-INF/pages/telefones.jsp").forward(request, response);

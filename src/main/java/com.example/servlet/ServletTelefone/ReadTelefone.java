@@ -2,11 +2,9 @@ package com.example.servlet.ServletTelefone;
 
 import java.io.IOException;
 import java.util.List;
-
 import com.example.models.Telefone;
 import com.example.dao.TelefoneDAO;
 import com.example.dao.UsuarioDAO;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -30,31 +28,31 @@ public class ReadTelefone extends HttpServlet {
             List<Telefone> lista = telefoneDAO.read();
             request.setAttribute("listaTelefones", lista);
 
-            request.setAttribute("listaUsuarios", usuarioDAO.read());
+            if ("prepararCreate".equals(acao) || "prepararUpdate".equals(acao)) {
+                request.setAttribute("listaUsuarios", usuarioDAO.read());
+            }
 
-            if ("prepararUpdate".equals(acao) && idStr != null) {
-                int id = Integer.parseInt(idStr);
-                Telefone t = telefoneDAO.readById(id);
-                if (t != null) {
-                    request.setAttribute("telefoneModal", t);
-                    request.setAttribute("modalAtivo", "update");
-                }
-            }
-            else if ("prepararDelete".equals(acao) && idStr != null) {
-                int id = Integer.parseInt(idStr);
-                Telefone t = telefoneDAO.readById(id);
-                if (t != null) {
-                    request.setAttribute("telefoneModal", t);
-                    request.setAttribute("modalAtivo", "delete");
-                }
-            }
-            else if ("prepararCreate".equals(acao)) {
+            if ("prepararCreate".equals(acao)) {
                 request.setAttribute("modalAtivo", "create");
+            }
+            else if (idStr != null) {
+                int id = Integer.parseInt(idStr);
+                Telefone telefone = telefoneDAO.readById(id);
+
+                if (telefone != null) {
+                    request.setAttribute("telefoneModal", telefone);
+
+                    if ("prepararUpdate".equals(acao)) {
+                        request.setAttribute("modalAtivo", "update");
+                    } else if ("prepararDelete".equals(acao)) {
+                        request.setAttribute("modalAtivo", "delete");
+                    }
+                }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("erro", "Erro ao processar dados: " + e.getMessage());
+            request.setAttribute("erro", "Erro inesperado ao carregar dados.");
         }
 
         request.getRequestDispatcher("/WEB-INF/pages/telefones.jsp").forward(request, response);
