@@ -30,8 +30,7 @@ public class NotaDAO {
     public List<Nota> read() throws SQLException {
 
         String sql =
-                "SELECT " +
-                        "n.id_nota, n.tipo, n.semestre, n.ano, n.nota, n.id_aluno, n.id_disciplina, " +
+                "SELECT n.id_nota, n.tipo, n.semestre, n.ano, n.nota, n.id_aluno, n.id_disciplina, " +
                         "a.id_aluno, a.cpf, a.matricula, a.id_usuario AS aluno_usuario_id, " +
                         "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha, ua.tipo AS aluno_tipo, " +
                         "d.id_disciplina, d.nome AS disciplina_nome, d.id_professor, " +
@@ -53,60 +52,7 @@ public class NotaDAO {
              ResultSet rset = pstmt.executeQuery()) {
 
             while (rset.next()) {
-
-                Usuario usuarioAluno = new Usuario(
-                        rset.getInt("usuario_aluno_id"),
-                        rset.getString("aluno_nome"),
-                        rset.getString("aluno_sobrenome"),
-                        rset.getString("aluno_email"),
-                        rset.getString("aluno_senha"),
-                        rset.getString("aluno_tipo")
-                );
-
-                Aluno aluno = new Aluno(
-                        rset.getInt("id_aluno"),
-                        rset.getString("cpf"),
-                        rset.getString("matricula"),
-                        rset.getInt("aluno_usuario_id")
-                );
-                aluno.setUsuario(usuarioAluno);
-
-                Usuario usuarioProfessor = new Usuario(
-                        rset.getInt("usuario_professor_id"),
-                        rset.getString("professor_nome"),
-                        rset.getString("professor_sobrenome"),
-                        rset.getString("professor_email"),
-                        rset.getString("professor_senha"),
-                        rset.getString("professor_tipo")
-                );
-
-                Professor professor = new Professor(
-                        rset.getInt("id_professor"),
-                        rset.getInt("professor_usuario_id")
-                );
-                professor.setUsuario(usuarioProfessor);
-
-                Disciplina disciplina = new Disciplina(
-                        rset.getInt("id_disciplina"),
-                        rset.getString("disciplina_nome"),
-                        rset.getInt("id_professor")
-                );
-                disciplina.setProfessor(professor);
-
-                Nota nota = new Nota(
-                        rset.getInt("id_nota"),
-                        rset.getString("tipo"),
-                        rset.getInt("semestre"),
-                        rset.getInt("ano"),
-                        rset.getDouble("nota"),
-                        rset.getInt("id_aluno"),
-                        rset.getInt("id_disciplina")
-                );
-
-                nota.setAluno(aluno);
-                nota.setDisciplina(disciplina);
-
-                lista.add(nota);
+                lista.add(notaBuilder(rset));
             }
         }
 
@@ -116,8 +62,7 @@ public class NotaDAO {
     public Nota readById(int id) throws SQLException {
 
         String sql =
-                "SELECT " +
-                        "n.id_nota, n.tipo, n.semestre, n.ano, n.nota, n.id_aluno, n.id_disciplina, " +
+                "SELECT n.id_nota, n.tipo, n.semestre, n.ano, n.nota, n.id_aluno, n.id_disciplina, " +
                         "a.id_aluno, a.cpf, a.matricula, a.id_usuario AS aluno_usuario_id, " +
                         "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha, ua.tipo AS aluno_tipo, " +
                         "d.id_disciplina, d.nome AS disciplina_nome, d.id_professor, " +
@@ -140,49 +85,33 @@ public class NotaDAO {
             pstmt.setInt(1, id);
 
             try (ResultSet rset = pstmt.executeQuery()) {
-
                 if (rset.next()) {
+                    nota = notaBuilder(rset);
+                }
+            }
+        }
 
-                    Usuario usuarioAluno = new Usuario(
-                            rset.getInt("usuario_aluno_id"),
-                            rset.getString("aluno_nome"),
-                            rset.getString("aluno_sobrenome"),
-                            rset.getString("aluno_email"),
-                            rset.getString("aluno_senha"),
-                            rset.getString("aluno_tipo")
-                    );
+        return nota;
+    }
 
-                    Aluno aluno = new Aluno(
-                            rset.getInt("id_aluno"),
-                            rset.getString("cpf"),
-                            rset.getString("matricula"),
-                            rset.getInt("aluno_usuario_id")
-                    );
-                    aluno.setUsuario(usuarioAluno);
+    public List<Nota> readByAlunoId(int alunoId) throws SQLException {
 
-                    Usuario usuarioProfessor = new Usuario(
-                            rset.getInt("usuario_professor_id"),
-                            rset.getString("professor_nome"),
-                            rset.getString("professor_sobrenome"),
-                            rset.getString("professor_email"),
-                            rset.getString("professor_senha"),
-                            rset.getString("professor_tipo")
-                    );
+        String sql = "SELECT id_nota, tipo, semestre, ano, nota, id_aluno, id_disciplina " +
+                "FROM nota WHERE id_aluno = ? ORDER BY id_nota ASC";
 
-                    Professor professor = new Professor(
-                            rset.getInt("id_professor"),
-                            rset.getInt("professor_usuario_id")
-                    );
-                    professor.setUsuario(usuarioProfessor);
+        Conexao conexao = new Conexao();
+        List<Nota> lista = new LinkedList<>();
 
-                    Disciplina disciplina = new Disciplina(
-                            rset.getInt("id_disciplina"),
-                            rset.getString("disciplina_nome"),
-                            rset.getInt("id_professor")
-                    );
-                    disciplina.setProfessor(professor);
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-                    nota = new Nota(
+            pstmt.setInt(1, alunoId);
+
+            try (ResultSet rset = pstmt.executeQuery()) {
+
+                while (rset.next()) {
+
+                    Nota nota = new Nota(
                             rset.getInt("id_nota"),
                             rset.getString("tipo"),
                             rset.getInt("semestre"),
@@ -192,20 +121,18 @@ public class NotaDAO {
                             rset.getInt("id_disciplina")
                     );
 
-                    nota.setAluno(aluno);
-                    nota.setDisciplina(disciplina);
+                    lista.add(nota);
                 }
             }
         }
 
-        return nota;
+        return lista;
     }
 
-    public List<Nota> readByAno(int ano) throws SQLException {
+    public List<Nota> readByDisciplinaId(int disciplinaId) throws SQLException {
 
-        String sql =
-                "SELECT n.id_nota, n.tipo, n.semestre, n.ano, n.nota, n.id_aluno, n.id_disciplina " +
-                        "FROM nota n WHERE n.ano = ? ORDER BY n.id_nota ASC";
+        String sql = "SELECT id_nota, tipo, semestre, ano, nota, id_aluno, id_disciplina " +
+                "FROM nota WHERE id_disciplina = ? ORDER BY id_nota ASC";
 
         Conexao conexao = new Conexao();
         List<Nota> lista = new LinkedList<>();
@@ -213,7 +140,7 @@ public class NotaDAO {
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, ano);
+            pstmt.setInt(1, disciplinaId);
 
             try (ResultSet rset = pstmt.executeQuery()) {
 
@@ -268,15 +195,84 @@ public class NotaDAO {
         }
     }
 
-    public int deleteByAno(int ano) throws SQLException {
-        String sql = "DELETE FROM nota WHERE ano = ?";
+    public int deleteByAlunoId(int alunoId) throws SQLException {
+        String sql = "DELETE FROM nota WHERE id_aluno = ?";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, ano);
+            pstmt.setInt(1, alunoId);
             return pstmt.executeUpdate();
         }
+    }
+
+    public int deleteByDisciplinaId(int disciplinaId) throws SQLException {
+        String sql = "DELETE FROM nota WHERE id_disciplina = ?";
+        Conexao conexao = new Conexao();
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, disciplinaId);
+            return pstmt.executeUpdate();
+        }
+    }
+
+    private Nota notaBuilder(ResultSet rset) throws SQLException {
+
+        Usuario usuarioAluno = new Usuario(
+                rset.getInt("usuario_aluno_id"),
+                rset.getString("aluno_nome"),
+                rset.getString("aluno_sobrenome"),
+                rset.getString("aluno_email"),
+                rset.getString("aluno_senha"),
+                rset.getString("aluno_tipo")
+        );
+
+        Aluno aluno = new Aluno(
+                rset.getInt("id_aluno"),
+                rset.getString("cpf"),
+                rset.getString("matricula"),
+                rset.getInt("aluno_usuario_id")
+        );
+        aluno.setUsuario(usuarioAluno);
+
+        Usuario usuarioProfessor = new Usuario(
+                rset.getInt("usuario_professor_id"),
+                rset.getString("professor_nome"),
+                rset.getString("professor_sobrenome"),
+                rset.getString("professor_email"),
+                rset.getString("professor_senha"),
+                rset.getString("professor_tipo")
+        );
+
+        Professor professor = new Professor(
+                rset.getInt("id_professor"),
+                rset.getInt("professor_usuario_id")
+        );
+        professor.setUsuario(usuarioProfessor);
+
+        Disciplina disciplina = new Disciplina(
+                rset.getInt("id_disciplina"),
+                rset.getString("disciplina_nome"),
+                rset.getInt("id_professor")
+        );
+        disciplina.setProfessor(professor);
+
+        Nota nota = new Nota(
+                rset.getInt("id_nota"),
+                rset.getString("tipo"),
+                rset.getInt("semestre"),
+                rset.getInt("ano"),
+                rset.getDouble("nota"),
+                rset.getInt("id_aluno"),
+                rset.getInt("id_disciplina")
+        );
+
+        nota.setAluno(aluno);
+        nota.setDisciplina(disciplina);
+
+        return nota;
     }
 }
