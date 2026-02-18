@@ -6,7 +6,6 @@ import com.example.models.Disciplina;
 import com.example.models.Professor;
 import com.example.dao.DisciplinaDAO;
 import com.example.dao.ProfessorDAO;
-import com.example.dao.UsuarioDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -22,27 +21,16 @@ public class ReadDisciplina extends HttpServlet {
 
         DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
         ProfessorDAO professorDAO = new ProfessorDAO();
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
 
         String acao = request.getParameter("acao");
         String idStr = request.getParameter("id");
 
         try {
             List<Disciplina> lista = disciplinaDAO.read();
-            for (Disciplina d : lista) {
-                Professor p = professorDAO.readById(d.getFkProfessorId());
-                if (p != null) {
-                    p.setUsuario(usuarioDAO.readById(p.getFkUsuarioId()));
-                }
-                d.setProfessor(p);
-            }
             request.setAttribute("listaDisciplinas", lista);
 
             if ("prepararCreate".equals(acao) || "prepararUpdate".equals(acao)) {
                 List<Professor> listaProfs = professorDAO.read();
-                for (Professor p : listaProfs) {
-                    p.setUsuario(usuarioDAO.readById(p.getFkUsuarioId()));
-                }
                 request.setAttribute("listaProfessores", listaProfs);
             }
 
@@ -55,7 +43,6 @@ public class ReadDisciplina extends HttpServlet {
 
                 if (disciplina != null) {
                     request.setAttribute("disciplinaModal", disciplina);
-
                     if ("prepararUpdate".equals(acao)) {
                         request.setAttribute("modalAtivo", "update");
                     } else if ("prepararDelete".equals(acao)) {
