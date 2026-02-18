@@ -8,7 +8,6 @@ public class Nota {
     private double nota;
     private int fkAlunoId;
     private int fkDisciplinaId;
-
     private Aluno aluno;
     private Disciplina disciplina;
 

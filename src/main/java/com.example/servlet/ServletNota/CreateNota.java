@@ -3,6 +3,9 @@ package com.example.servlet.ServletNota;
 import com.example.dao.AlunoDAO;
 import com.example.dao.DisciplinaDAO;
 import com.example.dao.NotaDAO;
+import com.example.dao.UsuarioDAO;
+import com.example.models.Aluno;
+import com.example.models.Disciplina;
 import com.example.models.Nota;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,7 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet("/nota-create")
 public class CreateNota extends HttpServlet {
@@ -25,49 +28,67 @@ public class CreateNota extends HttpServlet {
         String tipo = request.getParameter("tipo");
         String semestreStr = request.getParameter("semestre");
         String anoStr = request.getParameter("ano");
-        String notaValStr = request.getParameter("nota");
-        String fkAlunoIdStr = request.getParameter("fkAlunoId");
-        String fkDisciplinaIdStr = request.getParameter("fkDisciplinaId");
+        String notaValorStr = request.getParameter("nota");
+        String idAlunoStr = request.getParameter("fkAlunoId");
+        String idDisciplinaStr = request.getParameter("fkDisciplinaId");
 
         NotaDAO notaDAO = new NotaDAO();
-        boolean success = false;
+        AlunoDAO alunoDAO = new AlunoDAO();
+        DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
         String erro = null;
 
         try {
             int semestre = Integer.parseInt(semestreStr);
             int ano = Integer.parseInt(anoStr);
-            double notaVal = Double.parseDouble(notaValStr);
-            int fkAlunoId = Integer.parseInt(fkAlunoIdStr);
-            int fkDisciplinaId = Integer.parseInt(fkDisciplinaIdStr);
+            double valor = Double.parseDouble(notaValorStr.replace(",", "."));
+            int fkAlunoId = Integer.parseInt(idAlunoStr);
+            int fkDisciplinaId = Integer.parseInt(idDisciplinaStr);
 
-            Nota novaNota = new Nota(tipo, semestre, ano, notaVal, fkAlunoId, fkDisciplinaId);
-            success = notaDAO.create(novaNota);
+            Nota novaNota = new Nota(tipo, semestre, ano, valor, fkAlunoId, fkDisciplinaId);
 
-            if (!success) erro = "Erro ao registrar nota.";
+            if (notaDAO.create(novaNota)) {
+                response.sendRedirect(request.getContextPath() + "/nota-read");
+                return;
+            } else {
+                erro = "Erro ao lançar nota no banco.";
+            }
 
+        } catch (NumberFormatException e) {
+            erro = "Verifique os números digitados (Ano, Semestre, Nota).";
+        } catch (IllegalArgumentException e) {
+            erro = "Validação: " + e.getMessage();
         } catch (Exception e) {
-            erro = "Erro: " + e.getMessage();
-        }
-
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/nota-read");
-            return;
+            e.printStackTrace();
+            erro = "Erro inesperado.";
         }
 
         request.setAttribute("erro", erro);
+        request.setAttribute("modalAtivo", "create");
+
         request.setAttribute("tipo_previo", tipo);
         request.setAttribute("semestre_previo", semestreStr);
         request.setAttribute("ano_previo", anoStr);
-        request.setAttribute("nota_previo", notaValStr);
-        request.setAttribute("fkAlunoId_previo", fkAlunoIdStr);
-        request.setAttribute("fkDisciplinaId_previo", fkDisciplinaIdStr);
-        request.setAttribute("modalAtivo", "create");
+        request.setAttribute("nota_previo", notaValorStr);
 
         try {
-            request.setAttribute("listaNotas", notaDAO.read());
-            request.setAttribute("listaAlunos", new AlunoDAO().read());
-            request.setAttribute("listaDisciplinas", new DisciplinaDAO().read());
-        } catch (Exception e) {}
+            List<Nota> lista = notaDAO.read();
+            for (Nota n : lista) {
+                Aluno a = alunoDAO.readById(n.getFkAlunoId());
+                if (a != null) a.setUsuario(usuarioDAO.readById(a.getFkUsuarioId()));
+                n.setAluno(a);
+                n.setDisciplina(disciplinaDAO.readById(n.getFkDisciplinaId()));
+            }
+            request.setAttribute("listaNotas", lista);
+
+            List<Aluno> listaAlunos = alunoDAO.read();
+            for (Aluno a : listaAlunos) a.setUsuario(usuarioDAO.readById(a.getFkUsuarioId()));
+            request.setAttribute("listaAlunos", listaAlunos);
+
+            List<Disciplina> listaDisciplinas = disciplinaDAO.read();
+            request.setAttribute("listaDisciplinas", listaDisciplinas);
+
+        } catch (Exception e) { e.printStackTrace(); }
 
         request.getRequestDispatcher("/WEB-INF/pages/notas.jsp").forward(request, response);
     }
