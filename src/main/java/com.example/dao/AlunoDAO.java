@@ -2,6 +2,7 @@ package com.example.dao;
 
 import com.example.controllers.Conexao;
 import com.example.models.Aluno;
+import com.example.models.Usuario;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -10,21 +11,23 @@ import java.util.List;
 public class AlunoDAO {
 
     public boolean create(Aluno aluno) throws SQLException {
-        String sql = "INSERT INTO aluno (matricula, usuario_id) VALUES (?, ?)";
+        String sql = "INSERT INTO aluno (cpf, matricula, id_usuario) VALUES (?, ?, ?)";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, aluno.getMatricula());
-            pstmt.setInt(2, aluno.getUsuarioId());
+            pstmt.setString(1, aluno.getCpf());
+            pstmt.setString(2, aluno.getMatricula());
+            pstmt.setInt(3, aluno.getFkUsuarioId());
 
             return pstmt.executeUpdate() > 0;
         }
     }
 
     public List<Aluno> read() throws SQLException {
-        String sql = "SELECT * FROM aluno ORDER BY id ASC";
+        String sql = "SELECT a.id_aluno, a.cpf, a.matricula, a.id_usuario, u.id_usuario, u.nome, u.sobrenome, u.email, u.senha, u.tipo FROM aluno a INNER JOIN usuario u ON a.id_usuario = u.id_usuario ORDER BY a.id_aluno ASC";
+
         Conexao conexao = new Conexao();
         List<Aluno> listaAluno = new LinkedList<>();
 
@@ -33,19 +36,35 @@ public class AlunoDAO {
              ResultSet rset = pstmt.executeQuery()) {
 
             while (rset.next()) {
-                Aluno aluno = new Aluno(
-                        rset.getInt("id"),
-                        rset.getString("matricula"),
-                        rset.getInt("usuario_id")
+
+                Usuario usuario = new Usuario(
+                        rset.getInt("id_usuario"),
+                        rset.getString("nome"),
+                        rset.getString("sobrenome"),
+                        rset.getString("email"),
+                        rset.getString("senha"),
+                        rset.getString("tipo")
                 );
+
+                Aluno aluno = new Aluno(
+                        rset.getInt("id_aluno"),
+                        rset.getString("cpf"),
+                        rset.getString("matricula"),
+                        rset.getInt("id_usuario")
+                );
+
+                aluno.setUsuario(usuario);
+
                 listaAluno.add(aluno);
             }
         }
+
         return listaAluno;
     }
 
     public Aluno readById(int id) throws SQLException {
-        String sql = "SELECT * FROM aluno WHERE id = ?";
+        String sql = "SELECT a.id_aluno, a.cpf, a.matricula, a.id_usuario, u.id_usuario, u.nome, u.sobrenome, u.email, u.senha, u.tipo FROM aluno a INNER JOIN usuario u ON a.id_usuario = u.id_usuario WHERE a.id_aluno = ?";
+
         Conexao conexao = new Conexao();
         Aluno aluno = null;
 
@@ -55,20 +74,36 @@ public class AlunoDAO {
             pstmt.setInt(1, id);
 
             try (ResultSet rset = pstmt.executeQuery()) {
+
                 if (rset.next()) {
-                    aluno = new Aluno(
-                            rset.getInt("id"),
-                            rset.getString("matricula"),
-                            rset.getInt("usuario_id")
+
+                    Usuario usuario = new Usuario(
+                            rset.getInt("id_usuario"),
+                            rset.getString("nome"),
+                            rset.getString("sobrenome"),
+                            rset.getString("email"),
+                            rset.getString("senha"),
+                            rset.getString("tipo")
                     );
+
+                    aluno = new Aluno(
+                            rset.getInt("id_aluno"),
+                            rset.getString("cpf"),
+                            rset.getString("matricula"),
+                            rset.getInt("id_usuario")
+                    );
+
+                    aluno.setUsuario(usuario);
                 }
             }
         }
+
         return aluno;
     }
 
     public Aluno readByMatricula(String matricula) throws SQLException {
-        String sql = "SELECT * FROM aluno WHERE matricula = ?";
+        String sql = "SELECT a.id_aluno, a.cpf, a.matricula, a.id_usuario, u.id_usuario, u.nome, u.sobrenome, u.email, u.senha, u.tipo FROM aluno a INNER JOIN usuario u ON a.id_usuario = u.id_usuario WHERE a.matricula = ?";
+
         Conexao conexao = new Conexao();
         Aluno aluno = null;
 
@@ -78,35 +113,51 @@ public class AlunoDAO {
             pstmt.setString(1, matricula);
 
             try (ResultSet rset = pstmt.executeQuery()) {
+
                 if (rset.next()) {
-                    aluno = new Aluno(
-                            rset.getInt("id"),
-                            rset.getString("matricula"),
-                            rset.getInt("usuario_id")
+
+                    Usuario usuario = new Usuario(
+                            rset.getInt("id_usuario"),
+                            rset.getString("nome"),
+                            rset.getString("sobrenome"),
+                            rset.getString("email"),
+                            rset.getString("senha"),
+                            rset.getString("tipo")
                     );
+
+                    aluno = new Aluno(
+                            rset.getInt("id_aluno"),
+                            rset.getString("cpf"),
+                            rset.getString("matricula"),
+                            rset.getInt("id_usuario")
+                    );
+
+                    aluno.setUsuario(usuario);
                 }
             }
         }
+
         return aluno;
     }
 
     public int update(Aluno aluno) throws SQLException {
-        String sql = "UPDATE aluno SET matricula = ?, usuario_id = ? WHERE id = ?";
+        String sql = "UPDATE aluno SET cpf = ?, matricula = ?, id_usuario = ? WHERE id_aluno = ?";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, aluno.getMatricula());
-            pstmt.setInt(2, aluno.getUsuarioId());
-            pstmt.setInt(3, aluno.getId());
+            pstmt.setString(1, aluno.getCpf());
+            pstmt.setString(2, aluno.getMatricula());
+            pstmt.setInt(3, aluno.getFkUsuarioId());
+            pstmt.setInt(4, aluno.getId());
 
             return pstmt.executeUpdate();
         }
     }
 
     public int deleteById(int id) throws SQLException {
-        String sql = "DELETE FROM aluno WHERE id = ?";
+        String sql = "DELETE FROM aluno WHERE id_aluno = ?";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
