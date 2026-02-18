@@ -18,14 +18,18 @@ public class ProfessorDAO {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, professor.getFkUsuarioId());
-
             return pstmt.executeUpdate() > 0;
         }
     }
 
     public List<Professor> read() throws SQLException {
-        String sql = "SELECT p.id_professor, p.id_usuario, u.id_usuario, u.nome, u.sobrenome, u.email, u.senha, u.tipo " +
-                "FROM professor p INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
+        String sql = "SELECT " +
+                "p.id_professor, " +
+                "p.id_usuario AS p_id_usuario, " +
+                "u.id_usuario AS u_id_usuario, " +
+                "u.nome, u.sobrenome, u.email, u.senha, u.tipo " +
+                "FROM professor p " +
+                "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
                 "ORDER BY p.id_professor ASC";
 
         Conexao conexao = new Conexao();
@@ -38,7 +42,7 @@ public class ProfessorDAO {
             while (rset.next()) {
 
                 Usuario usuario = new Usuario(
-                        rset.getInt("id_usuario"),
+                        rset.getInt("u_id_usuario"),
                         rset.getString("nome"),
                         rset.getString("sobrenome"),
                         rset.getString("email"),
@@ -48,11 +52,10 @@ public class ProfessorDAO {
 
                 Professor professor = new Professor(
                         rset.getInt("id_professor"),
-                        rset.getInt("id_usuario")
+                        rset.getInt("p_id_usuario")
                 );
 
                 professor.setUsuario(usuario);
-
                 listaProfessor.add(professor);
             }
         }
@@ -61,8 +64,13 @@ public class ProfessorDAO {
     }
 
     public Professor readById(int id) throws SQLException {
-        String sql = "SELECT p.id_professor, p.id_usuario, u.id_usuario, u.nome, u.sobrenome, u.email, u.senha, u.tipo " +
-                "FROM professor p INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
+        String sql = "SELECT " +
+                "p.id_professor, " +
+                "p.id_usuario AS p_id_usuario, " +
+                "u.id_usuario AS u_id_usuario, " +
+                "u.nome, u.sobrenome, u.email, u.senha, u.tipo " +
+                "FROM professor p " +
+                "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
                 "WHERE p.id_professor = ?";
 
         Conexao conexao = new Conexao();
@@ -78,7 +86,7 @@ public class ProfessorDAO {
                 if (rset.next()) {
 
                     Usuario usuario = new Usuario(
-                            rset.getInt("id_usuario"),
+                            rset.getInt("u_id_usuario"),
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
@@ -88,7 +96,7 @@ public class ProfessorDAO {
 
                     professor = new Professor(
                             rset.getInt("id_professor"),
-                            rset.getInt("id_usuario")
+                            rset.getInt("p_id_usuario")
                     );
 
                     professor.setUsuario(usuario);
@@ -100,8 +108,13 @@ public class ProfessorDAO {
     }
 
     public Professor readByUsuarioId(int usuarioId) throws SQLException {
-        String sql = "SELECT p.id_professor, p.id_usuario, u.id_usuario, u.nome, u.sobrenome, u.email, u.senha, u.tipo " +
-                "FROM professor p INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
+        String sql = "SELECT " +
+                "p.id_professor, " +
+                "p.id_usuario AS p_id_usuario, " +
+                "u.id_usuario AS u_id_usuario, " +
+                "u.nome, u.sobrenome, u.email, u.senha, u.tipo " +
+                "FROM professor p " +
+                "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
                 "WHERE p.id_usuario = ?";
 
         Conexao conexao = new Conexao();
@@ -117,7 +130,7 @@ public class ProfessorDAO {
                 if (rset.next()) {
 
                     Usuario usuario = new Usuario(
-                            rset.getInt("id_usuario"),
+                            rset.getInt("u_id_usuario"),
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
@@ -127,7 +140,7 @@ public class ProfessorDAO {
 
                     professor = new Professor(
                             rset.getInt("id_professor"),
-                            rset.getInt("id_usuario")
+                            rset.getInt("p_id_usuario")
                     );
 
                     professor.setUsuario(usuario);
