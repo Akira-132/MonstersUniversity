@@ -39,7 +39,6 @@ public class DisciplinaDAO {
                         "u.sobrenome, " +
                         "u.email, " +
                         "u.senha, " +
-                        "u.tipo " +
                         "FROM disciplina d " +
                         "INNER JOIN professor p ON d.id_professor = p.id_professor " +
                         "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
@@ -59,8 +58,7 @@ public class DisciplinaDAO {
                         rset.getString("usuario_nome"),
                         rset.getString("sobrenome"),
                         rset.getString("email"),
-                        rset.getString("senha"),
-                        rset.getString("tipo")
+                        rset.getString("senha")
                 );
 
                 Professor professor = new Professor(
@@ -99,7 +97,6 @@ public class DisciplinaDAO {
                         "u.sobrenome, " +
                         "u.email, " +
                         "u.senha, " +
-                        "u.tipo " +
                         "FROM disciplina d " +
                         "INNER JOIN professor p ON d.id_professor = p.id_professor " +
                         "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
@@ -122,8 +119,7 @@ public class DisciplinaDAO {
                             rset.getString("usuario_nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
-                            rset.getString("senha"),
-                            rset.getString("tipo")
+                            rset.getString("senha")
                     );
 
                     Professor professor = new Professor(
@@ -161,7 +157,6 @@ public class DisciplinaDAO {
                         "u.sobrenome, " +
                         "u.email, " +
                         "u.senha, " +
-                        "u.tipo " +
                         "FROM disciplina d " +
                         "INNER JOIN professor p ON d.id_professor = p.id_professor " +
                         "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
@@ -184,8 +179,7 @@ public class DisciplinaDAO {
                             rset.getString("usuario_nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
-                            rset.getString("senha"),
-                            rset.getString("tipo")
+                            rset.getString("senha")
                     );
 
                     Professor professor = new Professor(

@@ -23,7 +23,7 @@ public class AdminDAO {
     }
 
     public List<Admin> read() throws SQLException {
-        String sql = "SELECT a.id_admin, a.id_usuario, u.id_usuario, u.nome, u.sobrenome, u.email, u.senha, u.tipo FROM admin a INNER JOIN usuario u ON a.id_usuario = u.id_usuario ORDER BY a.id_admin ASC";
+        String sql = "SELECT a.id_admin, a.id_usuario, u.id_usuario, u.nome, u.sobrenome, u.email, u.senha FROM admin a INNER JOIN usuario u ON a.id_usuario = u.id_usuario ORDER BY a.id_admin ASC";
 
         Conexao conexao = new Conexao();
         List<Admin> lista = new LinkedList<>();
@@ -39,8 +39,7 @@ public class AdminDAO {
                         rset.getString("nome"),
                         rset.getString("sobrenome"),
                         rset.getString("email"),
-                        rset.getString("senha"),
-                        rset.getString("tipo")
+                        rset.getString("senha")
                 );
 
                 Admin admin = new Admin(
@@ -58,7 +57,7 @@ public class AdminDAO {
     }
 
     public Admin readById(int id) throws SQLException {
-        String sql = "SELECT a.id_admin, a.id_usuario, u.id_usuario, u.nome, u.sobrenome, u.email, u.senha, u.tipo FROM admin a INNER JOIN usuario u ON a.id_usuario = u.id_usuario WHERE a.id_admin = ?";
+        String sql = "SELECT a.id_admin, a.id_usuario, u.id_usuario, u.nome, u.sobrenome, u.email, u.senha FROM admin a INNER JOIN usuario u ON a.id_usuario = u.id_usuario WHERE a.id_admin = ?";
 
         Conexao conexao = new Conexao();
         Admin admin = null;
@@ -77,8 +76,7 @@ public class AdminDAO {
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
-                            rset.getString("senha"),
-                            rset.getString("tipo")
+                            rset.getString("senha")
                     );
 
                     admin = new Admin(
@@ -95,7 +93,7 @@ public class AdminDAO {
     }
 
     public Admin readByUsuarioId(int usuarioId) throws SQLException {
-        String sql = "SELECT a.id_admin, a.id_usuario, u.id_usuario, u.nome, u.sobrenome, u.email, u.senha, u.tipo FROM admin a INNER JOIN usuario u ON a.id_usuario = u.id_usuario WHERE a.id_usuario = ?";
+        String sql = "SELECT a.id_admin, a.id_usuario, u.id_usuario, u.nome, u.sobrenome, u.email, u.senha FROM admin a INNER JOIN usuario u ON a.id_usuario = u.id_usuario WHERE a.id_usuario = ?";
 
         Conexao conexao = new Conexao();
         Admin admin = null;
@@ -114,8 +112,7 @@ public class AdminDAO {
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
-                            rset.getString("senha"),
-                            rset.getString("tipo")
+                            rset.getString("senha")
                     );
 
                     admin = new Admin(
