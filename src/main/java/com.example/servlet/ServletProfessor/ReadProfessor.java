@@ -2,13 +2,8 @@ package com.example.servlet.ServletProfessor;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.ArrayList;
-
 import com.example.models.Professor;
-import com.example.models.Usuario;
 import com.example.dao.ProfessorDAO;
-import com.example.dao.UsuarioDAO;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -23,8 +18,6 @@ public class ReadProfessor extends HttpServlet {
             throws ServletException, IOException {
 
         ProfessorDAO professorDAO = new ProfessorDAO();
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-
         String acao = request.getParameter("acao");
         String idStr = request.getParameter("id");
 
@@ -32,34 +25,27 @@ public class ReadProfessor extends HttpServlet {
             List<Professor> lista = professorDAO.read();
             request.setAttribute("listaProfessores", lista);
 
-            if ("prepararUpdate".equals(acao) && idStr != null) {
-                int id = Integer.parseInt(idStr);
-                Professor p = professorDAO.readById(id);
-                if (p != null) {
-                    Usuario u = usuarioDAO.readById(p.getFkUsuarioId());
-                    p.setUsuario(u);
-
-                    request.setAttribute("professorModal", p);
-                    request.setAttribute("modalAtivo", "update");
-                }
-            }
-            else if ("prepararDelete".equals(acao) && idStr != null) {
-                int id = Integer.parseInt(idStr);
-                Professor p = professorDAO.readById(id);
-                if(p != null) {
-                    Usuario u = usuarioDAO.readById(p.getFkUsuarioId());
-                    p.setUsuario(u);
-                    request.setAttribute("professorModal", p);
-                    request.setAttribute("modalAtivo", "delete");
-                }
-            }
-            else if ("prepararCreate".equals(acao)) {
+            if ("prepararCreate".equals(acao)) {
                 request.setAttribute("modalAtivo", "create");
+            }
+            else if (idStr != null) {
+                int id = Integer.parseInt(idStr);
+                Professor professorSelecionado = professorDAO.readById(id);
+
+                if (professorSelecionado != null) {
+                    request.setAttribute("professorModal", professorSelecionado);
+
+                    if ("prepararUpdate".equals(acao)) {
+                        request.setAttribute("modalAtivo", "update");
+                    } else if ("prepararDelete".equals(acao)) {
+                        request.setAttribute("modalAtivo", "delete");
+                    }
+                }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("erro", "Erro ao processar dados: " + e.getMessage());
+            request.setAttribute("erro", "Erro inesperado ao carregar dados dos professores.");
         }
 
         request.getRequestDispatcher("/WEB-INF/pages/professores.jsp").forward(request, response);

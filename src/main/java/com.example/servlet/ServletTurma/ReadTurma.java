@@ -1,15 +1,15 @@
 package com.example.servlet.ServletTurma;
 
-import com.example.dao.DisciplinaDAO;
-import com.example.dao.TurmaDAO;
+import java.io.IOException;
+import java.util.List;
 import com.example.models.Turma;
+import com.example.dao.TurmaDAO;
+import com.example.dao.DisciplinaDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
 
 @WebServlet("/turma-read")
 public class ReadTurma extends HttpServlet {
@@ -25,23 +25,34 @@ public class ReadTurma extends HttpServlet {
         String idStr = request.getParameter("id");
 
         try {
-            request.setAttribute("listaTurmas", turmaDAO.read());
-            request.setAttribute("listaDisciplinas", disciplinaDAO.read());
+            List<Turma> lista = turmaDAO.read();
+            request.setAttribute("listaTurmas", lista);
+
+            if ("prepararCreate".equals(acao) || "prepararUpdate".equals(acao)) {
+                request.setAttribute("listaDisciplinas", disciplinaDAO.read());
+            }
 
             if ("prepararCreate".equals(acao)) {
                 request.setAttribute("modalAtivo", "create");
             }
-            else if (("prepararUpdate".equals(acao) || "prepararDelete".equals(acao)) && idStr != null) {
+            else if (idStr != null) {
                 int id = Integer.parseInt(idStr);
-                Turma t = turmaDAO.readById(id);
-                if (t != null) {
-                    t.setDisciplina(disciplinaDAO.readById(t.getFkDisciplinaId()));
-                    request.setAttribute("turmaModal", t);
-                    request.setAttribute("modalAtivo", "prepararUpdate".equals(acao) ? "update" : "delete");
+                Turma turma = turmaDAO.readById(id);
+
+                if (turma != null) {
+                    request.setAttribute("turmaModal", turma);
+
+                    if ("prepararUpdate".equals(acao)) {
+                        request.setAttribute("modalAtivo", "update");
+                    } else if ("prepararDelete".equals(acao)) {
+                        request.setAttribute("modalAtivo", "delete");
+                    }
                 }
             }
+
         } catch (Exception e) {
-            request.setAttribute("erro", e.getMessage());
+            e.printStackTrace();
+            request.setAttribute("erro", "Erro inesperado ao carregar dados.");
         }
 
         request.getRequestDispatcher("/WEB-INF/pages/turmas.jsp").forward(request, response);

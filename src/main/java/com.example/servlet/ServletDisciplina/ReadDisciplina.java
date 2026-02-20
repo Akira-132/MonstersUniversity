@@ -2,12 +2,10 @@ package com.example.servlet.ServletDisciplina;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.ArrayList;
-
 import com.example.models.Disciplina;
+import com.example.models.Professor;
 import com.example.dao.DisciplinaDAO;
 import com.example.dao.ProfessorDAO;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -31,31 +29,32 @@ public class ReadDisciplina extends HttpServlet {
             List<Disciplina> lista = disciplinaDAO.read();
             request.setAttribute("listaDisciplinas", lista);
 
-            request.setAttribute("listaProfessores", professorDAO.read());
+            if ("prepararCreate".equals(acao) || "prepararUpdate".equals(acao)) {
+                List<Professor> listaProfs = professorDAO.read();
+                request.setAttribute("listaProfessores", listaProfs);
+            }
 
-            if ("prepararUpdate".equals(acao) && idStr != null) {
-                int id = Integer.parseInt(idStr);
-                Disciplina d = disciplinaDAO.readById(id);
-                if (d != null) {
-                    request.setAttribute("disciplinaModal", d);
-                    request.setAttribute("modalAtivo", "update");
-                }
-            }
-            else if ("prepararDelete".equals(acao) && idStr != null) {
-                int id = Integer.parseInt(idStr);
-                Disciplina d = disciplinaDAO.readById(id);
-                if (d != null) {
-                    request.setAttribute("disciplinaModal", d);
-                    request.setAttribute("modalAtivo", "delete");
-                }
-            }
-            else if ("prepararCreate".equals(acao)) {
+            if ("prepararCreate".equals(acao)) {
                 request.setAttribute("modalAtivo", "create");
+            }
+            else if (idStr != null) {
+                int id = Integer.parseInt(idStr);
+                Disciplina disciplina = disciplinaDAO.readById(id);
+
+                if (disciplina != null) {
+                    request.setAttribute("disciplinaModal", disciplina);
+
+                    if ("prepararUpdate".equals(acao)) {
+                        request.setAttribute("modalAtivo", "update");
+                    } else if ("prepararDelete".equals(acao)) {
+                        request.setAttribute("modalAtivo", "delete");
+                    }
+                }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("erro", "Erro ao processar dados: " + e.getMessage());
+            request.setAttribute("erro", "Erro inesperado ao carregar dados.");
         }
 
         request.getRequestDispatcher("/WEB-INF/pages/disciplinas.jsp").forward(request, response);

@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet("/nota-create")
 public class CreateNota extends HttpServlet {
@@ -25,49 +24,55 @@ public class CreateNota extends HttpServlet {
         String tipo = request.getParameter("tipo");
         String semestreStr = request.getParameter("semestre");
         String anoStr = request.getParameter("ano");
-        String notaValStr = request.getParameter("nota");
-        String fkAlunoIdStr = request.getParameter("fkAlunoId");
-        String fkDisciplinaIdStr = request.getParameter("fkDisciplinaId");
+        String notaValorStr = request.getParameter("nota");
+        String idAlunoStr = request.getParameter("fkAlunoId");
+        String idDisciplinaStr = request.getParameter("fkDisciplinaId");
 
         NotaDAO notaDAO = new NotaDAO();
-        boolean success = false;
+        AlunoDAO alunoDAO = new AlunoDAO();
+        DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
         String erro = null;
 
         try {
             int semestre = Integer.parseInt(semestreStr);
             int ano = Integer.parseInt(anoStr);
-            double notaVal = Double.parseDouble(notaValStr);
-            int fkAlunoId = Integer.parseInt(fkAlunoIdStr);
-            int fkDisciplinaId = Integer.parseInt(fkDisciplinaIdStr);
+            double valor = Double.parseDouble(notaValorStr.replace(",", "."));
+            int fkAlunoId = Integer.parseInt(idAlunoStr);
+            int fkDisciplinaId = Integer.parseInt(idDisciplinaStr);
 
-            Nota novaNota = new Nota(tipo, semestre, ano, notaVal, fkAlunoId, fkDisciplinaId);
-            success = notaDAO.create(novaNota);
+            Nota novaNota = new Nota(tipo, semestre, ano, valor, fkAlunoId, fkDisciplinaId);
 
-            if (!success) erro = "Erro ao registrar nota.";
+            if (notaDAO.create(novaNota)) {
+                response.sendRedirect(request.getContextPath() + "/nota-read");
+                return;
+            } else {
+                erro = "Erro ao lançar nota no banco de dados.";
+            }
 
+        } catch (NumberFormatException e) {
+            erro = "Verifique os valores numéricos digitados.";
+        } catch (IllegalArgumentException e) {
+            erro = "Validação: " + e.getMessage();
         } catch (Exception e) {
-            erro = "Erro: " + e.getMessage();
-        }
-
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/nota-read");
-            return;
+            e.printStackTrace();
+            erro = "Erro inesperado ao lançar nota.";
         }
 
         request.setAttribute("erro", erro);
+        request.setAttribute("modalAtivo", "create");
         request.setAttribute("tipo_previo", tipo);
         request.setAttribute("semestre_previo", semestreStr);
         request.setAttribute("ano_previo", anoStr);
-        request.setAttribute("nota_previo", notaValStr);
-        request.setAttribute("fkAlunoId_previo", fkAlunoIdStr);
-        request.setAttribute("fkDisciplinaId_previo", fkDisciplinaIdStr);
-        request.setAttribute("modalAtivo", "create");
+        request.setAttribute("nota_previo", notaValorStr);
 
         try {
             request.setAttribute("listaNotas", notaDAO.read());
-            request.setAttribute("listaAlunos", new AlunoDAO().read());
-            request.setAttribute("listaDisciplinas", new DisciplinaDAO().read());
-        } catch (Exception e) {}
+            request.setAttribute("listaAlunos", alunoDAO.read());
+            request.setAttribute("listaDisciplinas", disciplinaDAO.read());
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("erro", "Erro crítico: Não foi possível carregar as listas.");
+        }
 
         request.getRequestDispatcher("/WEB-INF/pages/notas.jsp").forward(request, response);
     }

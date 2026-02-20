@@ -19,45 +19,60 @@ public class UpdateTurma extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-        TurmaDAO turmaDAO = new TurmaDAO();
 
         String idStr = request.getParameter("id");
         String periodo = request.getParameter("periodo");
         String sala = request.getParameter("sala");
-        String fkDisciplinaIdStr = request.getParameter("fkDisciplinaId");
+        String idDisciplinaStr = request.getParameter("fkDisciplinaId");
 
-        boolean success = false;
+        TurmaDAO turmaDAO = new TurmaDAO();
+        DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
         String erro = null;
-        int id = 0;
 
         try {
-            id = Integer.parseInt(idStr);
-            Turma turmaAtual = turmaDAO.readById(id);
+            int id = Integer.parseInt(idStr);
+            int fkDisciplinaId = Integer.parseInt(idDisciplinaStr);
 
-            if (turmaAtual != null) {
-                turmaAtual.setPeriodo(periodo);
-                turmaAtual.setSala(sala);
-                turmaAtual.setFkDisciplinaId(Integer.parseInt(fkDisciplinaIdStr));
-                success = turmaDAO.update(turmaAtual) > 0;
+            Turma turma = turmaDAO.readById(id);
+            if (turma == null) throw new Exception("Turma não encontrada.");
+
+            turma.setPeriodo(periodo);
+            turma.setSala(sala);
+            turma.setFkDisciplinaId(fkDisciplinaId);
+
+            if (turmaDAO.update(turma) > 0) {
+                response.sendRedirect(request.getContextPath() + "/turma-read");
+                return;
             } else {
-                erro = "Turma não encontrada.";
+                erro = "Erro ao atualizar turma no banco.";
             }
-        } catch (Exception e) {
-            erro = e.getMessage();
-        }
 
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/turma-read");
-            return;
+        } catch (NumberFormatException e) {
+            erro = "Dados inválidos.";
+        } catch (IllegalArgumentException e) {
+            erro = "Validação: " + e.getMessage();
+        } catch (Exception e) {
+            e.printStackTrace();
+            erro = "Erro: " + e.getMessage();
         }
 
         request.setAttribute("erro", erro);
         request.setAttribute("modalAtivo", "update");
+
         try {
             request.setAttribute("listaTurmas", turmaDAO.read());
-            request.setAttribute("listaDisciplinas", new DisciplinaDAO().read());
-            if (id > 0) request.setAttribute("turmaModal", turmaDAO.readById(id));
-        } catch (Exception e) {}
+            request.setAttribute("listaDisciplinas", disciplinaDAO.read());
+
+            if (idStr != null) {
+                request.setAttribute("turmaModal", turmaDAO.readById(Integer.parseInt(idStr)));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (request.getAttribute("erro") == null) {
+                request.setAttribute("erro", "Erro ao recarregar as listas.");
+            }
+        }
 
         request.getRequestDispatcher("/WEB-INF/pages/turmas.jsp").forward(request, response);
     }

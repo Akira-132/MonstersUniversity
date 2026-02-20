@@ -12,8 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 @WebServlet("/professor-create")
 public class CreateProfessor extends HttpServlet {
@@ -31,62 +29,57 @@ public class CreateProfessor extends HttpServlet {
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         ProfessorDAO professorDAO = new ProfessorDAO();
-        boolean success = false;
         String erro = null;
 
         try {
             Usuario novoUsuario = new Usuario(nome, sobrenome, email, senha);
 
-            boolean usuarioCriado = usuarioDAO.create(novoUsuario);
-
-            if (usuarioCriado) {
-                Usuario usuarioBanco = usuarioDAO.readByEmail(email);
-
-                if (usuarioBanco != null) {
-                    Professor novoProfessor = new Professor(usuarioBanco.getId());
-                    success = professorDAO.create(novoProfessor);
-                } else {
-                    erro = "Erro: Usuário criado mas ID não encontrado.";
-                }
-            } else {
-                erro = "Erro ao criar o usuário base.";
+            if (!usuarioDAO.create(novoUsuario)) {
+                throw new SQLException("Falha ao criar o usuário base.");
             }
 
-        } catch (IllegalArgumentException e) {
-            erro = "Erro de validação: " + e.getMessage();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            if (e.getMessage().contains("Duplicate entry") || e.getMessage().contains("UNIQUE")) {
-                erro = "Erro: E-mail já cadastrado.";
-            } else {
-                erro = "Erro de banco: " + e.getMessage();
+            Usuario usuarioBanco = usuarioDAO.readByEmail(email);
+            if (usuarioBanco == null) {
+                throw new SQLException("Erro crítico: Usuário criado, mas ID não encontrado.");
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            erro = "Erro inesperado: " + e.getMessage();
-        }
+            Professor novoProfessor = new Professor(usuarioBanco.getId());
 
-        if (success) {
+            if (!professorDAO.create(novoProfessor)) {
+                usuarioDAO.deleteById(usuarioBanco.getId());
+                throw new SQLException("Erro ao criar perfil de professor.");
+            }
+
             response.sendRedirect(request.getContextPath() + "/professor-read");
             return;
+
+        } catch (IllegalArgumentException e) {
+            erro = "Validação: " + e.getMessage();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            if (e.getMessage().contains("Duplicate") || e.getMessage().contains("UNIQUE")) {
+                erro = "Este e-mail já está em uso.";
+            } else {
+                erro = "Erro de banco de dados ao salvar professor.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            erro = "Erro inesperado ao processar a solicitação.";
         }
 
         request.setAttribute("erro", erro);
+        request.setAttribute("modalAtivo", "create");
         request.setAttribute("nome_previo", nome);
         request.setAttribute("sobrenome_previo", sobrenome);
         request.setAttribute("email_previo", email);
 
-        List<Professor> listaProfessores = new ArrayList<>();
         try {
-            listaProfessores = professorDAO.read();
-        } catch (SQLException e) {
+            request.setAttribute("listaProfessores", professorDAO.read());
+        } catch (Exception e) {
             e.printStackTrace();
+            request.setAttribute("erro", "Erro crítico: Não foi possível carregar a lista de professores.");
         }
-        request.setAttribute("listaProfessores", listaProfessores);
 
-        request.setAttribute("modalAtivo", "create");
         request.getRequestDispatcher("/WEB-INF/pages/professores.jsp").forward(request, response);
     }
 }

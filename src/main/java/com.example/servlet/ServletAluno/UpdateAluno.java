@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.List;
+import java.sql.SQLException;
 
 @WebServlet("/aluno-update")
 public class UpdateAluno extends HttpServlet {
@@ -24,6 +24,7 @@ public class UpdateAluno extends HttpServlet {
 
         String idAlunoStr = request.getParameter("id");
         String idUsuarioStr = request.getParameter("idUsuario");
+
         String nome = request.getParameter("nome");
         String sobrenome = request.getParameter("sobrenome");
         String email = request.getParameter("email");
@@ -39,35 +40,66 @@ public class UpdateAluno extends HttpServlet {
             int idAluno = Integer.parseInt(idAlunoStr);
 
             Usuario usuario = usuarioDAO.readById(idUsuario);
+            if (usuario == null) throw new SQLException("Usuário não encontrado.");
+
             usuario.setNome(nome);
             usuario.setSobrenome(sobrenome);
             usuario.setEmail(email);
+
             if (senha != null && !senha.trim().isEmpty()) {
                 usuario.setSenha(senha);
             }
 
             Aluno aluno = alunoDAO.readById(idAluno);
+            if (aluno == null) throw new SQLException("Aluno não encontrado.");
+
             aluno.setCpf(cpf);
 
-            usuarioDAO.update(usuario);
-            alunoDAO.update(aluno);
+            if (usuarioDAO.update(usuario) > 0 && alunoDAO.update(aluno) > 0) {
+                response.sendRedirect(request.getContextPath() + "/aluno-read");
+                return;
+            } else {
+                erro = "Erro ao atualizar dados no banco.";
+            }
 
-            response.sendRedirect(request.getContextPath() + "/aluno-read");
-            return;
-
+        } catch (IllegalArgumentException e) {
+            erro = "Validação: " + e.getMessage();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            if (e.getMessage().contains("Duplicate") || e.getMessage().contains("UNIQUE")) {
+                if (e.getMessage().contains("cpf")) {
+                    erro = "Este CPF já pertence a outro aluno.";
+                } else {
+                    erro = "Este e-mail já está em uso.";
+                }
+            } else {
+                erro = "Erro de banco de dados ao atualizar.";
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            erro = "Erro ao atualizar: " + e.getMessage();
+            erro = "Erro inesperado ao atualizar.";
         }
 
         request.setAttribute("erro", erro);
         request.setAttribute("modalAtivo", "update");
+        request.setAttribute("nome_previo", nome);
+        request.setAttribute("sobrenome_previo", sobrenome);
+        request.setAttribute("email_previo", email);
+        request.setAttribute("cpf_previo", cpf);
 
         try {
-            List<Aluno> lista = alunoDAO.read();
-            for (Aluno a : lista) a.setUsuario(usuarioDAO.readById(a.getFkUsuarioId()));
-            request.setAttribute("listaAlunos", lista);
-        } catch (Exception e) {}
+            request.setAttribute("listaAlunos", alunoDAO.read());
+
+            if (idAlunoStr != null) {
+                int id = Integer.parseInt(idAlunoStr);
+                request.setAttribute("alunoModal", alunoDAO.readById(id));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (request.getAttribute("erro") == null) {
+                request.setAttribute("erro", "Erro ao recarregar a lista de alunos.");
+            }
+        }
 
         request.getRequestDispatcher("/WEB-INF/pages/alunos.jsp").forward(request, response);
     }
