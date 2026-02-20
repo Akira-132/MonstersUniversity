@@ -27,14 +27,13 @@ public class CreateAdmin extends HttpServlet {
         String sobrenome = request.getParameter("sobrenome");
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
-        String tipo = "admin";
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         AdminDAO adminDAO = new AdminDAO();
         String erro = null;
 
         try {
-            Usuario novoUsuario = new Usuario(nome, sobrenome, email, senha, tipo);
+            Usuario novoUsuario = new Usuario(nome, sobrenome, email, senha);
 
             if (!usuarioDAO.create(novoUsuario)) {
                 throw new SQLException("Falha ao criar o usuário base.");
