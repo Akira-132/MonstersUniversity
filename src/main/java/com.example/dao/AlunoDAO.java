@@ -137,6 +137,78 @@ public class AlunoDAO {
         return aluno;
     }
 
+    public Aluno readByUsuarioId(int usuarioId) throws SQLException {
+        String sql = "SELECT a.id_aluno, a.cpf, a.matricula, a.id_usuario, u.nome, u.sobrenome, u.email, u.senha FROM aluno a INNER JOIN usuario u ON a.id_usuario = u.id_usuario WHERE a.id_usuario = ?";
+
+        Conexao conexao = new Conexao();
+        Aluno aluno = null;
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, usuarioId);
+
+            try (ResultSet rset = pstmt.executeQuery()) {
+                if (rset.next()) {
+                    Usuario usuario = new Usuario(
+                            rset.getInt("id_usuario"),
+                            rset.getString("nome"),
+                            rset.getString("sobrenome"),
+                            rset.getString("email"),
+                            rset.getString("senha")
+                    );
+
+                    aluno = new Aluno(
+                            rset.getInt("id_aluno"),
+                            rset.getString("cpf"),
+                            rset.getString("matricula"),
+                            rset.getInt("id_usuario")
+                    );
+
+                    aluno.setUsuario(usuario);
+                }
+            }
+        }
+
+        return aluno;
+    }
+
+    public Aluno readByCpf(String cpf) throws SQLException {
+        String sql = "SELECT a.id_aluno, a.cpf, a.matricula, a.id_usuario, u.nome, u.sobrenome, u.email, u.senha FROM aluno a INNER JOIN usuario u ON a.id_usuario = u.id_usuario WHERE a.cpf = ?";
+
+        Conexao conexao = new Conexao();
+        Aluno aluno = null;
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, cpf);
+
+            try (ResultSet rset = pstmt.executeQuery()) {
+                if (rset.next()) {
+                    Usuario usuario = new Usuario(
+                            rset.getInt("id_usuario"),
+                            rset.getString("nome"),
+                            rset.getString("sobrenome"),
+                            rset.getString("email"),
+                            rset.getString("senha")
+                    );
+
+                    aluno = new Aluno(
+                            rset.getInt("id_aluno"),
+                            rset.getString("cpf"),
+                            rset.getString("matricula"),
+                            rset.getInt("id_usuario")
+                    );
+
+                    aluno.setUsuario(usuario);
+                }
+            }
+        }
+
+        return aluno;
+    }
+
     public int update(Aluno aluno) throws SQLException {
         String sql = "UPDATE aluno SET cpf = ?, matricula = ?, id_usuario = ? WHERE id_aluno = ?";
         Conexao conexao = new Conexao();
