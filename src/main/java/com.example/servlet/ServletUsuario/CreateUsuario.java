@@ -33,11 +33,9 @@ public class CreateUsuario extends HttpServlet {
 
         try {
             Usuario novoUsuario = new Usuario(nome, sobrenome, email, senha);
-            int idGerado = dao.create(novoUsuario);
+            success = dao.create(novoUsuario);
 
-            if (idGerado > 0) {
-                success = true;
-            } else {
+            if (!success) {
                 erro = "Erro ao cadastrar usuário.";
             }
 
