@@ -41,6 +41,7 @@ public class RedefinirSenha extends HttpServlet {
                 if (usuarioDAO.update(usuario) > 0) {
                     session.removeAttribute("codigoRecuperacao");
                     session.removeAttribute("emailRecuperacao");
+                    session.removeAttribute("codigoVerificado");
 
                     response.sendRedirect(request.getContextPath() + "/login.jsp");
                     return;

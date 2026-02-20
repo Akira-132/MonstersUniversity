@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
@@ -30,7 +31,9 @@ public class IdentificadorCpf extends HttpServlet {
             Aluno aluno = alunoDAO.readByCpf(cpf);
 
             if (aluno != null) {
-                request.setAttribute("alunoAtivacao", aluno);
+                HttpSession session = request.getSession();
+                session.setAttribute("alunoAtivacao", aluno);
+
                 request.getRequestDispatcher("matricula.jsp").forward(request, response);
                 return;
             } else {

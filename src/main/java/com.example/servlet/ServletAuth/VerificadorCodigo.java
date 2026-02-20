@@ -40,6 +40,7 @@ public class VerificadorCodigo extends HttpServlet {
         }
 
         if (codigoDigitado.equals(codigoCorreto)) {
+            session.setAttribute("codigoVerificado", true);
             response.sendRedirect(request.getContextPath() + "/criar-senha.jsp");
         } else {
             request.setAttribute("erro", "Código inválido. Tente novamente.");

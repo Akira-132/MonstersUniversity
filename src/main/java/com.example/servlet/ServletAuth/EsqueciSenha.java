@@ -2,7 +2,6 @@ package com.example.servlet.ServletAuth;
 
 import com.example.dao.UsuarioDAO;
 import com.example.models.Usuario;
-import com.example.servlet.ServletAuth.EmailService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
