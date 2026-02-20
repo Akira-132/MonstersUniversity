@@ -32,10 +32,10 @@ public class NotaDAO {
         String sql =
                 "SELECT n.id_nota, n.tipo, n.semestre, n.ano, n.nota, n.id_aluno, n.id_disciplina, " +
                         "a.id_aluno, a.cpf, a.matricula, a.id_usuario AS aluno_usuario_id, " +
-                        "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha, ua.tipo AS aluno_tipo, " +
+                        "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha AS aluno_tipo, " +
                         "d.id_disciplina, d.nome AS disciplina_nome, d.id_professor, " +
                         "p.id_professor, p.id_usuario AS professor_usuario_id, " +
-                        "up.id_usuario AS usuario_professor_id, up.nome AS professor_nome, up.sobrenome AS professor_sobrenome, up.email AS professor_email, up.senha AS professor_senha, up.tipo AS professor_tipo " +
+                        "up.id_usuario AS usuario_professor_id, up.nome AS professor_nome, up.sobrenome AS professor_sobrenome, up.email AS professor_email, up.senha AS professor_senha AS professor_tipo " +
                         "FROM nota n " +
                         "INNER JOIN aluno a ON n.id_aluno = a.id_aluno " +
                         "INNER JOIN usuario ua ON a.id_usuario = ua.id_usuario " +
@@ -64,10 +64,10 @@ public class NotaDAO {
         String sql =
                 "SELECT n.id_nota, n.tipo, n.semestre, n.ano, n.nota, n.id_aluno, n.id_disciplina, " +
                         "a.id_aluno, a.cpf, a.matricula, a.id_usuario AS aluno_usuario_id, " +
-                        "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha, ua.tipo AS aluno_tipo, " +
+                        "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha AS aluno_tipo, " +
                         "d.id_disciplina, d.nome AS disciplina_nome, d.id_professor, " +
                         "p.id_professor, p.id_usuario AS professor_usuario_id, " +
-                        "up.id_usuario AS usuario_professor_id, up.nome AS professor_nome, up.sobrenome AS professor_sobrenome, up.email AS professor_email, up.senha AS professor_senha, up.tipo AS professor_tipo " +
+                        "up.id_usuario AS usuario_professor_id, up.nome AS professor_nome, up.sobrenome AS professor_sobrenome, up.email AS professor_email, up.senha AS professor_senha AS professor_tipo " +
                         "FROM nota n " +
                         "INNER JOIN aluno a ON n.id_aluno = a.id_aluno " +
                         "INNER JOIN usuario ua ON a.id_usuario = ua.id_usuario " +
@@ -226,8 +226,7 @@ public class NotaDAO {
                 rset.getString("aluno_nome"),
                 rset.getString("aluno_sobrenome"),
                 rset.getString("aluno_email"),
-                rset.getString("aluno_senha"),
-                rset.getString("aluno_tipo")
+                rset.getString("aluno_senha")
         );
 
         Aluno aluno = new Aluno(
@@ -243,8 +242,7 @@ public class NotaDAO {
                 rset.getString("professor_nome"),
                 rset.getString("professor_sobrenome"),
                 rset.getString("professor_email"),
-                rset.getString("professor_senha"),
-                rset.getString("professor_tipo")
+                rset.getString("professor_senha")
         );
 
         Professor professor = new Professor(

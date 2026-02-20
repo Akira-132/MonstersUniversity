@@ -9,23 +9,20 @@ public class Usuario {
     private String email;
     private String sobrenome;
     private String senha;
-    private String tipo;
 
-    public Usuario(int id, String nome, String sobrenome, String email, String senha, String tipo) {
+    public Usuario(int id, String nome, String sobrenome, String email, String senha) {
         this.setId(id);
         this.setNome(nome);
         this.setSobrenome(sobrenome);
         this.setEmail(email);
         this.setSenha(senha);
-        this.setTipo(tipo);
     }
 
-    public Usuario(String nome, String sobrenome, String email, String senha, String tipo) {
+    public Usuario(String nome, String sobrenome, String email, String senha) {
         this.setNome(nome);
         this.setSobrenome(sobrenome);
         this.setEmail(email);
         this.setSenha(senha);
-        this.setTipo(tipo);
     }
 
     public int getId() {
@@ -87,23 +84,6 @@ public class Usuario {
         }
         validateSenha(senha);
         this.senha = senha;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-    public void setTipo(String tipo) {
-        if (tipo == null) {
-            throw new NullPointerException("O tipo de usuário não pode ser nulo.");
-        }
-        if (tipo.trim().isEmpty()) {
-            throw new IllegalArgumentException("O tipo de usuário não pode estar em branco.");
-        }
-        String tipoLower = tipo.toLowerCase();
-        if (!tipoLower.equals("aluno") && !tipoLower.equals("admin") && !tipoLower.equals("professor")) {
-            throw new IllegalArgumentException("Tipo de usuário não aceitado: " + tipo);
-        }
-        this.tipo = tipo;
     }
 
     private static final Pattern PATTERN_EMAIL = Pattern.compile(

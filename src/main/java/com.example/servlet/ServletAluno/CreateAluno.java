@@ -28,14 +28,13 @@ public class CreateAluno extends HttpServlet {
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
         String cpf = request.getParameter("cpf");
-        String tipo = "aluno";
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         AlunoDAO alunoDAO = new AlunoDAO();
         String erro = null;
 
         try {
-            Usuario novoUsuario = new Usuario(nome, sobrenome, email, senha, tipo);
+            Usuario novoUsuario = new Usuario(nome, sobrenome, email, senha);
 
             if (!usuarioDAO.create(novoUsuario)) {
                 throw new SQLException("Falha ao criar o usuário base.");

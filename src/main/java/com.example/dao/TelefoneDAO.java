@@ -26,7 +26,7 @@ public class TelefoneDAO {
 
     public List<Telefone> read() throws SQLException {
         String sql = "SELECT t.id_telefone, t.telefone, t.id_usuario, " +
-                "u.id_usuario, u.nome, u.sobrenome, u.email, u.senha, u.tipo " +
+                "u.id_usuario, u.nome, u.sobrenome, u.email, u.senha" +
                 "FROM telefone t " +
                 "INNER JOIN usuario u ON t.id_usuario = u.id_usuario " +
                 "ORDER BY t.id_telefone ASC";
@@ -45,8 +45,7 @@ public class TelefoneDAO {
                         rset.getString("nome"),
                         rset.getString("sobrenome"),
                         rset.getString("email"),
-                        rset.getString("senha"),
-                        rset.getString("tipo")
+                        rset.getString("senha")
                 );
 
                 Telefone telefone = new Telefone(
@@ -66,7 +65,7 @@ public class TelefoneDAO {
 
     public Telefone readById(int id) throws SQLException {
         String sql = "SELECT t.id_telefone, t.telefone, t.id_usuario, " +
-                "u.id_usuario, u.nome, u.sobrenome, u.email, u.senha, u.tipo " +
+                "u.id_usuario, u.nome, u.sobrenome, u.email, u.senha" +
                 "FROM telefone t " +
                 "INNER JOIN usuario u ON t.id_usuario = u.id_usuario " +
                 "WHERE t.id_telefone = ?";
@@ -88,8 +87,7 @@ public class TelefoneDAO {
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
-                            rset.getString("senha"),
-                            rset.getString("tipo")
+                            rset.getString("senha")
                     );
 
                     telefone = new Telefone(
@@ -108,7 +106,7 @@ public class TelefoneDAO {
 
     public Telefone readByTelefone(String numero) throws SQLException {
         String sql = "SELECT t.id_telefone, t.telefone, t.id_usuario, " +
-                "u.id_usuario, u.nome, u.sobrenome, u.email, u.senha, u.tipo " +
+                "u.id_usuario, u.nome, u.sobrenome, u.email, u.senha" +
                 "FROM telefone t " +
                 "INNER JOIN usuario u ON t.id_usuario = u.id_usuario " +
                 "WHERE t.telefone = ?";
@@ -130,8 +128,7 @@ public class TelefoneDAO {
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
-                            rset.getString("senha"),
-                            rset.getString("tipo")
+                            rset.getString("senha")
                     );
 
                     telefone = new Telefone(
