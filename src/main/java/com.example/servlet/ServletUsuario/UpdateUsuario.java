@@ -34,7 +34,6 @@ public class UpdateUsuario extends HttpServlet {
         String sobrenome = request.getParameter("sobrenome");
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
-        String tipo = request.getParameter("tipo");
 
         boolean success = false;
         String erro = null;
@@ -48,7 +47,6 @@ public class UpdateUsuario extends HttpServlet {
                 usuarioAtual.setNome(nome);
                 usuarioAtual.setSobrenome(sobrenome);
                 usuarioAtual.setEmail(email);
-                usuarioAtual.setTipo(tipo);
 
                 if (senha != null && !senha.trim().isEmpty()) {
                     usuarioAtual.setSenha(senha);
@@ -87,7 +85,6 @@ public class UpdateUsuario extends HttpServlet {
         request.setAttribute("nome_previo", nome);
         request.setAttribute("sobrenome_previo", sobrenome);
         request.setAttribute("email_previo", email);
-        request.setAttribute("tipo_previo", tipo);
         request.setAttribute("modalAtivo", "update");
 
         List<Usuario> lista = new ArrayList<>();
