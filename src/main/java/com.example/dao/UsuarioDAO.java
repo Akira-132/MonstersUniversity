@@ -137,7 +137,7 @@ public class UsuarioDAO {
             pstmt.setString(2, usuario.getSobrenome());
             pstmt.setString(3, usuario.getEmail());
             pstmt.setString(4, usuario.getSenha());
-            pstmt.setInt(6, usuario.getId());
+            pstmt.setInt(5, usuario.getId());
 
             return pstmt.executeUpdate();
         }
