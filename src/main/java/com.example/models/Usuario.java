@@ -9,27 +9,25 @@ public class Usuario {
     private String email;
     private String sobrenome;
     private String senha;
-    private String telefone;
 
-    public Usuario(int id, String nome, String sobrenome, String email, String senha, String telefone) {
+    public Usuario(int id, String nome, String sobrenome, String email, String senha) {
         this.setId(id);
         this.setNome(nome);
+        this.setSobrenome(sobrenome);
         this.setEmail(email);
         this.setSenha(senha);
-        this.setTelefone(telefone);
     }
 
-    public Usuario(String nome, String sobrenome, String email, String senha, String telefone) {
+    public Usuario(String nome, String sobrenome, String email, String senha) {
         this.setNome(nome);
+        this.setSobrenome(sobrenome);
         this.setEmail(email);
         this.setSenha(senha);
-        this.setTelefone(telefone);
     }
 
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("O ID não pode ser negativo");
@@ -40,7 +38,6 @@ public class Usuario {
     public String getNome() {
         return nome;
     }
-
     public void setNome(String nome) {
         if (nome == null) {
             throw new NullPointerException("O nome não pode ser nulo.");
@@ -54,7 +51,6 @@ public class Usuario {
     public String getSobrenome() {
         return sobrenome;
     }
-
     public void setSobrenome(String sobrenome) {
         if (sobrenome == null) {
             throw new NullPointerException("O sobrenome não pode ser nulo.");
@@ -68,7 +64,6 @@ public class Usuario {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         if (email == null) {
             throw new NullPointerException("O e-mail não pode ser nulo.");
@@ -80,7 +75,6 @@ public class Usuario {
     public String getSenha() {
         return senha;
     }
-
     public void setSenha(String senha) {
         if (senha == null) {
             throw new NullPointerException("A senha não pode ser nula.");
@@ -91,20 +85,6 @@ public class Usuario {
         validateSenha(senha);
         this.senha = senha;
     }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        if (telefone == null) {
-            throw new NullPointerException("O telefone não pode ser nulo.");
-        }
-        String telefoneLimpo = telefone.replaceAll("[^\\d]", "");
-        validateTelefone(telefoneLimpo);
-        this.telefone = telefoneLimpo;
-    }
-
 
     private static final Pattern PATTERN_EMAIL = Pattern.compile(
             "^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@" +
@@ -137,13 +117,6 @@ public class Usuario {
         }
         if (!PATTERN_ESPECIAL.matcher(senha).find()) {
             throw new IllegalArgumentException("A senha deve ter no mínimo 1 caractere especial.");
-        }
-    }
-
-    private void validateTelefone(String telefoneLimpo) {
-        int len = telefoneLimpo.length();
-        if (len != 10 && len != 11) {
-            throw new IllegalArgumentException("Telefone inválido. Deve conter 10 ou 11 dígitos (com DDD). Recebido: '" + telefoneLimpo + "'");
         }
     }
 }

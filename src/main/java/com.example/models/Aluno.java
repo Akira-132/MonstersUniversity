@@ -4,18 +4,22 @@ import java.util.UUID;
 
 public class Aluno {
     private int id;
+    private String cpf;
     private String matricula;
-    private int usuarioId;
+    private int fkUsuarioId;
+    private Usuario usuario;
 
-    public Aluno(int usuarioId) {
-        this.setUsuarioId(usuarioId);
-        this.matricula = UUID.randomUUID().toString();
+    public Aluno(String cpf, int fkUsuarioId) {
+        this.setCpf(cpf);
+        this.matricula = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        this.setFkUsuarioId(fkUsuarioId);
     }
 
-    public Aluno(int id, String matricula, int usuarioId) {
+    public Aluno(int id, String cpf, String matricula, int fkUsuarioId) {
         this.setId(id);
-        this.matricula = matricula;
-        this.setUsuarioId(usuarioId);
+        this.setCpf(cpf);
+        this.setMatricula(matricula);
+        this.setFkUsuarioId(fkUsuarioId);
     }
 
     public int getId() {
@@ -28,17 +32,45 @@ public class Aluno {
         this.id = id;
     }
 
+    public String getCpf() {
+        return cpf;
+    }
+    public void setCpf(String cpf) {
+        if (cpf == null) {
+            throw new NullPointerException("O CPF não pode ser nulo.");
+        }
+        String cpfLimpo = cpf.replaceAll("[^\\d]", "");
+        validateCpf(cpfLimpo);
+        this.cpf = cpfLimpo;
+    }
+
     public String getMatricula() {
         return matricula;
     }
-
-    public int getUsuarioId() {
-        return usuarioId;
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
     }
-    public void setUsuarioId(int usuarioId) {
-        if (usuarioId <= 0) {
+
+    public int getFkUsuarioId() {
+        return fkUsuarioId;
+    }
+    public void setFkUsuarioId(int fkUsuarioId) {
+        if (fkUsuarioId <= 0) {
             throw new IllegalArgumentException("O ID de usuário não pode ser negativo");
         }
-        this.usuarioId = usuarioId;
+        this.fkUsuarioId = fkUsuarioId;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    private void validateCpf(String cpfLimpo) {
+        if (cpfLimpo.length() != 11) {
+            throw new IllegalArgumentException("CPF inválido. Deve conter 11 dígitos.");
+        }
     }
 }

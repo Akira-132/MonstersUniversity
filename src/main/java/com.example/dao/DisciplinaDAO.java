@@ -2,6 +2,8 @@ package com.example.dao;
 
 import com.example.controllers.Conexao;
 import com.example.models.Disciplina;
+import com.example.models.Professor;
+import com.example.models.Usuario;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -10,21 +12,38 @@ import java.util.List;
 public class DisciplinaDAO {
 
     public boolean create(Disciplina disciplina) throws SQLException {
-        String sql = "INSERT INTO disciplina (nome, professor_id) VALUES (?, ?)";
+        String sql = "INSERT INTO disciplina (nome, id_professor) VALUES (?, ?)";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, disciplina.getNome());
-            pstmt.setInt(2, disciplina.getProfessorId());
+            pstmt.setInt(2, disciplina.getFkProfessorId());
 
             return pstmt.executeUpdate() > 0;
         }
     }
 
     public List<Disciplina> read() throws SQLException {
-        String sql = "SELECT id, nome, professor_id FROM disciplina ORDER BY id ASC";
+
+        String sql =
+                "SELECT " +
+                        "d.id_disciplina, " +
+                        "d.nome AS disciplina_nome, " +
+                        "d.id_professor AS disciplina_professor_id, " +
+                        "p.id_professor AS professor_id, " +
+                        "p.id_usuario AS professor_usuario_id, " +
+                        "u.id_usuario AS usuario_id, " +
+                        "u.nome AS usuario_nome, " +
+                        "u.sobrenome, " +
+                        "u.email, " +
+                        "u.senha, " +
+                        "FROM disciplina d " +
+                        "INNER JOIN professor p ON d.id_professor = p.id_professor " +
+                        "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
+                        "ORDER BY d.id_disciplina ASC";
+
         Conexao conexao = new Conexao();
         List<Disciplina> lista = new LinkedList<>();
 
@@ -33,19 +52,58 @@ public class DisciplinaDAO {
              ResultSet rset = pstmt.executeQuery()) {
 
             while (rset.next()) {
-                lista.add(new Disciplina(
-                        rset.getInt("id"),
-                        rset.getString("nome"),
-                        rset.getInt("professor_id")
-                ));
+
+                Usuario usuario = new Usuario(
+                        rset.getInt("usuario_id"),
+                        rset.getString("usuario_nome"),
+                        rset.getString("sobrenome"),
+                        rset.getString("email"),
+                        rset.getString("senha")
+                );
+
+                Professor professor = new Professor(
+                        rset.getInt("professor_id"),
+                        rset.getInt("professor_usuario_id")
+                );
+
+                professor.setUsuario(usuario);
+
+                Disciplina disciplina = new Disciplina(
+                        rset.getInt("id_disciplina"),
+                        rset.getString("disciplina_nome"),
+                        rset.getInt("disciplina_professor_id")
+                );
+
+                disciplina.setProfessor(professor);
+
+                lista.add(disciplina);
             }
         }
+
         return lista;
     }
 
     public Disciplina readById(int id) throws SQLException {
-        String sql = "SELECT id, nome, professor_id FROM disciplina WHERE id = ?";
+
+        String sql =
+                "SELECT " +
+                        "d.id_disciplina, " +
+                        "d.nome AS disciplina_nome, " +
+                        "d.id_professor AS disciplina_professor_id, " +
+                        "p.id_professor AS professor_id, " +
+                        "p.id_usuario AS professor_usuario_id, " +
+                        "u.id_usuario AS usuario_id, " +
+                        "u.nome AS usuario_nome, " +
+                        "u.sobrenome, " +
+                        "u.email, " +
+                        "u.senha, " +
+                        "FROM disciplina d " +
+                        "INNER JOIN professor p ON d.id_professor = p.id_professor " +
+                        "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
+                        "WHERE d.id_disciplina = ?";
+
         Conexao conexao = new Conexao();
+        Disciplina disciplina = null;
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -53,76 +111,107 @@ public class DisciplinaDAO {
             pstmt.setInt(1, id);
 
             try (ResultSet rset = pstmt.executeQuery()) {
+
                 if (rset.next()) {
-                    return new Disciplina(
-                            rset.getInt("id"),
-                            rset.getString("nome"),
-                            rset.getInt("professor_id")
+
+                    Usuario usuario = new Usuario(
+                            rset.getInt("usuario_id"),
+                            rset.getString("usuario_nome"),
+                            rset.getString("sobrenome"),
+                            rset.getString("email"),
+                            rset.getString("senha")
                     );
+
+                    Professor professor = new Professor(
+                            rset.getInt("professor_id"),
+                            rset.getInt("professor_usuario_id")
+                    );
+
+                    professor.setUsuario(usuario);
+
+                    disciplina = new Disciplina(
+                            rset.getInt("id_disciplina"),
+                            rset.getString("disciplina_nome"),
+                            rset.getInt("disciplina_professor_id")
+                    );
+
+                    disciplina.setProfessor(professor);
                 }
             }
         }
-        return null;
+
+        return disciplina;
     }
 
-    public List<Disciplina> readByNome(String nome, String orderBy, String direction) throws SQLException {
+    public Disciplina readByNome(String nome) throws SQLException {
+
+        String sql =
+                "SELECT " +
+                        "d.id_disciplina, " +
+                        "d.nome AS disciplina_nome, " +
+                        "d.id_professor AS disciplina_professor_id, " +
+                        "p.id_professor AS professor_id, " +
+                        "p.id_usuario AS professor_usuario_id, " +
+                        "u.id_usuario AS usuario_id, " +
+                        "u.nome AS usuario_nome, " +
+                        "u.sobrenome, " +
+                        "u.email, " +
+                        "u.senha, " +
+                        "FROM disciplina d " +
+                        "INNER JOIN professor p ON d.id_professor = p.id_professor " +
+                        "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
+                        "WHERE d.nome = ?";
+
         Conexao conexao = new Conexao();
-        List<Disciplina> lista = new LinkedList<>();
-
-        StringBuilder sql = new StringBuilder(
-                "SELECT id, nome, professor_id FROM disciplina"
-        );
-
-        List<Object> parametros = new LinkedList<>();
-
-        if (nome != null && !nome.trim().isEmpty()) {
-            sql.append(" WHERE nome ILIKE ?");
-            parametros.add("%" + nome.trim() + "%");
-        }
-
-        String colunaOrdenacao = "id";
-        if ("nome".equalsIgnoreCase(orderBy)) {
-            colunaOrdenacao = "nome";
-        } else if ("professor_id".equalsIgnoreCase(orderBy)) {
-            colunaOrdenacao = "professor_id";
-        }
-
-        String direcao = "ASC";
-        if ("DESC".equalsIgnoreCase(direction)) {
-            direcao = "DESC";
-        }
-
-        sql.append(" ORDER BY ").append(colunaOrdenacao).append(" ").append(direcao);
+        Disciplina disciplina = null;
 
         try (Connection conn = conexao.conectar();
-             PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            for (int i = 0; i < parametros.size(); i++) {
-                pstmt.setObject(i + 1, parametros.get(i));
-            }
+            pstmt.setString(1, nome);
 
             try (ResultSet rset = pstmt.executeQuery()) {
-                while (rset.next()) {
-                    lista.add(new Disciplina(
-                            rset.getInt("id"),
-                            rset.getString("nome"),
-                            rset.getInt("professor_id")
-                    ));
+
+                if (rset.next()) {
+
+                    Usuario usuario = new Usuario(
+                            rset.getInt("usuario_id"),
+                            rset.getString("usuario_nome"),
+                            rset.getString("sobrenome"),
+                            rset.getString("email"),
+                            rset.getString("senha")
+                    );
+
+                    Professor professor = new Professor(
+                            rset.getInt("professor_id"),
+                            rset.getInt("professor_usuario_id")
+                    );
+
+                    professor.setUsuario(usuario);
+
+                    disciplina = new Disciplina(
+                            rset.getInt("id_disciplina"),
+                            rset.getString("disciplina_nome"),
+                            rset.getInt("disciplina_professor_id")
+                    );
+
+                    disciplina.setProfessor(professor);
                 }
             }
         }
-        return lista;
+
+        return disciplina;
     }
 
     public int update(Disciplina disciplina) throws SQLException {
-        String sql = "UPDATE disciplina SET nome = ?, professor_id = ? WHERE id = ?";
+        String sql = "UPDATE disciplina SET nome = ?, id_professor = ? WHERE id_disciplina = ?";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, disciplina.getNome());
-            pstmt.setInt(2, disciplina.getProfessorId());
+            pstmt.setInt(2, disciplina.getFkProfessorId());
             pstmt.setInt(3, disciplina.getId());
 
             return pstmt.executeUpdate();
@@ -130,7 +219,7 @@ public class DisciplinaDAO {
     }
 
     public int deleteById(int id) throws SQLException {
-        String sql = "DELETE FROM disciplina WHERE id = ?";
+        String sql = "DELETE FROM disciplina WHERE id_disciplina = ?";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();

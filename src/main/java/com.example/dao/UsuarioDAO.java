@@ -10,25 +10,24 @@ import java.util.List;
 public class UsuarioDAO {
 
     public boolean create(Usuario usuario) throws SQLException {
-        String sql = "INSERT INTO usuario (nome, sobrenome, email, senha, telefone) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuario (nome, sobrenome, email, senha) VALUES (?, ?, ?, ?)";
 
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setString(1, usuario.getNome());
             pstmt.setString(2, usuario.getSobrenome());
             pstmt.setString(3, usuario.getEmail());
             pstmt.setString(4, usuario.getSenha());
-            pstmt.setString(5, usuario.getTelefone());
 
             return pstmt.executeUpdate() > 0;
         }
     }
 
     public List<Usuario> read() throws SQLException {
-        String sql = "SELECT id, nome, sobrenome, email, senha, telefone FROM usuario ORDER BY id ASC";
+        String sql = "SELECT id, nome, sobrenome, email, senha FROM usuario ORDER BY id ASC";
 
         Conexao conexao = new Conexao();
         List<Usuario> lista = new LinkedList<>();
@@ -43,8 +42,7 @@ public class UsuarioDAO {
                         rset.getString("nome"),
                         rset.getString("sobrenome"),
                         rset.getString("email"),
-                        rset.getString("senha"),
-                        rset.getString("telefone")
+                        rset.getString("senha")
                 ));
             }
         }
@@ -52,7 +50,7 @@ public class UsuarioDAO {
     }
 
     public Usuario readById(int id) throws SQLException {
-        String sql = "SELECT id, nome, sobrenome, email, senha, telefone FROM usuario WHERE id = ?";
+        String sql = "SELECT id, nome, sobrenome, email, senha FROM usuario WHERE id = ?";
 
         Conexao conexao = new Conexao();
 
@@ -68,8 +66,7 @@ public class UsuarioDAO {
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
-                            rset.getString("senha"),
-                            rset.getString("telefone")
+                            rset.getString("senha")
                     );
                 }
             }
@@ -78,7 +75,7 @@ public class UsuarioDAO {
     }
 
     public Usuario readByEmail(String email) throws SQLException {
-        String sql = "SELECT id, nome, sobrenome, email, senha, telefone FROM usuario WHERE email = ?";
+        String sql = "SELECT id, nome, sobrenome, email, senha FROM usuario WHERE email = ?";
 
         Conexao conexao = new Conexao();
 
@@ -94,8 +91,7 @@ public class UsuarioDAO {
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
-                            rset.getString("senha"),
-                            rset.getString("telefone")
+                            rset.getString("senha")
                     );
                 }
             }
@@ -104,7 +100,7 @@ public class UsuarioDAO {
     }
 
     public Usuario login(String email, String senha) throws SQLException {
-        String sql = "SELECT id, nome, sobrenome, email, senha, telefone FROM usuario WHERE email = ? AND senha = ?";
+        String sql = "SELECT id, nome, sobrenome, email, senha FROM usuario WHERE email = ? AND senha = ?";
 
         Conexao conexao = new Conexao();
 
@@ -121,8 +117,7 @@ public class UsuarioDAO {
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
-                            rset.getString("senha"),
-                            rset.getString("telefone")
+                            rset.getString("senha")
                     );
                 }
             }
@@ -131,7 +126,7 @@ public class UsuarioDAO {
     }
 
     public int update(Usuario usuario) throws SQLException {
-        String sql = "UPDATE usuario SET nome = ?, sobrenome = ?, email = ?, senha = ?, telefone = ? WHERE id = ?";
+        String sql = "UPDATE usuario SET nome = ?, sobrenome = ?, email = ?, senha = ? WHERE id = ?";
 
         Conexao conexao = new Conexao();
 
@@ -142,8 +137,7 @@ public class UsuarioDAO {
             pstmt.setString(2, usuario.getSobrenome());
             pstmt.setString(3, usuario.getEmail());
             pstmt.setString(4, usuario.getSenha());
-            pstmt.setString(5, usuario.getTelefone());
-            pstmt.setInt(6, usuario.getId());
+            pstmt.setInt(5, usuario.getId());
 
             return pstmt.executeUpdate();
         }
