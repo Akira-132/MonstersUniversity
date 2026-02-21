@@ -27,7 +27,7 @@ public class UsuarioDAO {
     }
 
     public List<Usuario> read() throws SQLException {
-        String sql = "SELECT id, nome, sobrenome, email, senha FROM usuario ORDER BY id ASC";
+        String sql = "SELECT id_usuario, nome, sobrenome, email, senha FROM usuario ORDER BY id_usuario ASC";
 
         Conexao conexao = new Conexao();
         List<Usuario> lista = new LinkedList<>();
@@ -38,7 +38,7 @@ public class UsuarioDAO {
 
             while (rset.next()) {
                 lista.add(new Usuario(
-                        rset.getInt("id"),
+                        rset.getInt("id_usuario"),
                         rset.getString("nome"),
                         rset.getString("sobrenome"),
                         rset.getString("email"),
@@ -50,7 +50,7 @@ public class UsuarioDAO {
     }
 
     public Usuario readById(int id) throws SQLException {
-        String sql = "SELECT id, nome, sobrenome, email, senha FROM usuario WHERE id = ?";
+        String sql = "SELECT id_usuario, nome, sobrenome, email, senha FROM usuario WHERE id_usuario = ?";
 
         Conexao conexao = new Conexao();
 
@@ -62,7 +62,7 @@ public class UsuarioDAO {
             try (ResultSet rset = pstmt.executeQuery()) {
                 if (rset.next()) {
                     return new Usuario(
-                            rset.getInt("id"),
+                            rset.getInt("id_usuario"),
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
@@ -75,7 +75,7 @@ public class UsuarioDAO {
     }
 
     public Usuario readByEmail(String email) throws SQLException {
-        String sql = "SELECT id, nome, sobrenome, email, senha FROM usuario WHERE email = ?";
+        String sql = "SELECT id_usuario, nome, sobrenome, email, senha FROM usuario WHERE email = ?";
 
         Conexao conexao = new Conexao();
 
@@ -87,7 +87,7 @@ public class UsuarioDAO {
             try (ResultSet rset = pstmt.executeQuery()) {
                 if (rset.next()) {
                     return new Usuario(
-                            rset.getInt("id"),
+                            rset.getInt("id_usuario"),
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
@@ -100,7 +100,7 @@ public class UsuarioDAO {
     }
 
     public Usuario login(String email, String senha) throws SQLException {
-        String sql = "SELECT id, nome, sobrenome, email, senha FROM usuario WHERE email = ? AND senha = ?";
+        String sql = "SELECT id_usuario, nome, sobrenome, email, senha FROM usuario WHERE email = ? AND senha = ?";
 
         Conexao conexao = new Conexao();
 
@@ -113,7 +113,7 @@ public class UsuarioDAO {
             try (ResultSet rset = pstmt.executeQuery()) {
                 if (rset.next()) {
                     return new Usuario(
-                            rset.getInt("id"),
+                            rset.getInt("id_usuario"),
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
@@ -126,7 +126,7 @@ public class UsuarioDAO {
     }
 
     public int update(Usuario usuario) throws SQLException {
-        String sql = "UPDATE usuario SET nome = ?, sobrenome = ?, email = ?, senha = ? WHERE id = ?";
+        String sql = "UPDATE usuario SET nome = ?, sobrenome = ?, email = ?, senha = ? WHERE id_usuario = ?";
 
         Conexao conexao = new Conexao();
 
@@ -137,14 +137,14 @@ public class UsuarioDAO {
             pstmt.setString(2, usuario.getSobrenome());
             pstmt.setString(3, usuario.getEmail());
             pstmt.setString(4, usuario.getSenha());
-            pstmt.setInt(6, usuario.getId());
+            pstmt.setInt(5, usuario.getId());
 
             return pstmt.executeUpdate();
         }
     }
 
     public int deleteById(int id) throws SQLException {
-        String sql = "DELETE FROM usuario WHERE id = ?";
+        String sql = "DELETE FROM usuario WHERE id_usuario = ?";
 
         Conexao conexao = new Conexao();
 
