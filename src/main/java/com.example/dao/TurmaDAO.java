@@ -276,7 +276,7 @@ public class TurmaDAO {
         }
     }
 
-    private List<Aluno> buscarAlunos(Connection conn, int turmaId) throws SQLException {
+    private List<Aluno> findAlunosInTurma(Connection conn, int turmaId) throws SQLException {
 
         String sql = "SELECT a.id_aluno, a.cpf, a.matricula, a.id_usuario " +
                 "FROM turma_aluno ta " +
@@ -307,4 +307,37 @@ public class TurmaDAO {
 
         return lista;
     }
+
+    public boolean addAlunoInTurma(int turmaId, int alunoId) throws SQLException {
+
+        String sql = "INSERT INTO turma_aluno (id_turma, id_aluno) VALUES (?, ?)";
+
+        Conexao conexao = new Conexao();
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, turmaId);
+            pstmt.setInt(2, alunoId);
+
+            return pstmt.executeUpdate() > 0;
+        }
+    }
+
+    public boolean removeAlunoFromTurma(int turmaId, int alunoId) throws SQLException {
+
+        String sql = "DELETE FROM turma_aluno WHERE id_turma = ? AND id_aluno = ?";
+
+        Conexao conexao = new Conexao();
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, turmaId);
+            pstmt.setInt(2, alunoId);
+
+            return pstmt.executeUpdate() > 0;
+        }
+    }
+
 }
