@@ -987,7 +987,7 @@ public class Main {
 //
 //            System.out.println("\n========== TESTE READ BY SALA ==========");
 //
-//            Turma porSala = dao.readBySala("A1");
+//            Turma porSala = dao.readByTurma("A1");
 //            if (porSala != null) {
 //                System.out.println("Encontrada turma sala A1: " + porSala.getPeriodo());
 //            } else {
@@ -997,7 +997,7 @@ public class Main {
 //
 //            System.out.println("\n========== TESTE UPDATE ==========");
 //
-//            Turma turmaUpdate = dao.readBySala("A1");
+//            Turma turmaUpdate = dao.readByTurma("A1");
 //
 //            if (turmaUpdate != null) {
 //
@@ -1028,7 +1028,7 @@ public class Main {
 //
 //            System.out.println("\n========== TESTE DELETE BY ID ==========");
 //
-//            Turma turmaParaExcluir = dao.readBySala("C3");
+//            Turma turmaParaExcluir = dao.readByTurma("C3");
 //            if (turmaParaExcluir != null) {
 //                int deletadasId = dao.deleteById(turmaParaExcluir.getId());
 //                System.out.println("Linhas deletadas por ID: " + deletadasId);

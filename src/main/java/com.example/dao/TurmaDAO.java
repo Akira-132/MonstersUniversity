@@ -140,7 +140,7 @@ public class TurmaDAO {
         return turma;
     }
 
-    public Turma readBySala(String sala) throws SQLException {
+    public Turma readByTurma(String sala) throws SQLException {
 
         String sql = "SELECT t.id_turma, t.periodo, t.sala, t.id_disciplina, " +
                 "d.id_disciplina AS d_id_disciplina, d.nome, d.id_professor " +
