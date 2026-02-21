@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="../../assets/imgs/Logo.png" type="image/x-icon">
     <link rel="stylesheet" href="../../assets/styles/globaLogin.css">
     <link rel="stylesheet" href="../../assets/styles/redefinirSenhaVeri.css">
-    <title>Verificar Email</title>
+    <title>Monsters University</title>
 </head>
 <body>
     <header>

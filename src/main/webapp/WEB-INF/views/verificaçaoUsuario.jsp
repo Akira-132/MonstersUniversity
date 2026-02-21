@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="../imgs/Logo.png" type="image/x-icon">
     <link rel="stylesheet" href="../styles/globaLogin.css">
     <link rel="stylesheet" href="../styles/verifiçaoUsuario.css">
-    <title>Verificar Usúario</title>
+    <title>Monsters University</title>
 </head>
 <body>
     <header>
