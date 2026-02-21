@@ -71,7 +71,7 @@ tbody td:last-child {
   background: #ffffff;
   box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: all 0.2s;
 }
 
 .icone-editar:hover {
