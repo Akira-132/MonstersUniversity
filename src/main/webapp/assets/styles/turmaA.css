@@ -1,0 +1,71 @@
+#conteudo {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem 2.5rem;
+}
+
+h1 {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #1a1a2e;
+  text-align: center;
+  letter-spacing: 0.1rem;
+  margin-bottom: 1.5rem;
+}
+
+a {
+  text-decoration: none;
+  color: #1a1a2e;
+}
+
+button {
+  display: block;
+  width: fit-content;
+  margin: 0 auto 2rem;
+  background: #fff;
+  box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.329);
+  border: none;
+  border-radius: 62.4rem;
+  padding: 0.8rem 3rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+button:hover {
+  transform: translateY(-0.1rem);
+}
+
+#alunos-lista,
+#professores-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.aluno-card,
+.professores-card {
+  background: #fff;
+  box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.329);
+  border: 0.1rem solid transparent;
+  border-radius: 0.9rem;
+  padding: 1.8rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+  transition: all 0.2s;
+}
+
+.aluno-card:hover {
+  transform: translateY(-0.1rem);
+  border-color: rgb(58, 56, 56);
+}
+
+.aluno-card.ativo {
+  background: #ffffff;
+  border-color: #2563eb;
+}

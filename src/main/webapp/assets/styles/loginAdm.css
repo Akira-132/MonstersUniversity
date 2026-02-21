@@ -1,0 +1,18 @@
+
+#img_admin {
+    position: absolute;
+    bottom: 0;
+    right:3rem;
+    z-index: 16;
+    height: 48%;
+}
+a{
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+}
+input[type="submit"]{
+    margin-bottom: 0;
+}
+#btn-login{
+    margin-top: 2rem;
+}

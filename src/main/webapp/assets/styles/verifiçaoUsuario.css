@@ -1,0 +1,58 @@
+#fundo {
+    top: 3rem;
+    align-items: flex-start;
+}
+
+#criança {
+    display: block;
+    margin: 0 auto;
+    z-index: 5;
+    margin-bottom: -2.8rem;
+}
+
+h1 {
+    font-size: 2.8rem;
+}
+
+input {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+input[type="submit"] {
+    width: 45%;
+}
+#links_principais a {
+    color: #0491FC;
+    text-decoration: none;
+    font-size: 1rem;
+    text-align: left;
+    margin-bottom: 0.5rem;
+}
+
+#buttons {
+    display: flex;
+    gap: 4rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+#btn-voltar {
+    text-decoration: none;
+    border: #C6BEBE 2px solid;
+    color: black;
+    padding: 1rem 3rem;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+#btn-voltar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(104, 104, 105, 0.4);
+}
+
+#btn-login {
+    padding: 1rem 3rem;
+    margin-top: 1.9rem;
+}
