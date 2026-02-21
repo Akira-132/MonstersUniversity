@@ -89,7 +89,7 @@ public class TurmaDAO {
                 );
 
                 turma.setDisciplina(disciplina);
-                turma.setAlunos(buscarAlunos(conn, turma.getId()));
+                turma.setAlunos(findAlunosInTurma(conn, turma.getId()));
 
                 listaTurma.add(turma);
             }
@@ -132,7 +132,7 @@ public class TurmaDAO {
                     );
 
                     turma.setDisciplina(disciplina);
-                    turma.setAlunos(buscarAlunos(conn, turma.getId()));
+                    turma.setAlunos(findAlunosInTurma(conn, turma.getId()));
                 }
             }
         }
@@ -174,7 +174,7 @@ public class TurmaDAO {
                     );
 
                     turma.setDisciplina(disciplina);
-                    turma.setAlunos(buscarAlunos(conn, turma.getId()));
+                    turma.setAlunos(findAlunosInTurma(conn, turma.getId()));
                 }
             }
         }
