@@ -94,12 +94,10 @@ tbody td:last-child {
   justify-content: center;
 }
 
-/* Quando o checkbox estiver marcado, mostre o overlay */
 #modal-input:checked ~ #modal-overlay {
   display: flex;
 }
 
-/* Estilização Interna do Modal */
 .modal {
   background: #ffffff;
   border-radius: 1rem;
