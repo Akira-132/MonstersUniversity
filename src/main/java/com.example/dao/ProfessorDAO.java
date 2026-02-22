@@ -67,7 +67,7 @@ public class ProfessorDAO {
                 "p.id_professor, " +
                 "p.id_usuario AS p_id_usuario, " +
                 "u.id_usuario AS u_id_usuario, " +
-                "u.nome, u.sobrenome, u.email, u.senha" +
+                "u.nome, u.sobrenome, u.email, u.senha " +
                 "FROM professor p " +
                 "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
                 "WHERE p.id_professor = ?";
@@ -110,7 +110,7 @@ public class ProfessorDAO {
                 "p.id_professor, " +
                 "p.id_usuario AS p_id_usuario, " +
                 "u.id_usuario AS u_id_usuario, " +
-                "u.nome, u.sobrenome, u.email, u.senha" +
+                "u.nome, u.sobrenome, u.email, u.senha " +
                 "FROM professor p " +
                 "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
                 "WHERE p.id_usuario = ?";

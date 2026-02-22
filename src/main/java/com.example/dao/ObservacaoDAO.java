@@ -11,13 +11,13 @@ public class ObservacaoDAO {
 
     public boolean create(Observacao observacao) throws SQLException {
 
-        String sql = "INSERT INTO observacao (texto, data_envio, id_professor, id_aluno) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO observacoes (comentario, data_envio, id_professor, id_aluno) VALUES (?, ?, ?, ?)";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, observacao.getTexto());
+            pstmt.setString(1, observacao.getComentario());
             pstmt.setTimestamp(2, Timestamp.valueOf(observacao.getDataEnvio()));
             pstmt.setInt(3, observacao.getFkProfessorId());
             pstmt.setInt(4, observacao.getFkAlunoId());
@@ -29,12 +29,12 @@ public class ObservacaoDAO {
     public List<Observacao> read() throws SQLException {
 
         String sql =
-                "SELECT o.id_observacao, o.texto, o.data_envio, o.id_professor, o.id_aluno, " +
+                "SELECT o.id_observacao, o.comentario, o.data_envio, o.id_professor, o.id_aluno, " +
                         "p.id_professor, p.id_usuario AS professor_usuario_id, " +
-                        "up.id_usuario AS usuario_professor_id, up.nome AS professor_nome, up.sobrenome AS professor_sobrenome, up.email AS professor_email, up.senha AS professor_senha AS professor_tipo, " +
+                        "up.id_usuario AS usuario_professor_id, up.nome AS professor_nome, up.sobrenome AS professor_sobrenome, up.email AS professor_email, up.senha AS professor_senha, " +
                         "a.id_aluno, a.cpf, a.matricula, a.id_usuario AS aluno_usuario_id, " +
-                        "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha AS aluno_tipo " +
-                        "FROM observacao o " +
+                        "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha " +
+                        "FROM observacoes o " +
                         "INNER JOIN professor p ON o.id_professor = p.id_professor " +
                         "INNER JOIN usuario up ON p.id_usuario = up.id_usuario " +
                         "INNER JOIN aluno a ON o.id_aluno = a.id_aluno " +
@@ -59,12 +59,12 @@ public class ObservacaoDAO {
     public Observacao readById(int id) throws SQLException {
 
         String sql =
-                "SELECT o.id_observacao, o.texto, o.data_envio, o.id_professor, o.id_aluno, " +
+                "SELECT o.id_observacao, o.comentario, o.data_envio, o.id_professor, o.id_aluno, " +
                         "p.id_professor, p.id_usuario AS professor_usuario_id, " +
-                        "up.id_usuario AS usuario_professor_id, up.nome AS professor_nome, up.sobrenome AS professor_sobrenome, up.email AS professor_email, up.senha AS professor_senha AS professor_tipo, " +
+                        "up.id_usuario AS usuario_professor_id, up.nome AS professor_nome, up.sobrenome AS professor_sobrenome, up.email AS professor_email, up.senha AS professor_senha, " +
                         "a.id_aluno, a.cpf, a.matricula, a.id_usuario AS aluno_usuario_id, " +
-                        "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha AS aluno_tipo " +
-                        "FROM observacao o " +
+                        "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha " +
+                        "FROM observacoes o " +
                         "INNER JOIN professor p ON o.id_professor = p.id_professor " +
                         "INNER JOIN usuario up ON p.id_usuario = up.id_usuario " +
                         "INNER JOIN aluno a ON o.id_aluno = a.id_aluno " +
@@ -91,8 +91,8 @@ public class ObservacaoDAO {
 
     public List<Observacao> readByAlunoId(int alunoId) throws SQLException {
 
-        String sql = "SELECT id_observacao, texto, data_envio, id_professor, id_aluno " +
-                "FROM observacao WHERE id_aluno = ? ORDER BY id_observacao ASC";
+        String sql = "SELECT id_observacao, comentario, data_envio, id_professor, id_aluno " +
+                "FROM observacoes WHERE id_aluno = ? ORDER BY id_observacao ASC";
 
         Conexao conexao = new Conexao();
         List<Observacao> lista = new LinkedList<>();
@@ -108,7 +108,7 @@ public class ObservacaoDAO {
 
                     Observacao observacao = new Observacao(
                             rset.getInt("id_observacao"),
-                            rset.getString("texto"),
+                            rset.getString("comentario"),
                             rset.getTimestamp("data_envio").toLocalDateTime(),
                             rset.getInt("id_professor"),
                             rset.getInt("id_aluno")
@@ -124,8 +124,8 @@ public class ObservacaoDAO {
 
     public List<Observacao> readByProfessorId(int professorId) throws SQLException {
 
-        String sql = "SELECT id_observacao, texto, data_envio, id_professor, id_aluno " +
-                "FROM observacao WHERE id_professor = ? ORDER BY id_observacao ASC";
+        String sql = "SELECT id_observacao, comentario, data_envio, id_professor, id_aluno " +
+                "FROM observacoes WHERE id_professor = ? ORDER BY id_observacao ASC";
 
         Conexao conexao = new Conexao();
         List<Observacao> lista = new LinkedList<>();
@@ -141,7 +141,7 @@ public class ObservacaoDAO {
 
                     Observacao observacao = new Observacao(
                             rset.getInt("id_observacao"),
-                            rset.getString("texto"),
+                            rset.getString("comentario"),
                             rset.getTimestamp("data_envio").toLocalDateTime(),
                             rset.getInt("id_professor"),
                             rset.getInt("id_aluno")
@@ -157,13 +157,13 @@ public class ObservacaoDAO {
 
     public int update(Observacao observacao) throws SQLException {
 
-        String sql = "UPDATE observacao SET texto = ?, data_envio = ?, id_professor = ?, id_aluno = ? WHERE id_observacao = ?";
+        String sql = "UPDATE observacoes SET comentario = ?, data_envio = ?, id_professor = ?, id_aluno = ? WHERE id_observacao = ?";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, observacao.getTexto());
+            pstmt.setString(1, observacao.getComentario());
             pstmt.setTimestamp(2, Timestamp.valueOf(observacao.getDataEnvio()));
             pstmt.setInt(3, observacao.getFkProfessorId());
             pstmt.setInt(4, observacao.getFkAlunoId());
@@ -175,7 +175,7 @@ public class ObservacaoDAO {
 
     public int deleteById(int id) throws SQLException {
 
-        String sql = "DELETE FROM observacao WHERE id_observacao = ?";
+        String sql = "DELETE FROM observacoes WHERE id_observacao = ?";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
@@ -188,7 +188,7 @@ public class ObservacaoDAO {
 
     public int deleteByAlunoId(int alunoId) throws SQLException {
 
-        String sql = "DELETE FROM observacao WHERE id_aluno = ?";
+        String sql = "DELETE FROM observacoes WHERE id_aluno = ?";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
@@ -201,7 +201,7 @@ public class ObservacaoDAO {
 
     public int deleteByProfessorId(int professorId) throws SQLException {
 
-        String sql = "DELETE FROM observacao WHERE id_professor = ?";
+        String sql = "DELETE FROM observacoes WHERE id_professor = ?";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
@@ -246,7 +246,7 @@ public class ObservacaoDAO {
 
         Observacao observacao = new Observacao(
                 rset.getInt("id_observacao"),
-                rset.getString("texto"),
+                rset.getString("comentario"),
                 rset.getTimestamp("data_envio").toLocalDateTime(),
                 rset.getInt("id_professor"),
                 rset.getInt("id_aluno")
