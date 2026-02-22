@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="../../assets/imgs/Logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="../../assets/styles/globalApp.css">
+    <link rel="stylesheet" href="../../assets/styles/adicionar.css">
+    <title>Monsters University</title>
+</head>
+<body>
+    <aside>
+        <div id="logo">
+            <img src="../../assets/imgs/Logo.png" alt="Logo" />
+        </div>
+        <nav>
+            <a href="turmasAdm.html">
+                <img src="../../assets/imgs/icone-diciplinas.png" alt="" />
+                Disciplina
+            </a>
+            <a href="turmasAdm.html" class="ativo">
+                <img src="../../assets/imgs/icone-adicionar.png" alt="" />
+                Adicionar
+            </a>
+            <a href="turmasAdm.html">
+                <img src="../../assets/imgs/icone-professores.png" alt=""/>
+                Professores
+            </a>
+        </nav>
+        <div id="info-usuario">
+            <div id="avatar">
+                <img src="../../assets/imgs/icone-usuario.png" alt="" />
+            </div>
+            <span>
+                <strong>Felipe Augusto</strong>
+                Camuflagem
+            </span>
+        </div>
+    </aside>
+
+    <main>
+        <header>Minha disciplina</header>
+        
+        <input type="checkbox" id="toggle-tipo">
+        
+        <div id="conteudo">
+            <h2>Criar usuário</h2>
+    
+            <div id="toggle">
+                <label for="toggle-tipo" id="label-aluno">Aluno</label>
+                <label for="toggle-tipo" id="label-professor">Professor</label>
+            </div>
+    
+            <form action="criarUsuario" method="post">
+                <div id="campos">
+                    <input type="text" name="nome" placeholder="nome" required>
+                    <input type="text" name="cpf" placeholder="cpf" required maxlength="11">
+                    <input type="text" name="sobrenome" placeholder="sobrenome" required>
+                    <input type="text" name="matricula" id="campo-matricula" placeholder="matricula" required>
+                    <input type="email" name="email" placeholder="email" required>
+                    <input type="password" name="senha" placeholder="senha" required>
+                </div>
+    
+                <button type="submit" id="btn-adicionar">Adicionar</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
