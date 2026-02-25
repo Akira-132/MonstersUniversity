@@ -154,7 +154,7 @@ public class AlunoDAO {
     }
 
     public int deleteById(int id) throws SQLException {
-        String sql = "DELETE FROM aluno WHERE id_aluno = ?";
+        String sql = "DELETE FROM usuario WHERE id_usuario = (SELECT id_usuario FROM aluno WHERE id_aluno = ?)";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
@@ -165,14 +165,14 @@ public class AlunoDAO {
         }
     }
 
-    public int deleteByMatricula(String matricula) throws SQLException {
-        String sql = "DELETE FROM aluno WHERE matricula = ?";
+    public int deleteByUsuarioId(int usuarioId) throws SQLException {
+        String sql = "DELETE FROM usuario WHERE id_usuario = ?";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, matricula);
+            pstmt.setInt(1, usuarioId);
             return pstmt.executeUpdate();
         }
     }
