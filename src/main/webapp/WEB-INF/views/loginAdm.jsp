@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <img src="../../assets/imgs/surpresa.png" alt="Mike" id="img_admin">
+        <img src="../../assets/imgs/surpresa.png" alt="" id="img_admin">
     </div>
 </body>
 </html>
