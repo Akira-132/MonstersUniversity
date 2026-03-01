@@ -163,7 +163,7 @@ public class ProfessorDAO {
     }
 
     public int deleteById(int id) throws SQLException {
-        String sql = "DELETE FROM professor WHERE id_professor = ?";
+        String sql = "DELETE FROM usuario WHERE id_usuario = (SELECT id_usuario FROM professor WHERE id_professor = ?)";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
@@ -175,7 +175,7 @@ public class ProfessorDAO {
     }
 
     public int deleteByUsuarioId(int usuarioId) throws SQLException {
-        String sql = "DELETE FROM professor WHERE id_usuario = ?";
+        String sql = "DELETE FROM usuario WHERE id_usuario = ?";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
