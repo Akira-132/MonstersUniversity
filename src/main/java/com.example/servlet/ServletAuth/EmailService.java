@@ -13,10 +13,8 @@ public class EmailService {
     private static final String EMAIL_REMETENTE = "monstrossa132@gmail.com";
     private static final String SENHA_APP = "npix vsmf fpww zpfo";
 
-    // 🔥 Thread Pool (reutiliza threads)
     private static final ExecutorService executor = Executors.newFixedThreadPool(2);
 
-    // 🔥 Session criada uma única vez
     private static final Session session;
 
     static {

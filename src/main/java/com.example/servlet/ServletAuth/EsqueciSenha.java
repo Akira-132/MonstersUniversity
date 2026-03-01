@@ -29,7 +29,6 @@ public class EsqueciSenha extends HttpServlet {
         session.setAttribute("codigoRecuperacao", codigo);
         session.setAttribute("emailRecuperacao", email);
 
-        // 🚀 envio assíncrono (não bloqueia)
         EmailService.enviarCodigoRecuperacaoAsync(email, codigo);
     }
 

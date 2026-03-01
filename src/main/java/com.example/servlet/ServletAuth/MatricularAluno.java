@@ -1,4 +1,4 @@
-package com.example.controllers;
+package com.example.servlet.ServletAuth;
 
 import com.example.dao.UsuarioDAO;
 import com.example.models.Usuario;
