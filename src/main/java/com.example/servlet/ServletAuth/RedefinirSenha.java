@@ -43,7 +43,7 @@ public class RedefinirSenha extends HttpServlet {
                     session.removeAttribute("emailRecuperacao");
                     session.removeAttribute("codigoVerificado");
 
-                    response.sendRedirect(request.getContextPath() + "/login.jsp");
+                    response.sendRedirect(request.getContextPath() + "/login");
                     return;
                 } else {
                     request.setAttribute("erro", "Erro ao atualizar a senha.");

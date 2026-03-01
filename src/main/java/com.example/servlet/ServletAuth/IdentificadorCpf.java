@@ -7,7 +7,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
@@ -19,24 +18,27 @@ public class IdentificadorCpf extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
+
         String cpf = request.getParameter("cpf");
+        if (cpf != null) {
+            cpf = cpf.replaceAll("[^\\d]", "");
+        }
+
+        System.out.println("[IdentificadorCpf] recebido cpf = '" + cpf + "'");
 
         AlunoDAO alunoDAO = new AlunoDAO();
 
         try {
-            if (cpf != null) {
-                cpf = cpf.replaceAll("[^\\d]", "");
-            }
-
             Aluno aluno = alunoDAO.readByCpf(cpf);
 
             if (aluno != null) {
-                HttpSession session = request.getSession();
-                session.setAttribute("alunoAtivacao", aluno);
+                System.out.println("[IdentificadorCpf] aluno encontrado: id=" + aluno.getId() + " cpf=" + aluno.getCpf());
 
-                request.getRequestDispatcher("matricula.jsp").forward(request, response);
+                request.setAttribute("aluno", aluno);
+                request.getRequestDispatcher("/WEB-INF/views/matricula.jsp").forward(request, response);
                 return;
             } else {
+                System.out.println("[IdentificadorCpf] nenhum aluno encontrado para cpf=" + cpf);
                 request.setAttribute("erro", "CPF não encontrado no sistema.");
             }
 
@@ -45,6 +47,6 @@ public class IdentificadorCpf extends HttpServlet {
             request.setAttribute("erro", "Erro ao verificar o CPF.");
         }
 
-        request.getRequestDispatcher("verificacao-aluno.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/verificaçaoUsuario.jsp").forward(request, response);
     }
 }

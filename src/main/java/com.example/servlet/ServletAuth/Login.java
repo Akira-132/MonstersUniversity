@@ -16,6 +16,20 @@ import java.io.IOException;
 
 @WebServlet("/login")
 public class Login extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String tipo = request.getParameter("tipo");
+
+        if ("admin".equals(tipo)) {
+            request.getRequestDispatcher("/WEB-INF/views/loginAdm.jsp")
+                    .forward(request, response);
+        } else {
+            request.getRequestDispatcher("/index.jsp")
+                    .forward(request, response);
+        }
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -23,8 +37,8 @@ public class Login extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
 
-        String email = request.getParameter("usuario");
-        String senha = request.getParameter("senha");
+        String email = request.getParameter("username");
+        String senha = request.getParameter("password");
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         AdminDAO adminDAO = new AdminDAO();
@@ -63,6 +77,7 @@ public class Login extends HttpServlet {
             request.setAttribute("erro", "Erro interno ao tentar fazer login.");
         }
 
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/loginAdm.jsp")
+                .forward(request, response);
     }
 }
