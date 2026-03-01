@@ -48,7 +48,7 @@
                 <input type="password" name="password" placeholder="Senha" required>
 
                 <div id="links_principais">
-                    <a href="${pageContext.request.contextPath}/WEB-INF/views/redefinirSenhaVeri.jsp">Esqueceu a Senha?</a>
+                    <a href="${pageContext.request.contextPath}/esqueci-senha">Esqueceu a Senha?</a>
                     <a href="${pageContext.request.contextPath}/ativar-matricula">Não fez a matrícula?</a>
                 </div>
 

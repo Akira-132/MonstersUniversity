@@ -10,16 +10,33 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.Random;
 
 @WebServlet("/esqueci-senha")
 public class EsqueciSenha extends HttpServlet {
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        request.getRequestDispatcher("/WEB-INF/views/redefinirSenhaVeri.jsp")
+                .forward(request, response);
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
+
         String email = request.getParameter("email");
+
+        if (email == null || email.isBlank()) {
+            request.setAttribute("erro", "Informe um e-mail válido.");
+            request.getRequestDispatcher("/WEB-INF/views/redefinirSenhaVeri.jsp")
+                    .forward(request, response);
+            return;
+        }
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
 
@@ -27,7 +44,8 @@ public class EsqueciSenha extends HttpServlet {
             Usuario usuario = usuarioDAO.readByEmail(email);
 
             if (usuario != null) {
-                Random random = new Random();
+
+                SecureRandom random = new SecureRandom();
                 int numero = 10000 + random.nextInt(90000);
                 String codigo = String.valueOf(numero);
 
@@ -37,8 +55,9 @@ public class EsqueciSenha extends HttpServlet {
 
                 EmailService.enviarCodigoRecuperacao(email, codigo);
 
-                response.sendRedirect(request.getContextPath() + "/verificacao.jsp");
+                response.sendRedirect(request.getContextPath() + "/verificaçao.jsp");
                 return;
+
             } else {
                 request.setAttribute("erro", "E-mail não encontrado no sistema.");
             }
@@ -48,6 +67,7 @@ public class EsqueciSenha extends HttpServlet {
             request.setAttribute("erro", "Erro interno ao processar a solicitação.");
         }
 
-        request.getRequestDispatcher("/redefinir-senha.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/redefinirSenhaVeri.jsp")
+                .forward(request, response);
     }
 }
