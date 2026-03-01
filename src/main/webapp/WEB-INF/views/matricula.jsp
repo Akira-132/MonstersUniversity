@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <img src="../imgs/montros_escuro.png" alt="" id="montros_escuro" width="360">
+        <img src="../../assets/imgs/montros_escuro.png" alt="" id="montros_escuro" width="360">
     </div>
     
 </body>

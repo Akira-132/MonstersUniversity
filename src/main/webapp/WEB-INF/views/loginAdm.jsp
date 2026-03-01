@@ -11,8 +11,10 @@
 </head>
 <body>
     <header>
-        <img src="../../assets/imgs/Logo.png" alt="LOGO">
-    </header>
+        <a href="">
+            <img src="../../assets/imgs/Logo.png" alt="LOGO">
+        </a>
+        </header>
 
     <div id="fundo">
         
@@ -32,7 +34,7 @@
             </div>
         </div>
 
-        <img src="../../assets/imgs/surpresa.png" alt="Mike" id="img_admin">
+        <img src="../../assets/imgs/surpresa.png" alt="" id="img_admin">
     </div>
 </body>
 </html>
