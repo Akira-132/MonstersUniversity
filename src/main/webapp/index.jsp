@@ -19,8 +19,29 @@
 <div id="fundo">
     <img src="${pageContext.request.contextPath}/assets/imgs/jake_login.png" alt="Sulley" id="jake">
 
+
     <div id="login-box">
         <h1>Login</h1>
+        <%
+            String cadastro = request.getParameter("cadastro");
+            if ("aluno-sucesso".equals(cadastro)) {
+        %>
+        <div id="msg-sucesso" style="
+            background-color: #e6ffed;
+            border: 1px solid #4CAF50;
+            color: #1e4620;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-family: 'Montserrat';
+            font-size: 14px;
+        ">
+            Cadastro de aluno realizado com sucesso
+        </div>
+        <%
+            }
+        %>
         <div>
             <form action="${pageContext.request.contextPath}/login?tipo=normal" method="post">
                 <input type="text" name="username" placeholder="Usuário" required>
@@ -38,5 +59,17 @@
 
     <img src="assets/imgs/Mical_login.png" alt="Mike" id="mical">
 </div>
+<script>
+    window.addEventListener("load", function() {
+        const msg = document.getElementById("msg-sucesso");
+        if (msg) {
+            setTimeout(() => {
+                msg.style.transition = "opacity 0.5s ease";
+                msg.style.opacity = "0";
+                setTimeout(() => msg.remove(), 500);
+            }, 4000); // 4 segundos
+        }
+    });
+</script>
 </body>
 </html>

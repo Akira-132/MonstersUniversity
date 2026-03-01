@@ -20,7 +20,7 @@ public class AuthFilter implements Filter {
             "/logout", "/verificacao-usuario.jsp",
             "/verificacao.jsp", "/redefinir-senha",
             "/verificar-codigo", "/criar-senha",
-            "/matricula.jsp", "/ativar-matricula"
+            "/matricula.jsp", "/ativar-matricula", "/aluno-matricula"
     );
 
     @Override
