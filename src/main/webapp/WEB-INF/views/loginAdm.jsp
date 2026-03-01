@@ -64,7 +64,7 @@
                 <input type="password" name="password" placeholder="Senha" required>
 
                 <div id="links_principais">
-                    <a href="redefinirSenhaVeri.jsp">Esqueceu a Senha?</a>
+                    <a href="${pageContext.request.contextPath}/esqueci-senha">Esqueceu a Senha?</a>
                 </div>
 
                 <input type="submit" value="Entrar" id="btn-login">

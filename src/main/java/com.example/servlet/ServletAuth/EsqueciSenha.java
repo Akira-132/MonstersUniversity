@@ -55,7 +55,7 @@ public class EsqueciSenha extends HttpServlet {
 
                 EmailService.enviarCodigoRecuperacao(email, codigo);
 
-                response.sendRedirect(request.getContextPath() + "/verificaçao.jsp");
+                response.sendRedirect(request.getContextPath() + "/verificar-codigo");
                 return;
 
             } else {
