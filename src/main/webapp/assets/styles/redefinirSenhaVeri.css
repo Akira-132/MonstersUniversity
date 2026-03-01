@@ -1,12 +1,22 @@
 #fundo {    
-    align-items: flex-start;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    min-height: 100vh;
 }
 
-#montro_ponte {
-    display: block;
-    margin: 0 auto;
-    z-index: 5;
-    margin-bottom: -4rem;
+#container {
+    display: flex;
+    justify-content: space-around; 
+    align-items: flex-end; 
+    gap: 3rem;               
+    width: 100%;
+}
+
+
+#login-box {
+    align-self: center;
+    margin-bottom: 3rem; 
 }
 
 h1 {
@@ -14,12 +24,13 @@ h1 {
 }
 
 input {
-    margin-top: 2rem;
     margin-bottom: 2rem;
 }
+
 input[type="submit"] {
     width: 45%;
 }
+
 #links_principais a {
     color: #0491FC;
     text-decoration: none;
@@ -44,6 +55,7 @@ input[type="submit"] {
     border-radius: 15px;
     font-size: 1.1rem;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 #btn-voltar:hover {
