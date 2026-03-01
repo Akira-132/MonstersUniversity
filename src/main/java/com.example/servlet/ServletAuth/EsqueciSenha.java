@@ -16,8 +16,44 @@ import java.util.Random;
 @WebServlet("/esqueci-senha")
 public class EsqueciSenha extends HttpServlet {
 
+    private static final SecureRandom RANDOM = new SecureRandom();
+
+    private String gerarCodigo() {
+        return String.valueOf(10000 + RANDOM.nextInt(90000));
+    }
+
+    private void gerarEEnviarCodigo(HttpSession session, String email) {
+
+        String codigo = gerarCodigo();
+
+        session.setAttribute("codigoRecuperacao", codigo);
+        session.setAttribute("emailRecuperacao", email);
+
+        // 🚀 envio assíncrono (não bloqueia)
+        EmailService.enviarCodigoRecuperacaoAsync(email, codigo);
+    }
+
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        if ("true".equals(request.getParameter("reenviar"))) {
+
+            HttpSession session = request.getSession(false);
+
+            if (session != null) {
+                String email = (String) session.getAttribute("emailRecuperacao");
+
+                if (email != null) {
+                    gerarEEnviarCodigo(session, email);
+                    response.sendRedirect(request.getContextPath() + "/verificar-codigo");
+                    return;
+                }
+            }
+
+            response.sendRedirect(request.getContextPath() + "/esqueci-senha");
+            return;
+        }
 
         request.getRequestDispatcher("/WEB-INF/views/redefinirSenhaVeri.jsp")
                 .forward(request, response);
@@ -45,15 +81,8 @@ public class EsqueciSenha extends HttpServlet {
 
             if (usuario != null) {
 
-                SecureRandom random = new SecureRandom();
-                int numero = 10000 + random.nextInt(90000);
-                String codigo = String.valueOf(numero);
-
                 HttpSession session = request.getSession();
-                session.setAttribute("codigoRecuperacao", codigo);
-                session.setAttribute("emailRecuperacao", email);
-
-                EmailService.enviarCodigoRecuperacao(email, codigo);
+                gerarEEnviarCodigo(session, email);
 
                 response.sendRedirect(request.getContextPath() + "/verificar-codigo");
                 return;
@@ -63,7 +92,6 @@ public class EsqueciSenha extends HttpServlet {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
             request.setAttribute("erro", "Erro interno ao processar a solicitação.");
         }
 

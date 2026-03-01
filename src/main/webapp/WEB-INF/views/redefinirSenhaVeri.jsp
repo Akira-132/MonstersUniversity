@@ -23,7 +23,7 @@
              width="250">
 
         <div id="login-box">
-            <h1>Verificação de Aluno</h1>
+            <h1>Redefinir Senha</h1>
 
             <%
                 String erro = (String) request.getAttribute("erro");

@@ -54,6 +54,13 @@
                            style="width:65px; height:75px; text-align:center; font-size:34px; font-weight:bold; border-radius:8px; border:2px solid #ccc;">
 
                 </div>
+                <p style="text-align:center; margin-bottom:15px;">
+                    Não recebeu o código?
+                    <a href="${pageContext.request.contextPath}/esqueci-senha?reenviar=true"
+                       style="color:#0056b3; font-weight:bold; text-decoration:none;">
+                        Enviar novamente
+                    </a>
+                </p>
 
                 <div id="buttons">
                     <a href="${pageContext.request.contextPath}/esqueci-senha" id="btn-voltar">Voltar</a>
