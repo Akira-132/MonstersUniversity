@@ -11,8 +11,10 @@
 </head>
 <body>
     <header>
-        <img src="../../assets/imgs/Logo.png" alt="LOGO">
-    </header>
+        <a href="">
+            <img src="../../assets/imgs/Logo.png" alt="LOGO">
+        </a>
+        </header>
 
     <div id="fundo">
         
