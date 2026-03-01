@@ -24,7 +24,7 @@
                     <p>Insira o código de 5 dígitos enviado para exemplo@email.com:</p>
                 </div>
                 <div>
-                    <form action="matricula.jsp" method="post">
+                    <form action="redefinirSenha.jsp" method="post">
                         <div id="inputs">
                             <input type="text" maxlength="1" />
                             <input type="text" maxlength="1" />
