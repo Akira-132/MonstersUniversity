@@ -50,7 +50,7 @@ public class MatricularAluno extends HttpServlet {
 
             usuarioDAO.update(usuarioExistente);
 
-            response.sendRedirect(request.getContextPath() + "/?cadastro=aluno-sucesso");
+            response.sendRedirect(request.getContextPath() + "/?origem=aluno-sucesso");
 
         } catch (NumberFormatException e) {
 
