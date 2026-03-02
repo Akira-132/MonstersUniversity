@@ -11,7 +11,7 @@
 </head>
 <body>
 <header>
-    <a href="${pageContext.request.contextPath}/login?tipo=admin">
+    <a href="${pageContext.request.contextPath}/login-admin">
         <img src="${pageContext.request.contextPath}/assets/imgs/Logo.png" alt="LOGO">
     </a>
 </header>
@@ -68,7 +68,7 @@
         </script>
         <% } %>
         <div>
-            <form action="${pageContext.request.contextPath}/login?tipo=normal" method="post">
+            <form action="${pageContext.request.contextPath}/login" method="post">
                 <input type="text" name="username" placeholder="Usuário" required>
                 <input type="password" name="password" placeholder="Senha" required>
 

@@ -209,6 +209,37 @@ public class AlunoDAO {
         return aluno;
     }
 
+    public Usuario loginPorMatricula(String matricula, String senha) throws SQLException {
+        String sql = "SELECT u.id_usuario, u.nome, u.sobrenome, u.email, u.senha " +
+                "FROM aluno a " +
+                "INNER JOIN usuario u ON a.id_usuario = u.id_usuario " +
+                "WHERE a.matricula = ? AND u.senha = ?";
+
+        Conexao conexao = new Conexao();
+        Usuario usuario = null;
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, matricula);
+            pstmt.setString(2, senha);
+
+            try (ResultSet rset = pstmt.executeQuery()) {
+                if (rset.next()) {
+                    usuario = new Usuario(
+                            rset.getInt("id_usuario"),
+                            rset.getString("nome"),
+                            rset.getString("sobrenome"),
+                            rset.getString("email"),
+                            rset.getString("senha")
+                    );
+                }
+            }
+        }
+
+        return usuario;
+    }
+
     public int update(Aluno aluno) throws SQLException {
         String sql = "UPDATE aluno SET cpf = ?, matricula = ?, id_usuario = ? WHERE id_aluno = ?";
         Conexao conexao = new Conexao();

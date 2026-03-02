@@ -14,7 +14,7 @@ import java.util.List;
 public class AuthFilter implements Filter {
 
     private final List<String> PUBLIC_PATHS = Arrays.asList(
-            "/", "/index.jsp", "/login", "/login-admin.jsp",
+            "/", "/index.jsp", "/login", "/login-admin", "/login-admin.jsp",
             "/verificacao-aluno.jsp", "/verificar-cpf",
             "/redefinir-senha.jsp", "/esqueci-senha",
             "/logout", "/verificacao-usuario.jsp",
