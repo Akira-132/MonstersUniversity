@@ -15,15 +15,41 @@
     <input type="checkbox" id="modal-adicionar" />
     <input type="checkbox" id="modal-editar" />
     <input type="checkbox" id="modal-excluir">
+    <input type="checkbox" id="modal-adicionar-diciplina" />
 
     <div id="overlay-adicionar">
         <div class="modal">
             <h2>Turma</h2>
-
             <form>
                 <div class="campo">
                     <label for="sala">Sala</label>
                     <input type="text" id="sala" placeholder="Turma A" />
+                </div>
+
+                <div class="campo">
+                    <label for="periodo">período</label>
+                    <select id="periodo">
+                        <option value="">Selecione</option>
+                        <option value="manha">Manhã</option>
+                        <option value="tarde">Tarde</option>
+                        <option value="noite">Noite</option>
+                    </select>
+                </div>
+
+                <div class="modal-botoes">
+                    <label for="modal-adicionar" class="btn-cancelar">Cancelar</label>
+                    <button type="submit" class="btn-confirmar">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="overlay-adicionar">
+        <div class="modal">
+            <h2>Disciplina</h2>
+            <form>
+                <div class="campo">
+                    <label for="sala">Nome</label>
+                    <input type="text" id="sala" placeholder="Camuflagem" />
                 </div>
 
                 <div class="campo">
@@ -149,8 +175,11 @@
                         <option value="portais">Portais dimensionais</option>
                     </select>
                 </div>
-
-                <label for="modal-adicionar" id="btn-adicionar-turma">+ Adicionar turma</label>
+                <div>
+                    <label for="modal-adicionar" id="btn-adicionar-turma">+ Adicionar Disciplina</label>
+                    <label for="modal-adicionar" id="btn-adicionar-turma">+ Adicionar turma</label>
+                </div>
+                
             </div>
 
             <div id="turmas-lista">

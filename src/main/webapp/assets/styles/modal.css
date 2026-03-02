@@ -7,7 +7,8 @@
 
 #overlay-adicionar,
 #overlay-editar,
-#overlay-excluir {
+#overlay-excluir,
+#modal-adicionar-diciplina {
   display: none;
   position: fixed;
   inset: 0;
