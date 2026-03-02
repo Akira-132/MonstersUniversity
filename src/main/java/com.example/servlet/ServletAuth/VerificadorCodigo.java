@@ -56,10 +56,10 @@ public class VerificadorCodigo extends HttpServlet {
             session.removeAttribute("codigoRecuperacao");
             session.setAttribute("codigoVerificado", true);
 
-            response.sendRedirect(request.getContextPath() + "/");
+            response.sendRedirect(request.getContextPath() + "/redefinir-senha");
         } else {
             request.setAttribute("erro", "Código inválido. Tente novamente.");
-            request.getRequestDispatcher("/WEB-INF/views/verificacao.jsp")
+            request.getRequestDispatcher("/WEB-INF/views/verificaçao.jsp")
                     .forward(request, response);
         }
     }
