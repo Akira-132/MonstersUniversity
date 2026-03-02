@@ -1,6 +1,7 @@
 #modal-adicionar,
 #modal-editar,
-#modal-excluir {
+#modal-excluir,
+#modal-adicionar-disciplina {
   display: none;
 }
 
@@ -8,7 +9,7 @@
 #overlay-adicionar,
 #overlay-editar,
 #overlay-excluir,
-#modal-adicionar-diciplina {
+#overlay-adicionar-disciplina {
   display: none;
   position: fixed;
   inset: 0;
@@ -20,7 +21,8 @@
 
 #modal-adicionar:checked ~ #overlay-adicionar,
 #modal-editar:checked ~ #overlay-editar,
-#modal-excluir:checked ~ #overlay-excluir {
+#modal-excluir:checked ~ #overlay-excluir,
+#modal-adicionar-disciplina:checked ~ #overlay-adicionar-disciplina {
   display: flex;
 }
 
