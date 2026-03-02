@@ -45,7 +45,7 @@ button:hover {
 }
 
 .aluno-card,
-.professores-card {
+.professor-card {
   background: #fff;
   box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.329);
   border: 0.1rem solid transparent;

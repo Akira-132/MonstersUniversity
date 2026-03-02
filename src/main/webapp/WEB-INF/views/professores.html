@@ -5,20 +5,57 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="../../assets/imgs/Logo.png" type="image/x-icon" />
-    <link rel="stylesheet" href="../../assets/styles/turmaA.css" />
+    <link rel="stylesheet" href="../../assets/styles/turmaAdm.css" />
     <link rel="stylesheet" href="../../assets/styles/globalApp.css" />
+    <link rel="stylesheet" href="../../assets/styles/modal.css">
     <title>Monsters University</title>
 </head>
 
 <body>
+
+    <input type="checkbox" id="modal-excluir">
+
+    <div id="overlay-excluir">
+        <div class="modal">
+            <h2>Excluir Professor</h2>
+
+            <form>
+                <div class="campo">
+                    <label for="sala-edit"></label>
+                    <input type="text" id="sala-edit" value="Felipe Augusto" />
+                </div>
+
+                <div class="campo">
+                    <label for="periodo-edit">Disciplina</label>
+                    <input type="text" id="periodo-edit" value="Camuflagem" />
+                </div>
+                <div class="campo">
+                    <label for="confirmacao">Tem certeza que deseja excluir este Professor?</label>
+                </div>
+                <div class="modal-botoes">
+                    <label for="modal-excluir" class="btn-cancelar">Cancelar</label>
+                    <button type="submit" class="btn-confirmar">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <aside>
         <div id="logo">
             <img src="../../assets/imgs/Logo.png" alt="" />
         </div>
         <nav>
-            <a href="turmasProfessor.html" class="ativo">
+            <a href="turmasAdm.html">
                 <img src="../../assets/imgs/icone-diciplinas.png" alt="" />
                 Disciplina
+            </a>
+            <a href="adicionar.html">
+                <img src="../../assets/imgs/icone-adicionar.png" alt="" />
+                Adicionar
+            </a>
+            <a href="professores.html" class="ativo">
+                <img src="../../assets/imgs/icone-professores.png" alt=""/>
+                Professores
             </a>
         </nav>
 
@@ -27,26 +64,56 @@
                 <img src="../../assets/imgs/icone-usuario.png" alt="" />
             </div>
             <span>
-                <strong>Felipe Augusto</strong>
-                Camuflagem
+                <strong>Akira</strong>
+                Super Administrador
             </span>
         </div>
     </aside>
 
     <main>
-        <header>Minha disciplina</header>
+        <header>Turma A</header>
         <div id="conteudo">
 
-            <h1 >Professores</h1>
+            <h1>TURMA A</h1>
 
 
             <div id="professores-lista">
-                <p class="professores-card">Felipe Augusto</p>
-                <p class="professores-card">Santos dumont</p>
-                <p class="professores-card">NIkolas tesla</p>
-                <p class="professores-card">Alberto estains</p>
-                <p class="professores-card">Sócrates Oliveira</p>
-                <p class="professores-card">Aristóteles de Estagira</p>
+                <div class="professor-card">
+                    Felipe Augusto
+                    <label for="modal-excluir">
+                        <img src="../../assets/imgs/icone-lixeira.png" alt="" class="icone-lixeira" />
+                    </label>
+                </div>
+                <div class="professor-card">
+                    Santos Dumont
+                    <label for="modal-excluir">
+                        <img src="../../assets/imgs/icone-lixeira.png" alt="" class="icone-lixeira" />
+                    </label>                
+                </div>
+                <div class="professor-card">
+                    Nikolas Tesla
+                    <label for="modal-excluir">
+                        <img src="../../assets/imgs/icone-lixeira.png" alt="" class="icone-lixeira" />
+                    </label>                
+                </div>
+                <div class="professor-card">
+                    Albert Einstein
+                    <label for="modal-excluir">
+                        <img src="../../assets/imgs/icone-lixeira.png" alt="" class="icone-lixeira" />
+                    </label>                
+                </div>
+                <div class="professor-card">
+                    Sócrates Oliveira
+                    <label for="modal-excluir">
+                        <img src="../../assets/imgs/icone-lixeira.png" alt="" class="icone-lixeira" />
+                    </label>                
+                </div>
+                <div class="professor-card">
+                    Aristóteles de Estagira
+                    <label for="modal-excluir">
+                        <img src="../../assets/imgs/icone-lixeira.png" alt="" class="icone-lixeira" />
+                    </label>                
+                </div>
             </div>
 
         </div>
