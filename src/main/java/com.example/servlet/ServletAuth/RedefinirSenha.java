@@ -4,10 +4,7 @@ import com.example.dao.UsuarioDAO;
 import com.example.models.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 
 import java.io.IOException;
 
@@ -15,48 +12,88 @@ import java.io.IOException;
 public class RedefinirSenha extends HttpServlet {
 
     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession(false);
+
+        if (session == null || session.getAttribute("codigoVerificado") == null) {
+            response.sendRedirect(request.getContextPath() + "/esqueci-senha");
+            return;
+        }
+
+        request.getRequestDispatcher("/WEB-INF/views/redefinirSenha.jsp")
+                .forward(request, response);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-        String novaSenha = request.getParameter("senha");
 
-        HttpSession session = request.getSession();
-        String email = (String) session.getAttribute("emailRecuperacao");
+        HttpSession session = request.getSession(false);
 
-        if (email == null) {
-            request.setAttribute("erro", "Sessão expirada. Inicie o processo novamente.");
-            request.getRequestDispatcher("/redefinir-senha.jsp").forward(request, response);
+        if (session == null || session.getAttribute("emailRecuperacao") == null) {
+            response.sendRedirect(request.getContextPath() + "/esqueci-senha");
             return;
         }
+
+        String senha = request.getParameter("senha");
+        String confirmarSenha = request.getParameter("confirmarSenha");
+
+        if (senha == null || confirmarSenha == null) {
+            request.setAttribute("erro", "Preencha todos os campos.");
+            request.getRequestDispatcher("/WEB-INF/views/redefinirSenha.jsp")
+                    .forward(request, response);
+            return;
+        }
+
+        if (!senha.equals(confirmarSenha)) {
+            request.setAttribute("erro", "As senhas não coincidem.");
+            request.getRequestDispatcher("/WEB-INF/views/redefinirSenha.jsp")
+                    .forward(request, response);
+            return;
+        }
+
+        if (senha.length() < 8) {
+            request.setAttribute("erro", "A senha deve ter no mínimo 8 caracteres.");
+            request.getRequestDispatcher("/WEB-INF/views/redefinirSenha.jsp")
+                    .forward(request, response);
+            return;
+        }
+
+        String email = (String) session.getAttribute("emailRecuperacao");
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
 
         try {
+
             Usuario usuario = usuarioDAO.readByEmail(email);
 
             if (usuario != null) {
-                usuario.setSenha(novaSenha);
 
-                if (usuarioDAO.update(usuario) > 0) {
-                    session.removeAttribute("codigoRecuperacao");
-                    session.removeAttribute("emailRecuperacao");
-                    session.removeAttribute("codigoVerificado");
+                usuario.setSenha(senha);
 
-                    response.sendRedirect(request.getContextPath() + "/login.jsp");
+                int linhasAfetadas = usuarioDAO.update(usuario);
+
+                if (linhasAfetadas > 0) {
+
+                    session.invalidate();
+
+                    response.sendRedirect(request.getContextPath() + "/?origem=senha-sucesso");
                     return;
-                } else {
-                    request.setAttribute("erro", "Erro ao atualizar a senha.");
                 }
             }
 
-        } catch (IllegalArgumentException e) {
-            request.setAttribute("erro", "Validação: " + e.getMessage());
+            request.setAttribute("erro", "Erro ao atualizar senha.");
+
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("erro", "Erro interno ao salvar nova senha.");
         }
 
-        request.getRequestDispatcher("/criar-senha.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/redefinirSenha.jsp")
+                .forward(request, response);
     }
 }

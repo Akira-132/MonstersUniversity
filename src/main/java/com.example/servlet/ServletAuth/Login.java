@@ -1,6 +1,5 @@
 package com.example.servlet.ServletAuth;
 
-import com.example.dao.AdminDAO;
 import com.example.dao.AlunoDAO;
 import com.example.dao.ProfessorDAO;
 import com.example.dao.UsuarioDAO;
@@ -18,51 +17,55 @@ import java.io.IOException;
 public class Login extends HttpServlet {
 
     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/index.jsp").forward(request, response);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
 
-        String email = request.getParameter("usuario");
-        String senha = request.getParameter("senha");
+        String username = request.getParameter("username");
+        String senha = request.getParameter("password");
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        AdminDAO adminDAO = new AdminDAO();
         ProfessorDAO professorDAO = new ProfessorDAO();
         AlunoDAO alunoDAO = new AlunoDAO();
 
         try {
-            Usuario usuarioLogado = usuarioDAO.login(email, senha);
+            Usuario usuarioLogado = null;
 
-            if (usuarioLogado != null) {
-                HttpSession session = request.getSession();
-                session.setAttribute("usuarioLogado", usuarioLogado);
+            if (username.matches("\\d+")) {
+                usuarioLogado = alunoDAO.loginPorMatricula(username, senha);
 
-                if (adminDAO.readByUsuarioId(usuarioLogado.getId()) != null) {
-                    response.sendRedirect(request.getContextPath() + "/admin-read");
+                if (usuarioLogado != null) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("usuarioLogado", usuarioLogado);
+                    response.sendRedirect(request.getContextPath() + "/alunoTELA");
                     return;
                 }
-
-                if (professorDAO.readByUsuarioId(usuarioLogado.getId()) != null) {
-                    response.sendRedirect(request.getContextPath() + "/disciplina-read");
-                    return;
-                }
-
-                if (alunoDAO.readByUsuarioId(usuarioLogado.getId()) != null) {
-                    response.sendRedirect(request.getContextPath() + "/nota-read");
-                    return;
-                }
-
-                request.setAttribute("erro", "Perfil de acesso não encontrado.");
             } else {
-                request.setAttribute("erro", "Usuário ou senha incorretos.");
+                usuarioLogado = usuarioDAO.login(username, senha);
+
+                if (usuarioLogado != null && professorDAO.readByUsuarioId(usuarioLogado.getId()) != null) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("usuarioLogado", usuarioLogado);
+                    response.sendRedirect(request.getContextPath() + "/professorTELA");
+                    return;
+                }
             }
+
+            request.setAttribute("erro", "Usuário ou senha incorretos.");
 
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("erro", "Erro interno ao tentar fazer login.");
         }
 
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        request.setAttribute("erro", request.getAttribute("erro"));
+        request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
 }

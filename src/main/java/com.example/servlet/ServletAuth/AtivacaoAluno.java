@@ -12,6 +12,13 @@ import java.io.IOException;
 
 @WebServlet("/ativar-matricula")
 public class AtivacaoAluno extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        request.getRequestDispatcher("/WEB-INF/views/verificaçaoUsuario.jsp")
+                .forward(request, response);
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -34,7 +41,7 @@ public class AtivacaoAluno extends HttpServlet {
                 usuario.setSenha(senha);
 
                 if (usuarioDAO.update(usuario) > 0) {
-                    response.sendRedirect("login.jsp");
+                    response.sendRedirect(request.getContextPath() + "/login");
                     return;
                 } else {
                     request.setAttribute("erro", "Erro ao ativar matrícula.");
@@ -50,6 +57,7 @@ public class AtivacaoAluno extends HttpServlet {
             request.setAttribute("erro", "Erro inesperado.");
         }
 
-        request.getRequestDispatcher("matricula.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/matricula.jsp")
+                .forward(request, response);
     }
 }
