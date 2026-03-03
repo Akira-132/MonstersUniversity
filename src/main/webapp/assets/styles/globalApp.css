@@ -117,3 +117,7 @@ header {
   color: white;
   border-bottom: 0.1rem solid #e0e4ef;
 }
+
+a{
+  text-decoration: none;
+}
