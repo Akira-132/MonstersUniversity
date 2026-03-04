@@ -32,10 +32,10 @@ public class NotaDAO {
         String sql =
                 "SELECT n.id_nota, n.tipo, n.semestre, n.ano, n.nota, n.id_aluno, n.id_disciplina, " +
                         "a.id_aluno, a.cpf, a.matricula, a.id_usuario AS aluno_usuario_id, " +
-                        "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha AS aluno_tipo, " +
+                        "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha, " +
                         "d.id_disciplina, d.nome AS disciplina_nome, d.id_professor, " +
                         "p.id_professor, p.id_usuario AS professor_usuario_id, " +
-                        "up.id_usuario AS usuario_professor_id, up.nome AS professor_nome, up.sobrenome AS professor_sobrenome, up.email AS professor_email, up.senha AS professor_senha AS professor_tipo " +
+                        "up.id_usuario AS usuario_professor_id, up.nome AS professor_nome, up.sobrenome AS professor_sobrenome, up.email AS professor_email, up.senha AS professor_senha " +
                         "FROM nota n " +
                         "INNER JOIN aluno a ON n.id_aluno = a.id_aluno " +
                         "INNER JOIN usuario ua ON a.id_usuario = ua.id_usuario " +
@@ -43,6 +43,7 @@ public class NotaDAO {
                         "INNER JOIN professor p ON d.id_professor = p.id_professor " +
                         "INNER JOIN usuario up ON p.id_usuario = up.id_usuario " +
                         "ORDER BY n.id_nota ASC";
+
 
         Conexao conexao = new Conexao();
         List<Nota> lista = new LinkedList<>();
@@ -64,10 +65,10 @@ public class NotaDAO {
         String sql =
                 "SELECT n.id_nota, n.tipo, n.semestre, n.ano, n.nota, n.id_aluno, n.id_disciplina, " +
                         "a.id_aluno, a.cpf, a.matricula, a.id_usuario AS aluno_usuario_id, " +
-                        "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha AS aluno_tipo, " +
+                        "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha, " +
                         "d.id_disciplina, d.nome AS disciplina_nome, d.id_professor, " +
                         "p.id_professor, p.id_usuario AS professor_usuario_id, " +
-                        "up.id_usuario AS usuario_professor_id, up.nome AS professor_nome, up.sobrenome AS professor_sobrenome, up.email AS professor_email, up.senha AS professor_senha AS professor_tipo " +
+                        "up.id_usuario AS usuario_professor_id, up.nome AS professor_nome, up.sobrenome AS professor_sobrenome, up.email AS professor_email, up.senha AS professor_senha " +
                         "FROM nota n " +
                         "INNER JOIN aluno a ON n.id_aluno = a.id_aluno " +
                         "INNER JOIN usuario ua ON a.id_usuario = ua.id_usuario " +

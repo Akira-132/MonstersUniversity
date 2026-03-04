@@ -143,7 +143,7 @@ public class AdminDAO {
     }
 
     public int deleteById(int id) throws SQLException {
-        String sql = "DELETE FROM admin WHERE id_admin = ?";
+        String sql = "DELETE FROM usuario WHERE id_usuario = (SELECT id_usuario FROM admin WHERE id_admin = ?)";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
@@ -155,7 +155,7 @@ public class AdminDAO {
     }
 
     public int deleteByUsuarioId(int usuarioId) throws SQLException {
-        String sql = "DELETE FROM admin WHERE id_usuario = ?";
+        String sql = "DELETE FROM usuario WHERE id_usuario = ?";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();

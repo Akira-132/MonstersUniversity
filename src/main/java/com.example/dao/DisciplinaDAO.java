@@ -38,7 +38,7 @@ public class DisciplinaDAO {
                         "u.nome AS usuario_nome, " +
                         "u.sobrenome, " +
                         "u.email, " +
-                        "u.senha, " +
+                        "u.senha " +
                         "FROM disciplina d " +
                         "INNER JOIN professor p ON d.id_professor = p.id_professor " +
                         "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
@@ -96,7 +96,7 @@ public class DisciplinaDAO {
                         "u.nome AS usuario_nome, " +
                         "u.sobrenome, " +
                         "u.email, " +
-                        "u.senha, " +
+                        "u.senha " +
                         "FROM disciplina d " +
                         "INNER JOIN professor p ON d.id_professor = p.id_professor " +
                         "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
@@ -156,7 +156,7 @@ public class DisciplinaDAO {
                         "u.nome AS usuario_nome, " +
                         "u.sobrenome, " +
                         "u.email, " +
-                        "u.senha, " +
+                        "u.senha " +
                         "FROM disciplina d " +
                         "INNER JOIN professor p ON d.id_professor = p.id_professor " +
                         "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +

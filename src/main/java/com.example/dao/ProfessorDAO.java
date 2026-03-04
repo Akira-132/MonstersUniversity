@@ -67,7 +67,7 @@ public class ProfessorDAO {
                 "p.id_professor, " +
                 "p.id_usuario AS p_id_usuario, " +
                 "u.id_usuario AS u_id_usuario, " +
-                "u.nome, u.sobrenome, u.email, u.senha" +
+                "u.nome, u.sobrenome, u.email, u.senha " +
                 "FROM professor p " +
                 "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
                 "WHERE p.id_professor = ?";
@@ -110,7 +110,7 @@ public class ProfessorDAO {
                 "p.id_professor, " +
                 "p.id_usuario AS p_id_usuario, " +
                 "u.id_usuario AS u_id_usuario, " +
-                "u.nome, u.sobrenome, u.email, u.senha" +
+                "u.nome, u.sobrenome, u.email, u.senha " +
                 "FROM professor p " +
                 "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
                 "WHERE p.id_usuario = ?";
@@ -163,7 +163,7 @@ public class ProfessorDAO {
     }
 
     public int deleteById(int id) throws SQLException {
-        String sql = "DELETE FROM professor WHERE id_professor = ?";
+        String sql = "DELETE FROM usuario WHERE id_usuario = (SELECT id_usuario FROM professor WHERE id_professor = ?)";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
@@ -175,7 +175,7 @@ public class ProfessorDAO {
     }
 
     public int deleteByUsuarioId(int usuarioId) throws SQLException {
-        String sql = "DELETE FROM professor WHERE id_usuario = ?";
+        String sql = "DELETE FROM usuario WHERE id_usuario = ?";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();

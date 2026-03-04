@@ -209,6 +209,37 @@ public class AlunoDAO {
         return aluno;
     }
 
+    public Usuario loginPorMatricula(String matricula, String senha) throws SQLException {
+        String sql = "SELECT u.id_usuario, u.nome, u.sobrenome, u.email, u.senha " +
+                "FROM aluno a " +
+                "INNER JOIN usuario u ON a.id_usuario = u.id_usuario " +
+                "WHERE a.matricula = ? AND u.senha = ?";
+
+        Conexao conexao = new Conexao();
+        Usuario usuario = null;
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, matricula);
+            pstmt.setString(2, senha);
+
+            try (ResultSet rset = pstmt.executeQuery()) {
+                if (rset.next()) {
+                    usuario = new Usuario(
+                            rset.getInt("id_usuario"),
+                            rset.getString("nome"),
+                            rset.getString("sobrenome"),
+                            rset.getString("email"),
+                            rset.getString("senha")
+                    );
+                }
+            }
+        }
+
+        return usuario;
+    }
+
     public int update(Aluno aluno) throws SQLException {
         String sql = "UPDATE aluno SET cpf = ?, matricula = ?, id_usuario = ? WHERE id_aluno = ?";
         Conexao conexao = new Conexao();
@@ -226,7 +257,7 @@ public class AlunoDAO {
     }
 
     public int deleteById(int id) throws SQLException {
-        String sql = "DELETE FROM aluno WHERE id_aluno = ?";
+        String sql = "DELETE FROM usuario WHERE id_usuario = (SELECT id_usuario FROM aluno WHERE id_aluno = ?)";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
@@ -237,14 +268,14 @@ public class AlunoDAO {
         }
     }
 
-    public int deleteByMatricula(String matricula) throws SQLException {
-        String sql = "DELETE FROM aluno WHERE matricula = ?";
+    public int deleteByUsuarioId(int usuarioId) throws SQLException {
+        String sql = "DELETE FROM usuario WHERE id_usuario = ?";
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, matricula);
+            pstmt.setInt(1, usuarioId);
             return pstmt.executeUpdate();
         }
     }

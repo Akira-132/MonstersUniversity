@@ -4,23 +4,23 @@ import java.time.LocalDateTime;
 
 public class Observacao {
     private int id;
-    private String texto;
+    private String comentario;
     private LocalDateTime dataEnvio;
     private int fkProfessorId;
     private int fkAlunoId;
     private Professor professor;
     private Aluno aluno;
 
-    public Observacao(String texto, int fkProfessorId, int fkAlunoId) {
-        this.setTexto(texto);
+    public Observacao(String comentario, int fkProfessorId, int fkAlunoId) {
+        this.setComentario(comentario);
         this.setFkProfessorId(fkProfessorId);
         this.setFkAlunoId(fkAlunoId);
         this.setDataEnvio(LocalDateTime.now());
     }
 
-    public Observacao(int id, String texto, LocalDateTime dataEnvio, int fkProfessorId, int fkAlunoId) {
+    public Observacao(int id, String comentario, LocalDateTime dataEnvio, int fkProfessorId, int fkAlunoId) {
         this.setId(id);
-        this.setTexto(texto);
+        this.setComentario(comentario);
         this.setDataEnvio(dataEnvio);
         this.setFkProfessorId(fkProfessorId);
         this.setFkAlunoId(fkAlunoId);
@@ -36,17 +36,17 @@ public class Observacao {
         this.id = id;
     }
 
-    public String getTexto() {
-        return texto;
+    public String getComentario() {
+        return comentario;
     }
-    public void setTexto(String texto) {
-        if (texto == null) {
-            throw new NullPointerException("O texto não pode ser nulo.");
+    public void setComentario(String comentario) {
+        if (comentario == null) {
+            throw new NullPointerException("O comentário não pode ser nulo.");
         }
-        if (texto.trim().isEmpty()) {
-            throw new IllegalArgumentException("O texto não pode estar em branco.");
+        if (comentario.trim().isEmpty()) {
+            throw new IllegalArgumentException("O comentário não pode estar em branco.");
         }
-        this.texto = texto;
+        this.comentario = comentario;
     }
 
     public LocalDateTime getDataEnvio() {

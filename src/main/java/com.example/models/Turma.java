@@ -1,11 +1,14 @@
 package com.example.models;
 
+import java.util.List;
+
 public class Turma {
     private int id;
     private String periodo;
     private String sala;
     private int fkDisciplinaId;
     private Disciplina disciplina;
+    private List<Aluno> alunos;
 
     public Turma(String periodo, String sala, int fkDisciplinaId) {
         this.setPeriodo(periodo);
@@ -72,5 +75,12 @@ public class Turma {
     }
     public void setDisciplina(Disciplina disciplina) {
         this.disciplina = disciplina;
+    }
+
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos = alunos;
     }
 }
