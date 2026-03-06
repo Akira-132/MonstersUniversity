@@ -1,0 +1,120 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.example.models.Usuario" %>
+<%@ page import="com.example.models.Aluno" %>
+<%@ page import="com.example.models.Telefone" %>
+
+<%
+    Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
+    Aluno alunoLogado = (Aluno) request.getAttribute("alunoLogado");
+    Telefone telefoneDoAluno = (Telefone) request.getAttribute("telefoneDoUsuario");
+
+    String nomeCompleto = (usuarioLogado != null) ? usuarioLogado.getNome() + " " + usuarioLogado.getSobrenome() : "Aluno";
+    String email = (usuarioLogado != null) ? usuarioLogado.getEmail() : "";
+    String cpf = (alunoLogado != null) ? alunoLogado.getCpf() : "Não informado";
+    String matricula = (alunoLogado != null) ? alunoLogado.getMatricula() : "Sem matrícula";
+    String telefone = (telefoneDoAluno != null) ? telefoneDoAluno.getTelefone() : "";
+
+    String erro = (String) request.getAttribute("erro");
+    String sucesso = (String) request.getAttribute("sucesso");
+%>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/imgs/Logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/styles/globalApp.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/styles/perfil.css" />
+    <title>Perfil - Monsters University</title>
+</head>
+<body>
+<aside>
+    <div id="logo">
+        <img src="${pageContext.request.contextPath}/assets/imgs/Logo.png" alt="" />
+    </div>
+    <nav>
+        <a href="${pageContext.request.contextPath}/disciplina-read">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-diciplinas.png" alt="" />
+            Disciplinas
+        </a>
+        <a href="${pageContext.request.contextPath}/boletim-read">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-boletim.png" alt="" />
+            Boletim
+        </a>
+    </nav>
+
+    <div id="info-usuario">
+        <div id="avatar">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png" alt="" />
+        </div>
+        <span>
+                <strong><%= usuarioLogado != null ? usuarioLogado.getNome() : "Aluno" %></strong>
+                Universitário
+            </span>
+    </div>
+</aside>
+
+<main>
+    <header>Meu Perfil</header>
+
+    <div id="conteudo">
+        <div id="perfil-container">
+            <div id="foto-perfil">
+                <img src="${pageContext.request.contextPath}/assets/imgs/mike-perfil.png" alt="Foto de perfil" />
+            </div>
+
+            <h1><%= nomeCompleto %></h1>
+
+            <% if (erro != null) { %>
+            <div style="color: #ff4d4d; margin-bottom: 10px; text-align: center;"><%= erro %></div>
+            <% } %>
+            <% if (sucesso != null) { %>
+            <div style="color: #4CAF50; margin-bottom: 10px; text-align: center;"><%= sucesso %></div>
+            <% } %>
+
+            <form action="${pageContext.request.contextPath}/perfil-update" method="post">
+                <div id="campos-grid">
+                    <div class="campo-perfil">
+                        <label for="email">Email</label>
+                        <div class="input-editavel">
+                            <input type="email" id="email" name="email" value="<%= email %>" />
+                            <img src="${pageContext.request.contextPath}/assets/imgs/icone-editar.png" alt="Editar" class="icone-editar-campo" />
+                        </div>
+                    </div>
+
+                    <div class="campo-perfil">
+                        <label for="telefone">Telefone</label>
+                        <div class="input-editavel">
+                            <input type="tel" id="telefone" name="telefone" value="<%= telefone %>" maxlength="15" />
+                            <img src="${pageContext.request.contextPath}/assets/imgs/icone-editar.png" alt="Editar" class="icone-editar-campo" />
+                        </div>
+                    </div>
+
+                    <div class="campo-perfil">
+                        <label for="cpf">CPF</label>
+                        <input type="text" id="cpf" value="<%= cpf %>" readonly style="background-color: #f0f0f0;"/>
+                    </div>
+
+                    <div class="campo-perfil">
+                        <label for="matricula">Matrícula</label>
+                        <input type="text" id="matricula" value="<%= matricula %>" readonly style="background-color: #f0f0f0;"/>
+                    </div>
+                </div>
+
+                <div class="campo-perfil campo-descricao">
+                    <label for="sobre">Sobre mim</label>
+                    <textarea id="sobre" rows="6" readonly style="background-color: #f0f0f0; cursor: default;">Aluno dedicado da Monsters University, apaixonado por técnicas de susto e camuflagem. Membro ativo da equipe de gritos aterrorizantes.</textarea>
+                </div>
+
+                <button type="submit" id="btn-salvar" style="background-color: #0d47a1; color: white; padding: 12px; border-radius: 8px; width: 100%; font-weight: bold; border: none; cursor: pointer; margin-bottom: 15px;">SALVAR ALTERAÇÕES</button>
+            </form>
+
+            <form action="${pageContext.request.contextPath}/logout" method="post" style="width: 100%;">
+                <button type="submit" id="btn-sair">SAIR DA CONTA</button>
+            </form>
+
+        </div>
+    </div>
+</main>
+</body>
+</html>

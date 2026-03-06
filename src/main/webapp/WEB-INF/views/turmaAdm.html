@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="../../assets/imgs/Logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="../../assets/styles/turmaAdm.css" />
+    <link rel="stylesheet" href="../../assets/styles/globalApp.css" />
+    <link rel="stylesheet" href="../../assets/styles/modal.css">
+    <title>Monsters University</title>
+</head>
+
+<body>
+
+
+    <input type="checkbox" id="modal-excluir">
+
+    <div id="overlay-excluir">
+        <div class="modal">
+            <h2>Excluir Aluno</h2>
+
+            <form>
+                <div class="campo">
+                    <label for="sala-edit"></label>
+                    <input type="text" id="sala-edit" value="Diogo Martins Nascimento" />
+                </div>
+
+                <div class="campo">
+                    <label for="periodo">período</label>
+                    <select id="periodo">
+                        <option value="">Selecione</option>
+                        <option value="manha">Manhã</option>
+                        <option value="tarde">Tarde</option>
+                        <option value="noite">Noite</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label for="confirmacao">Tem certeza que deseja excluir este aluno?</label>
+                </div>
+                <div class="modal-botoes">
+                    <label for="modal-excluir" class="btn-cancelar">Cancelar</label>
+                    <button type="submit" class="btn-confirmar">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <aside>
+        <div id="logo">
+            <img src="../../assets/imgs/Logo.png" alt="" />
+        </div>
+        <nav>
+            <a href="turmasAdm.html" class="ativo">
+                <img src="../../assets/imgs/icone-diciplinas.png" alt="" />
+                Disciplina
+            </a>
+            <a href="adicionar.jsp">
+                <img src="../../assets/imgs/icone-adicionar.png" alt="" />
+                Adicionar
+            </a>
+            <a href="professores.jsp">
+                <img src="../../assets/imgs/icone-professores.png" alt=""/>
+                Professores
+            </a>
+            <a href="http://localhost:3000/dashboard.html">
+                <img src="../../assets/imgs/icone-boletim.png" alt=""/>
+                Dashboard
+            </a>
+        </nav>
+
+        <a href="perfilAdm.html" id="info-usuario">
+            <div id="avatar">
+                <img src="../../assets/imgs/icone-usuario.png" alt="" />
+            </div>
+            <span>
+                <strong>Akira</strong>
+                Super Administrador
+            </span>
+        </a>
+    </aside>
+
+    <main>
+        <header>Turma A</header>
+        <div id="conteudo">
+
+            <h1>TURMA A</h1>
+
+            <a href="notasAdm.html"><button>NOTAS</button></a>
+
+            <div id="alunos-lista">
+                <a href="observacao-aluno.jsp" class="aluno-card">
+                    Diogo Martins Nascimento
+                    <label for="modal-excluir">
+                        <img src="../../assets/imgs/icone-lixeira.png" alt="" class="icone-lixeira" />
+                    </label>
+                </a>
+                <a href="" class="aluno-card">
+                    Orestes oliveiro
+                    <label for="modal-excluir">
+                        <img src="../../assets/imgs/icone-lixeira.png" alt="" class="icone-lixeira" />
+                    </label>                
+                </a>
+                <a class="aluno-card">
+                    Edilson Capetinha
+                    <label for="modal-excluir">
+                        <img src="../../assets/imgs/icone-lixeira.png" alt="" class="icone-lixeira" />
+                    </label>                
+                </a>
+                <a href="" class="aluno-card">
+                    Camila Orestes
+                    <label for="modal-excluir">
+                        <img src="../../assets/imgs/icone-lixeira.png" alt="" class="icone-lixeira" />
+                    </label>                
+                </a>
+                <a href="" class="aluno-card">
+                    Amorim cavalo
+                    <label for="modal-excluir">
+                        <img src="../../assets/imgs/icone-lixeira.png" alt="" class="icone-lixeira" />
+                    </label>                
+                </a>
+                <a href="" class="aluno-card">
+                    Rafael Lopes
+                    <label for="modal-excluir">
+                        <img src="../../assets/imgs/icone-lixeira.png" alt="" class="icone-lixeira" />
+                    </label>                
+                </a>
+            </div>
+
+        </div>
+    </main>
+</body>
+
+</html>

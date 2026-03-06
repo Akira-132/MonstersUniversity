@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="../../assets/imgs/Logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="../../assets/styles/globalApp.css" />
+    <link rel="stylesheet" href="../../assets/styles/perfil.css" />
+    <title>Perfil - Monsters University</title>
+</head>
+
+<body>
+    <aside>
+        <div id="logo">
+            <img src="../../assets/imgs/Logo.png" alt="" />
+        </div>
+        <nav>
+            <nav>
+                <a href="turmasProfessor.html" class="ativo">
+                    <img src="../../assets/imgs/icone-diciplinas.png" alt="" />
+                    Disciplina
+                </a>
+            </nav>
+        </nav>
+
+        <div id="info-usuario">
+            <div id="avatar">
+                <img src="../../assets/imgs/icone-usuario.png" alt="" />
+            </div>
+            <span>
+                <strong>Felipe Augusto</strong>
+                Camuflagem
+            </span>
+        </div>
+    </aside>
+
+    <main>
+        <header>Minhas disciplinas</header>
+
+        <div id="conteudo">
+            <div id="perfil-container">
+                <div id="foto-perfil">
+                    <img src="../../assets/imgs/mike-perfil.png" alt="Foto de perfil" />
+                </div>
+
+                <h1>Mini Wazowski Felipe Augusto jr</h1>
+
+                <form>
+                    <div id="campos-grid">
+                        <div class="campo-perfil">
+                            <label for="email">Email</label>
+                            <div class="input-editavel">
+                                <input type="email" id="email" value="mini.wazowski@monsters.edu" />
+                                <img src="../../assets/imgs/icone-editar.png" alt="Editar" class="icone-editar-campo" />
+                            </div>
+                        </div>
+
+                        <div class="campo-perfil">
+                            <label for="telefone">Telefone</label>
+                            <div class="input-editavel">
+                                <input type="tel" id="telefone" value="(11) 98765-4321"/>
+                                <img src="../../assets/imgs/icone-editar.png" alt="Editar" class="icone-editar-campo" />
+                            </div>
+                        </div>
+
+                        <div class="campo-perfil">
+                            <label for="cpf">CPF</label>
+                            <input type="text" id="cpf" value="123.456.789-00" readonly />
+                        </div>
+
+                        <div class="campo-perfil">
+                            <label for="matricula">Matrícula</label>
+                            <input type="text" id="matricula" value="2024001234" readonly />
+                        </div>
+                    </div>
+
+                    <div class="campo-perfil campo-descricao">
+                        <label for="sobre">Sobre mim</label>
+                        <textarea id="sobre" rows="6" placeholder="Conte um pouco sobre você...">Professor dedicado da Monsters University, apaixonado por técnicas de susto e camuflagem. Membro ativo da equipe de gritos aterrorizantes.</textarea>
+                    </div>
+
+                    <button type="submit" id="btn-sair">SAIR DA CONTA</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

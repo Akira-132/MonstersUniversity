@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="../../assets/imgs/Logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="../../assets/styles/turmasAdm.css" />
+    <link rel="stylesheet" href="../../assets/styles/globalApp.css" />
+    <link rel="stylesheet" href="../../assets/styles/modal.css">
+    <title>Monsters University</title>
+</head>
+
+<body>
+<body>
+<input type="checkbox" id="modal-adicionar" />
+<input type="checkbox" id="modal-editar" />
+<input type="checkbox" id="modal-excluir">
+<input type="checkbox" id="modal-adicionar-disciplina" />
+
+<div id="overlay-adicionar">
+    <div class="modal">
+        <h2>Turma</h2>
+        <form>
+            <div class="campo">
+                <label for="sala">Sala</label>
+                <input type="text" id="sala" placeholder="Turma A" />
+            </div>
+            <div class="campo">
+                <label for="periodo">período</label>
+                <select id="periodo">
+                    <option value="">Selecione</option>
+                    <option value="manha">Manhã</option>
+                    <option value="tarde">Tarde</option>
+                    <option value="noite">Noite</option>
+                </select>
+            </div>
+            <div class="modal-botoes">
+                <label for="modal-adicionar" class="btn-cancelar">Cancelar</label>
+                <button type="submit" class="btn-confirmar">Adicionar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<<<<<<< HEAD
+<div id="overlay-adicionar-disciplina">
+    <div class="modal">
+        <h2>Disciplina</h2>
+        <form>
+            <div class="campo">
+                <label for="nome-disciplina">Nome</label>
+                <input type="text" id="nome-disciplina" placeholder="Camuflagem" />
+=======
+    <div id="overlay-excluir">
+        <div class="modal">
+            <h2>Excluir Turma</h2>
+
+            <form>
+                <div class="campo">
+                    <label for="sala-edit"></label>
+                    <input type="text" id="sala-edit" value="Turma A" />
+                </div>
+
+                <div class="campo">
+                    <label for="periodo">período</label>
+                    <select id="periodo">
+                        <option value="">Selecione</option>
+                        <option value="manha">Manhã</option>
+                        <option value="tarde">Tarde</option>
+                        <option value="noite">Noite</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label for="confirmacao">Tem certeza que deseja excluir esta turma?</label>
+                </div>
+                <div class="modal-botoes">
+                    <label for="modal-excluir" class="btn-cancelar">Cancelar</label>
+                    <button type="submit" class="btn-confirmar">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <aside>
+        <div id="logo">
+            <img src="../../assets/imgs/Logo.png" alt="" />
+        </div>
+        <nav>
+            <a href="turmasAdm.html" class="ativo">
+                <img src="../../assets/imgs/icone-diciplinas.png" alt="" />
+                Disciplina
+            </a>
+            <a href="adicionar.html">
+                <img src="../../assets/imgs/icone-adicionar.png" alt="" />
+                Adicionar
+            </a>
+            <a href="professores.html">
+                <img src="../../assets/imgs/icone-professores.png" alt=""/>
+                Professores
+            </a>
+            <a href="http://localhost:3000/dashboard.html">
+                <img src="../../assets/imgs/icone-boletim.png" alt=""/>
+                Dashboard
+            </a>
+        </nav>
+
+        <a href="perfilAdm.html" id="info-usuario">
+            <div id="avatar">
+                <img src="../../assets/imgs/icone-usuario.png" alt="" />
+>>>>>>> develop
+            </div>
+            <div class="campo">
+                <label for="periodo-disciplina">período</label>
+                <select id="periodo-disciplina">
+                    <option value="">Selecione</option>
+                    <option value="manha">Manhã</option>
+                    <option value="tarde">Tarde</option>
+                    <option value="noite">Noite</option>
+                </select>
+            </div>
+            <div class="modal-botoes">
+                <label for="modal-adicionar-disciplina" class="btn-cancelar">Cancelar</label>
+                <button type="submit" class="btn-confirmar">Adicionar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div id="overlay-editar">
+    <div class="modal">
+        <h2>Editar Turma</h2>
+
+        <form>
+            <div class="campo">
+                <label for="sala-edit">Sala</label>
+                <input type="text" id="sala-edit" value="Turma A" />
+            </div>
+
+            <div class="campo">
+                <label for="periodo">período</label>
+                <select id="periodo">
+                    <option value="">Selecione</option>
+                    <option value="manha">Manhã</option>
+                    <option value="tarde">Tarde</option>
+                    <option value="noite">Noite</option>
+                </select>
+            </div>
+
+            <div class="modal-botoes">
+                <label for="modal-editar" class="btn-cancelar">Cancelar</label>
+                <button type="submit" class="btn-confirmar">Confirmar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="overlay-excluir">
+    <div class="modal">
+        <h2>Excluir Turma</h2>
+
+        <form>
+            <div class="campo">
+                <label for="sala-edit"></label>
+                <input type="text" id="sala-edit" value="Turma A" />
+            </div>
+
+            <div class="campo">
+                <label for="periodo">período</label>
+                <select id="periodo">
+                    <option value="">Selecione</option>
+                    <option value="manha">Manhã</option>
+                    <option value="tarde">Tarde</option>
+                    <option value="noite">Noite</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label for="confirmacao">Tem certeza que deseja excluir esta turma?</label>
+            </div>
+            <div class="modal-botoes">
+                <label for="modal-excluir" class="btn-cancelar">Cancelar</label>
+                <button type="submit" class="btn-confirmar">Confirmar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<aside>
+    <div id="logo">
+        <img src="../../assets/imgs/Logo.png" alt="" />
+    </div>
+    <nav>
+        <a href="turmasAdm.html" class="ativo">
+            <img src="../../assets/imgs/icone-diciplinas.png" alt="" />
+            Disciplina
+        </a>
+        <a href="adicionar.jsp">
+            <img src="../../assets/imgs/icone-adicionar.png" alt="" />
+            Adicionar
+        </a>
+        <a href="professores.jsp">
+            <img src="../../assets/imgs/icone-professores.png" alt=""/>
+            Professores
+        </a>
+    </nav>
+
+    <div id="info-usuario">
+        <div id="avatar">
+            <img src="../../assets/imgs/icone-usuario.png" alt="" />
+        </div>
+        <span>
+                <strong>Akira</strong>
+                Super Administrador
+            </span>
+<<<<<<< HEAD
+    </div>
+</aside>
+=======
+        </a>
+    </aside>
+>>>>>>> develop
+
+<main>
+    <header>Turmas</header>
+
+    <div id="conteudo">
+        <div id="topo-turmas">
+            <div id="filtro-disciplina">
+                <label for="disciplina-select">Selecione a disciplina</label>
+                <select id="disciplina-select">
+                    <option value="">Disciplina</option>
+                    <option value="susto">Susto em crianças</option>
+                    <option value="gritos">Gritos Aterrorizantes</option>
+                    <option value="interacoes">Interações humanos</option>
+                    <option value="camuflagem">Camuflagem</option>
+                    <option value="rugidos">Técnicas de rugidos</option>
+                    <option value="portais">Portais dimensionais</option>
+                </select>
+            </div>
+            <div>
+                <label for="modal-adicionar-disciplina" id="btn-adicionar-disciplina">+ Adicionar Disciplina</label>
+                <label for="modal-adicionar" id="btn-adicionar-turma">+ Adicionar turma</label>
+            </div>
+
+        </div>
+
+        <div id="turmas-lista">
+            <a href="turmaAdm.html">
+                <div class="turma-card">
+                    <span>Turma A</span>
+                    <div class="turma-acoes">
+                        <label for="modal-editar">
+                            <img src="../../assets/imgs/icone-editar.png" alt="Editar" class="icone-acao" />
+                        </label>
+                        <label for="modal-excluir">
+                            <img src="../../assets/imgs/icone-lixeira.png" alt="Excluir" class="icone-acao" />
+                        </label>
+                    </div>
+                    <div class="barra verde"></div>
+                </div>
+            </a>
+
+            <a href="">
+                <div class="turma-card">
+                    <span>Turma B</span>
+                    <div class="turma-acoes">
+                        <label for="modal-editar">
+                            <img src="../../assets/imgs/icone-editar.png" alt="Editar" class="icone-acao" />
+                        </label>
+                        <label for="modal-excluir">
+                            <img src="../../assets/imgs/icone-lixeira.png" alt="Excluir" class="icone-acao" />
+                        </label>
+                    </div>
+                    <div class="barra roxo"></div>
+                </div>
+            </a>
+
+            <a href="">
+                <div class="turma-card">
+                    <span>Turma C</span>
+                    <div class="turma-acoes">
+                        <label for="modal-editar">
+                            <img src="../../assets/imgs/icone-editar.png" alt="Editar" class="icone-acao" />
+                        </label>
+                        <label for="modal-excluir">
+                            <img src="../../assets/imgs/icone-lixeira.png" alt="Excluir" class="icone-acao" />
+                        </label>
+                    </div>
+                    <div class="barra verde"></div>
+                </div>
+            </a>
+
+            <a href="">
+                <div class="turma-card">
+                    <span>Turma D</span>
+                    <div class="turma-acoes">
+                        <label for="modal-editar">
+                            <img src="../../assets/imgs/icone-editar.png" alt="Editar" class="icone-acao" />
+                        </label>
+                        <label for="modal-excluir">
+                            <img src="../../assets/imgs/icone-lixeira.png" alt="Excluir" class="icone-acao" />
+                        </label>
+                    </div>
+                    <div class="barra roxo"></div>
+                </div>
+            </a>
+
+        </div>
+    </div>
+</main>
+</body>
+</html>

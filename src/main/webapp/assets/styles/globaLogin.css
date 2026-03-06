@@ -1,0 +1,160 @@
+/*Com responsividade*/
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Geologica:wght@400;700&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    background-image: url('../imgs/Fundo_Azul.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h1, h2, h3 {
+    font-family: "Montserrat";
+}
+
+p, a, input {
+    font-family: "Geologica";
+}
+
+header {
+    position: absolute;
+    top: 1.3rem;
+    left: 1.3rem;
+    z-index: 10;
+}
+
+#fundo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
+#login-box {
+    border: 0.2rem solid #C6BEBE;
+    background: white;
+    padding: 0.6rem 2.5rem;
+    border-radius: 1.3rem;
+    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.1);
+    text-align: center;
+    align-items: center;
+    width: 31.3rem;
+    z-index: 5;
+}
+
+h1 {
+    background: linear-gradient(to right, #0F66F1, #0491FC, #12E9DB);
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    font-size: 3.6rem;
+    margin-top: 2rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    margin: 0 auto;
+    padding: 3rem 0;
+    align-self: center;
+}
+
+input {
+    padding: 0.8rem 1.3rem;
+    border: 0.1rem solid #ddd;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 0.9rem;
+    outline: none;
+    width: 100%;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #0491FC;
+}
+
+#links_principais {
+    display: flex;
+    flex-direction: column;
+}
+
+#links_principais a {
+    color: #0491FC;
+    text-decoration: none;
+    font-size: 1rem;
+    text-align: left;
+    margin-bottom: 0.5rem;
+}
+
+#links_principais a:hover {
+    text-decoration: underline;
+}
+
+#btn-login {
+    background-color: #4289F9;
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 0.9rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+#btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.3rem 0.8rem rgba(66, 137, 249, 0.4);
+}
+/* tela media */
+@media (max-width: 1200px) {
+
+    #login-box{
+        width: 26rem;
+    }
+
+    h1{
+        font-size: 3rem;
+    }
+
+}
+/* tela menor */
+@media (max-width: 768px) {
+
+    body{
+        overflow: auto;
+    }
+
+    #login-box{
+        width: 90%;
+        max-width: 22rem;
+        padding: 1.5rem;
+    }
+
+    h1{
+        font-size: 2.2rem;
+        margin-top: 1.5rem;
+    }
+
+    input{
+        font-size: 0.95rem;
+    }
+
+    #btn-login{
+        font-size: 1rem;
+        padding: 0.9rem;
+    }
+
+}

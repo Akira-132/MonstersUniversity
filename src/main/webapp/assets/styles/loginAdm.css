@@ -1,0 +1,50 @@
+
+#img_admin {
+    position: absolute;
+    bottom: 0;
+    right:3rem;
+    z-index: 16;
+    height: 48%;
+}
+a{
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+}
+input[type="submit"]{
+    margin-bottom: 0;
+}
+#btn-login{
+    margin-top: 2rem;
+}
+/* tela media */
+@media (max-width: 1200px) {
+
+    #img_admin {
+        height: 40%;
+        right: 2rem;
+    }
+
+}
+
+/* tela menor */
+@media (max-width: 768px) {
+
+    #img_admin {
+        position: relative;
+        display: block;
+        margin: 2rem auto 0;
+        right: auto;
+        bottom: auto;
+        height: 12rem;
+    }
+
+    a {
+        margin-top: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    #btn-login {
+        margin-top: 1.5rem;
+    }
+
+}

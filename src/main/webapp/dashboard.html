@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="../../assets/imgs/Logo.png" type="image/x-icon" />
+  <link rel="stylesheet" href="../../assets/styles/dashboard.css" />
+  <link rel="stylesheet" href="../../assets/styles/globalApp.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>Dashboard - Monsters University</title>
+</head>
+
+<body>
+  <aside>
+    <div id="logo">
+      <img src="../../assets/imgs/Logo.png" alt="" />
+    </div>
+    <nav>
+      <a href="http://127.0.0.1:5500/src/main/webapp/WEB-INF/views/turmasAdm.html">
+        <img src="../../assets/imgs/icone-diciplinas.png" alt="" />
+        Disciplina
+      </a>
+      <a href="http://127.0.0.1:5500/src/main/webapp/WEB-INF/views/adicionar.html">
+        <img src="../../assets/imgs/icone-adicionar.png" alt="" />
+        Adicionar
+      </a>
+      <a href="http://127.0.0.1:5500/src/main/webapp/WEB-INF/views/professores.html">
+        <img src="../../assets/imgs/icone-professores.png" alt="" />
+        Professores
+      </a>
+      <a href="dashboard.html" class="ativo">
+        <img src="../../assets/imgs/icone-boletim.png" alt="" />
+        Dashboards
+      </a>
+    </nav>
+
+    <div id="info-usuario">
+      <div id="avatar">
+        <img src="../../assets/imgs/icone-usuario.png" alt="" />
+      </div>
+      <span>
+        <strong>Felipe Augusto</strong>
+        Camuflagem
+      </span>
+    </div>
+  </aside>
+
+  <main>
+    <section id="dashboard">
+
+      <div class="card verde">
+        <div class="info">
+          <h2>Total de Alunos</h2>
+          <p id="total"></p>
+        </div>
+      </div>
+
+      <div class="card roxo">
+        <div class="info">
+          <h2>Média Geral</h2>
+          <p id="mediaG"></p>
+        </div>
+      </div>
+
+      <div class="card verde">
+        <div class="info">
+          <h2>Quantidade de disciplinas</h2>
+          <p id="qtd_disciplinas"></p>
+        </div>
+      </div>
+
+      <div class="card roxo">
+        <div class="info">
+          <h2>Melhor Aluno</h2>
+          <p id="melhor_aluno"></p>
+        </div>
+      </div>
+
+      <div class="card grafico">
+        <h2>Desempenho Geral</h2>
+
+        <div class="filtros">
+          <select id="alunoSelect">
+            <option value="">Todos os alunos</option>
+          </select>
+
+          <select id="disciplinaSelect">
+            <option value="">Todas as disciplinas</option>
+          </select>
+
+          <button onclick="carregarGrafico()">Filtrar</button>
+        </div>
+
+        <canvas id="grafico"></canvas>
+      </div>
+
+    </section>
+  </main>
+  <script>
+    /*comeca o script*/
+    let graficoInstance = null;
+
+    async function carregarAlunos() {
+      const res = await fetch("http://localhost:3000/alunos");
+      const alunos = await res.json();
+
+      const select = document.getElementById("alunoSelect");
+
+      alunos.forEach(aluno => {
+        const option = document.createElement("option");
+        option.value = aluno.id_aluno;
+        option.textContent = aluno.nome;
+        select.appendChild(option);
+      });
+    }
+
+    async function carregarDisciplinas() {
+      const res = await fetch("http://localhost:3000/disciplinas");
+      const disciplinas = await res.json();
+
+      const select = document.getElementById("disciplinaSelect");
+
+      disciplinas.forEach(d => {
+        const option = document.createElement("option");
+        option.value = d.id_disciplina;
+        option.textContent = d.nome;
+        select.appendChild(option);
+      });
+    }
+
+    async function carregarGrafico() {
+
+      const aluno = document.getElementById("alunoSelect").value;
+      const disciplina = document.getElementById("disciplinaSelect").value;
+
+      let url = "http://localhost:3000/desempenho?";
+
+      if (aluno) url += `id_aluno=${aluno}&`;
+      if (disciplina) url += `id_disciplina=${disciplina}`;
+
+      const resposta = await fetch(url);
+      const dados = await resposta.json();
+
+      const labels = dados.map(d => d.nome);
+      const medias = dados.map(d => d.media);
+
+      const ctx = document.getElementById("grafico");
+
+      /* Evita criar vários gráficos */
+      if (graficoInstance) {
+        graficoInstance.destroy();
+      }
+
+      graficoInstance = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [{
+            label: "Média",
+            data: medias,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 10
+            }
+          }
+        }
+      });
+    }
+    async function carregarDados() {
+      const res = await fetch("http://localhost:3000/desempenho");
+      const desempenho = await res.json();
+
+      const resD = await fetch("http://localhost:3000/disciplinas");
+      const disciplina = await resD.json();
+
+      const melhorAluno = document.getElementById("melhor_aluno");
+      const qtd_disciplinas = document.getElementById("qtd_disciplinas");
+      const total = document.getElementById("total");
+      const mediaG = document.getElementById("mediaG");
+
+      let aluno_maior_nota = "";
+      let maior_media = 0;
+      let soma_media = 0;
+      let mediaGeral = 0;
+      let totalA = 0;
+      desempenho.forEach(aluno => {
+        if (Number(aluno.media) > maior_media) {
+          aluno_maior_nota = aluno.nome;
+          maior_media = Number(aluno.media);
+
+        }
+        soma_media += Number(aluno.media)
+        totalA++;
+
+
+      });
+      let totalD = 0;
+      disciplina.forEach(disciplina => {
+        totalD += 1;
+      });
+      mediaGeral = totalA > 0
+        ? (soma_media / totalA).toFixed(2)
+        : 0;
+
+      melhorAluno.innerHTML = aluno_maior_nota;
+      qtd_disciplinas.innerHTML = totalD;
+      total.innerHTML = totalA
+      mediaG.innerHTML = mediaGeral;
+    }
+
+    /* Carrega tudo ao abrir */
+    window.onload = async () => {
+      await carregarAlunos();
+      await carregarDisciplinas();
+      await carregarGrafico();
+      await carregarDados();
+    };
+  </script>
+</body>
+
+</html>

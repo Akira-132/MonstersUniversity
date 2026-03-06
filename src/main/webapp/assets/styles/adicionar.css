@@ -1,0 +1,108 @@
+/*Com responsividade*/
+
+#toggle-tipo {
+    display: none;
+}
+
+#conteudo {
+    background: #ffffff;
+    border-radius: 1.875rem;
+    padding: 3.125rem 3.75rem;
+    box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 50rem;
+    align-self: center;
+    margin-top: 2.5rem;
+    border: 0.125rem solid #e0e0e0;
+}
+
+#conteudo h2 {
+    font-size: 2rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 1.875rem;
+}
+
+#toggle {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2.5rem;
+    border: 0.15rem solid #1a4d7a;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#toggle label {
+    padding: 0.75rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#conteudo #label-aluno {
+    background: #1a4d7a;
+    color: #ffffff;
+}
+
+#conteudo #label-professor {
+    background: #ffffff;
+    color: #1a4d7a;
+}
+
+#toggle-tipo:checked ~ #conteudo #label-aluno {
+    background: #ffffff;
+    color: #1a4d7a;
+}
+
+#toggle-tipo:checked ~ #conteudo #label-professor {
+    background: #1a4d7a;
+    color: #ffffff;
+}
+
+#toggle-tipo:checked ~ #conteudo #campo-matricula {
+    display: none;
+}
+
+#campos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* auto-fit cria a quantidade de colunas de acordo com o espaço, sendo o máximo possível e com no min 250px*/
+    gap: 1.875rem;
+    margin-bottom: 2.5rem;
+}
+
+form input {
+    padding: 0.9375rem 1.25rem;
+    border: 0.125rem solid #e0e0e0;
+    border-radius: 0.9375rem;
+    font-size: 1rem;
+    color: rgb(102, 102, 102);
+    transition: all 0.3s ease;
+}
+
+form input:focus {
+    outline: none;
+    border-color: #1a4d7a;
+}
+
+#btn-adicionar {
+    width: 100%;
+    padding: 0.9375rem;
+    background: #1a4d7a;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.9375rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#btn-adicionar:hover {
+    background: #0d3558;
+    transform: translateY(-0.1rem);
+    box-shadow: 0 0.25rem 0.9375rem rgba(26, 77, 122, 0.3);
+}

@@ -1,0 +1,65 @@
+#jake {
+    position: absolute;
+    bottom: 0;
+    left: 3rem;
+    height: 75%;
+}
+
+#mical {
+    position: absolute;
+    bottom: 0;
+    right: 3rem;
+    z-index: 16;
+    height: 48%;
+}
+#btn-login{
+    margin-top: 2rem;
+}
+
+/* ========================= */
+/* RESPONSIVIDADE */
+/* ========================= */
+
+@media (max-width: 1024px) {
+    #login-box {
+        max-width: 450px;
+    }
+
+    header img {
+        max-width: 220px;
+    }
+}
+
+@media (max-width: 768px) {
+    #login-box {
+        max-width: 90%; /* ocupa quase toda a tela */
+    }
+
+    header img {
+        max-width: 180px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    header img {
+        max-width: 150px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    input {
+        font-size: 0.9rem;
+        padding: 0.6rem;
+    }
+
+    #btn-login {
+        font-size: 1rem;
+        padding: 0.8rem;
+    }
+}
