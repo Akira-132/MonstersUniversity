@@ -28,9 +28,13 @@
         <img src="../../assets/imgs/icone-diciplinas.png" alt="" />
         Disciplinas
       </a>
+      <a href="${pageContext.request.contextPath}/dashboard">
+        <img src="${pageContext.request.contextPath}/assets/imgs/icone-boletim.png" alt="" />
+        Dashboards
+      </a>
     </nav>
 
-    <a href="perfilProfessor.html" id="info-usuario">
+    <a href="perfil-professor.jsp" id="info-usuario">
       <div id="avatar">
         <img src="../../assets/imgs/icone-usuario.png" alt="" />
       </div>
