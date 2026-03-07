@@ -1,4 +1,3 @@
-/* Layout Geral */
 #conteudo {
   overflow-y: auto;
   padding: 3.2rem 2.5rem;
@@ -85,7 +84,7 @@ tbody td:last-child {
 }
 
 #modal-overlay {
-  display: none; 
+  display: none;
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
@@ -210,15 +209,11 @@ tbody td:last-child {
   box-shadow: 0 0.3rem 0.8rem rgba(37, 99, 235, 0.3);
 }
 
-#btn-cancelar:hover, 
+#btn-cancelar:hover,
 #btn-adicionar:hover {
   transform: translateY(-0.1rem);
   filter: brightness(0.95);
 }
-
-/* ========================= */
-/* RESPONSIVIDADE */
-/* ========================= */
 
 @media (max-width: 768px) {
 
@@ -232,7 +227,7 @@ tbody td:last-child {
   }
 
   thead {
-    display: none; /* Esconde cabeçalho no mobile */
+    display: none;
   }
 
   tbody tr {
@@ -269,7 +264,6 @@ tbody td:last-child {
     width: 2.5rem;
   }
 
-  /* Modal ajuste mobile */
   .modal {
     width: 95%;
     padding: 1.5rem;
