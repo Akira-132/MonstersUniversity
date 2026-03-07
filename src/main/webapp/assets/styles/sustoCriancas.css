@@ -1,7 +1,3 @@
-/* ========================= */
-/* ESTILOS BASE */
-/* ========================= */
-
 #conteudo {
   flex: 1;
   overflow-y: auto;
@@ -35,13 +31,9 @@
   font-weight: 600;
 }
 
-/* ========================= */
-/* RESPONSIVIDADE */
-/* ========================= */
-
 @media (max-width: 1024px) {
   #conteudo {
-    padding: 2rem 3rem; /* reduz margens laterais */
+    padding: 2rem 3rem;
     gap: 3rem;
   }
 
@@ -65,7 +57,7 @@
   }
 
   #card-situacao {
-    min-height: auto; /* deixa altura flexível */
+    min-height: auto;
   }
 
   #descricao {

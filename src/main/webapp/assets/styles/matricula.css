@@ -38,7 +38,7 @@
     transform: translateY(-2px);
     box-shadow: 0 0.3rem 0.8rem rgba(66, 137, 249, 0.4);
 }
-/* tela media */
+
 @media (max-width: 1200px) {
 
     #login-box {
@@ -48,7 +48,6 @@
 
 }
 
-/* tela menor */
 @media (max-width: 768px) {
 
     #login-box {

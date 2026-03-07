@@ -35,7 +35,7 @@
   gap: 1rem;
 }
 h1 {
- margin-top: -4rem;
+  margin-top: -4rem;
 }
 #subtitulo {
   font-size: 1.1rem;
@@ -132,18 +132,18 @@ h1 {
   right: -2.5rem;
 }
 #surpresa{
-    width: 16rem;
-    right: -2rem;
-    bottom: 0.5rem;
+  width: 16rem;
+  right: -2rem;
+  bottom: 0.5rem;
 }
 #sulley-grito {
   width: 32rem;
   right: -10rem;
   bottom: 0.5rem;
 }
-#lisete-grito{
-    width: 12.5rem;
-    right: 0.4rem;
-    bottom: 0.5rem;
-}
 
+#elite-grito{
+  width: 12.5rem;
+  right: 0.4rem;
+  bottom: 0.5rem;
+}
