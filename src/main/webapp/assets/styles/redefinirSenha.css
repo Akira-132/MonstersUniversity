@@ -1,4 +1,4 @@
-#fundo {    
+#fundo {
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -7,16 +7,16 @@
 
 #container {
     display: flex;
-    justify-content: space-around; 
-    align-items: flex-end; 
-    gap: 3rem;               
+    justify-content: space-around;
+    align-items: flex-end;
+    gap: 3rem;
     width: 100%;
 }
 
 
 #login-box {
     align-self: center;
-    margin-bottom: 3rem; 
+    margin-bottom: 3rem;
 }
 
 h1 {

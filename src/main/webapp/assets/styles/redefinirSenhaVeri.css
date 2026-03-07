@@ -1,14 +1,10 @@
-/* ========================= */
-/* ESTILOS BASE */
-/* ========================= */
-
-#fundo {    
+#fundo {
     align-items: flex-start;
 }
 
 header img#logo {
-    max-width: 200px;   /* tamanho máximo em telas grandes */
-    width: 30%;         /* proporcional ao container */
+    max-width: 200px;
+    width: 30%;
     height: auto;
     display: block;
     margin: 0 auto;
@@ -81,10 +77,6 @@ input[type="submit"] {
     flex: 1 1 45%;
     text-align: center;
 }
-
-/* ========================= */
-/* RESPONSIVIDADE */
-/* ========================= */
 
 @media (max-width: 768px) {
     #container {

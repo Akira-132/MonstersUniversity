@@ -5,7 +5,6 @@
   display: none;
 }
 
-
 #overlay-adicionar,
 #overlay-editar,
 #overlay-excluir,
@@ -26,9 +25,6 @@
   display: flex;
 }
 
-
-
-/* Modal */
 .modal {
   background: white;
   border-radius: 1rem;
