@@ -45,6 +45,10 @@
       <img src="<%= request.getContextPath() %>/assets/imgs/icone-diciplinas.png" alt="" />
       Disciplinas
     </a>
+    <a href="${pageContext.request.contextPath}/dashboard">
+      <img src="${pageContext.request.contextPath}/assets/imgs/icone-boletim.png" alt="" />
+      Dashboards
+    </a>
   </nav>
 
   <a href="${pageContext.request.contextPath}/perfil-professor" id="info-usuario">
