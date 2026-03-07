@@ -5,12 +5,16 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.DispatcherType;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-@WebFilter("/*")
+@WebFilter(urlPatterns = "/*", dispatcherTypes = {
+        DispatcherType.REQUEST,
+        DispatcherType.ERROR
+})
 public class AuthFilter implements Filter {
 
     private final List<String> PUBLIC_PATHS = Arrays.asList(
@@ -20,7 +24,8 @@ public class AuthFilter implements Filter {
             "/logout", "/verificacao-usuario.jsp",
             "/verificacao.jsp", "/redefinir-senha",
             "/verificar-codigo", "/criar-senha",
-            "/matricula.jsp", "/ativar-matricula", "/aluno-matricula"
+            "/matricula.jsp", "/ativar-matricula", "/aluno-matricula",
+            "/erro400.html", "/erro401.html", "/erro403.html", "/erro404.html", "/erro500.html"
     );
 
     @Override

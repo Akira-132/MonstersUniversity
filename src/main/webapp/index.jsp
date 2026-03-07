@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <img src="${pageContext.request.contextPath}assets/imgs/Mical_login.png" alt="Mike" id="mical">
+    <img src="${pageContext.request.contextPath}/assets/imgs/Mical_login.png" alt="Mike" id="mical">
 </div>
 </body>
 </html>
