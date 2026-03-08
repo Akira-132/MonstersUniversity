@@ -19,19 +19,39 @@
 <div id="fundo">
     <div id="login-box">
         <h1>Admin</h1>
-        <% if (request.getAttribute("erro") != null) { %>
-        <div style="
-        color: #b00020;
-        background-color: #ffe6e6;
-        border: 1px solid #ffb3b3;
-        padding: 8px;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        font-size: 14px;
-        font-family: 'Montserrat';
-        text-align: center;">
-            <%= request.getAttribute("erro") %>
-        </div>
+
+        <% String erro = (String) request.getAttribute("erro"); %>
+
+        <% if (erro != null) { %>
+        <script>
+            window.addEventListener("load", function() {
+                const alertBox = document.createElement("div");
+                alertBox.innerText = "<%= erro %>";
+
+                alertBox.style.position = "fixed";
+                alertBox.style.top = "20px";
+                alertBox.style.left = "50%";
+                alertBox.style.transform = "translateX(-50%)";
+                alertBox.style.backgroundColor = "#FDE8E8";
+                alertBox.style.color = "#7c1a1a";
+                alertBox.style.padding = "15px 25px";
+                alertBox.style.borderRadius = "8px";
+                alertBox.style.boxShadow = "0 4px 10px rgba(0,0,0,0.15)";
+                alertBox.style.fontFamily = "Montserrat";
+                alertBox.style.fontSize = "14px";
+                alertBox.style.zIndex = "9999";
+                alertBox.style.opacity = "0";
+                alertBox.style.transition = "opacity 0.4s ease";
+
+                document.body.appendChild(alertBox);
+
+                setTimeout(() => { alertBox.style.opacity = "1"; }, 100);
+                setTimeout(() => {
+                    alertBox.style.opacity = "0";
+                    setTimeout(() => alertBox.remove(), 400);
+                }, 4000);
+            });
+        </script>
         <% } %>
 
         <div>
@@ -48,7 +68,7 @@
         </div>
     </div>
 
-    <img src="${pageContext.request.contextPath}/assets/imgs/surpresa.png" alt="Mike" id="img_admin">
+    <img src="${pageContext.request.contextPath}/assets/imgs/surpresa.png" alt="Surpresa" id="img_admin">
 </div>
 </body>
 </html>

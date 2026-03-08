@@ -39,10 +39,11 @@ public class EmailService {
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
                 message.setSubject("Monsters University - Recuperação de Senha");
 
-                message.setText(
-                        "RAAAAGH!\n\n" +
-                                "Eae Monstrão! Seu código de verificação de 5 dígitos é: " + codigo +
-                                "\n\nSe você não solicitou isso, ignore este e-mail."
+                message.setContent(
+                        "<h1>RAAAAGH!</h1>" +
+                                "<p>Eae Monstrão! Seu código de verificação de 5 dígitos é: <b>" + codigo + "</b></p>" +
+                                "<p>Se você não solicitou isso, ignore este e-mail.</p>",
+                        "text/html; charset=utf-8"
                 );
 
                 Transport.send(message);

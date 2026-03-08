@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <title>Criar Senha - Monsters University</title>
 
-
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/imgs/Logo.png" type="image/x-icon">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/styles/globaLogin.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/styles/redefinirSenha.css">
@@ -39,18 +38,46 @@
 </header>
 
 <div id="fundo">
-
     <div id="container">
         <img src="<%=request.getContextPath()%>/assets/imgs/crianca_veri.png"
              alt="Personagem Esquerda"
              style="height: 320px; align-self: flex-end;">
 
         <div id="login-box">
-
             <h1>Crie uma Senha</h1>
 
-            <% if (request.getAttribute("erro") != null) { %>
-            <p style="color:red;"><%= request.getAttribute("erro") %></p>
+            <% String erro = (String) request.getAttribute("erro"); %>
+
+            <% if (erro != null) { %>
+            <script>
+                window.addEventListener("load", function() {
+                    const alertBox = document.createElement("div");
+                    alertBox.innerText = "<%= erro %>";
+
+                    alertBox.style.position = "fixed";
+                    alertBox.style.top = "20px";
+                    alertBox.style.left = "50%";
+                    alertBox.style.transform = "translateX(-50%)";
+                    alertBox.style.backgroundColor = "#FDE8E8";
+                    alertBox.style.color = "#7c1a1a";
+                    alertBox.style.padding = "15px 25px";
+                    alertBox.style.borderRadius = "8px";
+                    alertBox.style.boxShadow = "0 4px 10px rgba(0,0,0,0.15)";
+                    alertBox.style.fontFamily = "Montserrat";
+                    alertBox.style.fontSize = "14px";
+                    alertBox.style.zIndex = "9999";
+                    alertBox.style.opacity = "0";
+                    alertBox.style.transition = "opacity 0.4s ease";
+
+                    document.body.appendChild(alertBox);
+
+                    setTimeout(() => { alertBox.style.opacity = "1"; }, 100);
+                    setTimeout(() => {
+                        alertBox.style.opacity = "0";
+                        setTimeout(() => alertBox.remove(), 400);
+                    }, 4000);
+                });
+            </script>
             <% } %>
 
             <form action="<%=request.getContextPath()%>/redefinir-senha"
@@ -76,24 +103,16 @@
                 <p id="erroSenha" style="color:red;"></p>
 
                 <div id="buttons">
-                    <a href="<%=request.getContextPath()%>/login" id="btn-voltar">
-                        Voltar
-                    </a>
-
-                    <input type="submit"
-                           value="Entrar"
-                           id="btn-login">
+                    <a href="<%=request.getContextPath()%>/esqueci-senha" id="btn-voltar">Voltar</a>
+                    <input type="submit" value="Entrar" id="btn-login">
                 </div>
-
             </form>
         </div>
 
         <img src="<%=request.getContextPath()%>/assets/imgs/mike_pequeno.png"
              alt="Personagem Direita"
              style="height: 280px; align-self: flex-end;">
-
     </div>
-
 </div>
 
 </body>
