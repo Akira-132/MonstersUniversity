@@ -143,9 +143,8 @@
                 </button>
             </a>
 
-            <label for="modal-adicionar-aluno" style="cursor: pointer; display: flex; align-items: center; gap: 15px; padding: 20px 0 20px 30px; font-weight: 500;">
-                <img src="${pageContext.request.contextPath}/assets/imgs/icone-adicionar.png" alt="" />
-                Matricular Aluno
+            <label for="modal-adicionar-aluno" id="modal-adicionar-aluno" >
+                + Matricular Aluno
             </label>
         </div>
 
