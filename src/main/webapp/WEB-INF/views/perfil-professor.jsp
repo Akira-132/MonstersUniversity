@@ -46,7 +46,7 @@
         </div>
         <span>
             <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() : "Professor" %></strong>
-            Docente
+            Professor
         </span>
     </div>
 </aside>

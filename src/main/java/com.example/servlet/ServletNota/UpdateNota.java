@@ -82,7 +82,7 @@ public class UpdateNota extends HttpServlet {
             erro = "Erro: " + e.getMessage();
         }
 
-        request.getSession().setAttribute("erro", erro);
+        request.setAttribute("erro", erro);
 
         String urlErro = request.getContextPath()
                 + "/nota-read?acao=prepararUpdate&id=" + idStr;

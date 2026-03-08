@@ -77,7 +77,7 @@
         ? usuarioLogado.getNome()+" "+usuarioLogado.getSobrenome()
         : "Professor" %>
 </strong>
-Minha Disciplina
+Professor
 </span>
 
     </div>
@@ -91,7 +91,7 @@ Minha Disciplina
 
     <div id="conteudo">
 
-        <a href="${pageContext.request.contextPath}/turma-read" id="btn-voltar">
+        <a href="${pageContext.request.contextPath}/turma-aluno-read?id=<%= idTurma %>" id="btn-voltar">
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" width="36"/>
         </a>
 
@@ -149,9 +149,9 @@ Minha Disciplina
                     </td>
 
                     <td>
-<span class="nota <%= (n.getNota() < 6.0) ? "baixa" : "" %>">
-<%= String.format("%.1f", n.getNota()) %>
-</span>
+                        <span class="nota <%= (n.getNota() < 6.0) ? "baixa" : "" %>">
+                            <%= String.format("%.1f", n.getNota()) %>
+                        </span>
                     </td>
 
                     <td style="display:flex;gap:10px;justify-content:center;">

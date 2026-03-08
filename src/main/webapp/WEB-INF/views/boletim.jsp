@@ -80,18 +80,18 @@
           <td><%= b.getSemestre() %>º Semestre / <%= b.getAno() %></td>
 
           <td>
-              <span class="nota <%= (b.getMediaP1() < 6.0) ? "baixa" : "" %>">
-                  <%= String.format("%.1f", b.getMediaP1()) %>
+              <span class="nota <%= (b.getMediaP1() != null && b.getMediaP1() < 6.0) ? "baixa" : "" %>">
+                  <%= (b.getMediaP1() != null) ? String.format("%.1f", b.getMediaP1()) : "—" %>
               </span>
           </td>
           <td>
-              <span class="nota <%= (b.getMediaP2() < 6.0) ? "baixa" : "" %>">
-                  <%= String.format("%.1f", b.getMediaP2()) %>
+              <span class="nota <%= (b.getMediaP2() != null && b.getMediaP2() < 6.0) ? "baixa" : "" %>">
+                  <%= (b.getMediaP2() != null) ? String.format("%.1f", b.getMediaP2()) : "—" %>
               </span>
           </td>
           <td>
-              <span class="nota <%= (b.getMediaFinal() < 6.0) ? "baixa" : "" %>">
-                  <%= String.format("%.1f", b.getMediaFinal()) %>
+              <span class="nota <%= (b.getMediaFinal() != null && b.getMediaFinal() < 6.0) ? "baixa" : "" %>">
+                  <%= (b.getMediaFinal() != null) ? String.format("%.1f", b.getMediaFinal()) : "—" %>
               </span>
           </td>
 

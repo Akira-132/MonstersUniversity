@@ -29,10 +29,7 @@ public class ReadBoletim extends HttpServlet {
             String idStr = request.getParameter("id");
             HttpSession session = request.getSession(false);
 
-            if (idStr != null && !idStr.trim().isEmpty()) {
-                idAlunoParaBuscar = Integer.parseInt(idStr);
-            }
-            else if (session != null && session.getAttribute("usuarioLogado") != null) {
+            if (session != null && session.getAttribute("usuarioLogado") != null) {
                 Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
                 Aluno aluno = new AlunoDAO().readByUsuarioId(usuarioLogado.getId());
 

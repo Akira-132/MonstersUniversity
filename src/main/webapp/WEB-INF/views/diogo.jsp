@@ -22,7 +22,6 @@
     }
 
     String alunoIdVal = (alunoAtual != null) ? String.valueOf(alunoAtual.getId()) : "";
-    String professorIdVal = String.valueOf(usuarioLogado.getId());
     String observacaoIdVal = (observacao != null) ? String.valueOf(observacao.getId()) : "";
     String textoVal = (observacao != null && observacao.getComentario() != null) ? observacao.getComentario() : "";
     String nomeCompletoAluno = "Aluno";

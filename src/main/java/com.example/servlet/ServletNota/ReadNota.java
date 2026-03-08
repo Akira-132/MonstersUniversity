@@ -3,13 +3,9 @@ package com.example.servlet.ServletNota;
 import java.io.IOException;
 import java.util.List;
 
-import com.example.models.Nota;
-import com.example.models.Usuario;
-import com.example.models.Turma;
+import com.example.models.*;
 
 import java.util.ArrayList;
-import com.example.models.Aluno;
-import com.example.models.Disciplina;
 
 import com.example.dao.TurmaDAO;
 import com.example.dao.NotaDAO;
@@ -93,8 +89,22 @@ public class ReadNota extends HttpServlet {
                ========================= */
             else {
 
-                lista = notaDAO.read();
+                ProfessorDAO professorDAO = new ProfessorDAO();
+                Professor prof = (usuarioLogado != null)
+                        ? professorDAO.readByUsuarioId(usuarioLogado.getId()) : null;
 
+                if (prof != null) {
+                    DisciplinaDAO disciplinaDAO2 = new DisciplinaDAO();
+                    List<com.example.models.Disciplina> todasDisc = disciplinaDAO2.read();
+                    lista = new ArrayList<>();
+                    for (com.example.models.Disciplina d : todasDisc) {
+                        if (d.getFkProfessorId() == prof.getId()) {
+                            lista.addAll(notaDAO.readByDisciplinaId(d.getId()));
+                        }
+                    }
+                } else {
+                    lista = notaDAO.read();
+                }
             }
 
             request.setAttribute("listaNotas", lista);

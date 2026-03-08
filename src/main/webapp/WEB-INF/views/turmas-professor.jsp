@@ -30,20 +30,6 @@
 
     <title>Monsters University - Minhas Turmas</title>
 
-    <style>
-        .turma-card {
-            cursor: pointer;
-        }
-
-        .turma-link {
-            text-decoration: none;
-            color: inherit;
-            flex-grow: 1;
-            height: 100%;
-            display: flex;
-            align-items: center;
-        }
-    </style>
 </head>
 
 <body>
@@ -74,7 +60,7 @@
             <strong>
                 <%= (usuarioLogado != null) ? usuarioLogado.getNome() : "Professor" %>
             </strong>
-            Docente
+            Professor
         </span>
     </div>
 
@@ -108,20 +94,15 @@
                         String corBarra = (contador % 2 == 0) ? "verde" : "roxo";
                         contador++;
             %>
+            <a href="${pageContext.request.contextPath}/turma-aluno-read?id=<%= t.getId() %>" class="turma-link">
+                <div class="turma-card">
+                        <span style="padding-left:20px; font-weight:bold;">
+                            <%= (t.getSala() != null) ? t.getSala() : "Turma" %>
+                        </span>
+                    <div class="barra <%= corBarra %>"></div>
+                </div>
+            </a>
 
-            <div class="turma-card">
-
-                <a href="${pageContext.request.contextPath}/turma-aluno-read?id=<%= t.getId() %>" class="turma-link">
-
-                <span style="padding-left:20px; font-weight:bold;">
-                    <%= (t.getSala() != null) ? t.getSala() : "Turma" %>
-                </span>
-
-                </a>
-
-                <div class="barra <%= corBarra %>"></div>
-
-            </div>
 
             <%
                 }
