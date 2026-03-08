@@ -1,5 +1,6 @@
 package com.example.models;
 
+import java.time.ZoneId;
 import java.time.LocalDateTime;
 
 public class Observacao {
@@ -15,7 +16,7 @@ public class Observacao {
         this.setComentario(comentario);
         this.setFkProfessorId(fkProfessorId);
         this.setFkAlunoId(fkAlunoId);
-        this.setDataEnvio(LocalDateTime.now());
+        this.setDataEnvio(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
     }
 
     public Observacao(int id, String comentario, LocalDateTime dataEnvio, int fkProfessorId, int fkAlunoId) {

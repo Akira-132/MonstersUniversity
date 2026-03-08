@@ -17,13 +17,22 @@ public class DeleteNota extends HttpServlet {
             throws ServletException, IOException {
 
         NotaDAO notaDAO = new NotaDAO();
+        String idDisciplinaStr = request.getParameter("idDisciplina");
+        String idTurmaStr = request.getParameter("idTurma");
         String erro = null;
 
         try {
             int id = Integer.parseInt(request.getParameter("id"));
 
             if (notaDAO.deleteById(id) > 0) {
-                response.sendRedirect(request.getContextPath() + "/nota-read");
+                String redirecionamento = request.getContextPath() + "/nota-read";
+                if (idDisciplinaStr != null && !idDisciplinaStr.equals("0")) {
+                    redirecionamento += "?idDisciplina=" + idDisciplinaStr;
+                    if (idTurmaStr != null && !idTurmaStr.equals("0")) {
+                        redirecionamento += "&idTurma=" + idTurmaStr;
+                    }
+                }
+                response.sendRedirect(redirecionamento);
                 return;
             } else {
                 erro = "Não foi possível excluir a nota.";
@@ -34,7 +43,12 @@ public class DeleteNota extends HttpServlet {
             erro = "Erro inesperado ao excluir.";
         }
 
-        request.setAttribute("erro", erro);
-        request.getRequestDispatcher("/nota-read").forward(request, response);
+        request.getSession().setAttribute("erro", erro);
+
+        String urlErro = request.getContextPath() + "/nota-read";
+        if (idDisciplinaStr != null && !idDisciplinaStr.equals("0")) {
+            urlErro += "?idDisciplina=" + idDisciplinaStr;
+        }
+        response.sendRedirect(urlErro);
     }
 }

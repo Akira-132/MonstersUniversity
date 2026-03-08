@@ -4,6 +4,7 @@ import com.example.controllers.Conexao;
 import com.example.models.*;
 
 import java.sql.*;
+import java.time.ZoneId;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -109,7 +110,9 @@ public class ObservacaoDAO {
                     Observacao observacao = new Observacao(
                             rset.getInt("id_observacao"),
                             rset.getString("comentario"),
-                            rset.getTimestamp("data_envio").toLocalDateTime(),
+                            rset.getTimestamp("data_envio").toInstant()
+                                    .atZone(ZoneId.of("America/Sao_Paulo"))
+                                    .toLocalDateTime(),
                             rset.getInt("id_professor"),
                             rset.getInt("id_aluno")
                     );
@@ -142,7 +145,9 @@ public class ObservacaoDAO {
                     Observacao observacao = new Observacao(
                             rset.getInt("id_observacao"),
                             rset.getString("comentario"),
-                            rset.getTimestamp("data_envio").toLocalDateTime(),
+                            rset.getTimestamp("data_envio").toInstant()
+                                .atZone(ZoneId.of("America/Sao_Paulo"))
+                                .toLocalDateTime(),
                             rset.getInt("id_professor"),
                             rset.getInt("id_aluno")
                     );
@@ -247,7 +252,9 @@ public class ObservacaoDAO {
         Observacao observacao = new Observacao(
                 rset.getInt("id_observacao"),
                 rset.getString("comentario"),
-                rset.getTimestamp("data_envio").toLocalDateTime(),
+                rset.getTimestamp("data_envio").toInstant()
+                    .atZone(ZoneId.of("America/Sao_Paulo"))
+                    .toLocalDateTime(),
                 rset.getInt("id_professor"),
                 rset.getInt("id_aluno")
         );

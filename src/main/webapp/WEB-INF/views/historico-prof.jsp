@@ -51,7 +51,7 @@ List<Observacao> listaObservacoes = (List<Observacao>) request.getAttribute("lis
   </aside>
 
   <main>
-    <header>Minha disciplina</header>
+    <header>Histórico de Observações</header>
 
     <div id="conteudo">
       <div id="topo">
@@ -69,7 +69,6 @@ List<Observacao> listaObservacoes = (List<Observacao>) request.getAttribute("lis
         <a href="${pageContext.request.contextPath}/observacao-read?id=<%= obs.getId() %>">
           <div class="historico-item">
             <div class="item-conteudo">
-              <h3>Registro de Observação</h3>
               <p><%= obs.getComentario() %></p>
               <span class="item-data">Enviado em <%= (obs.getDataEnvio() != null) ? obs.getDataEnvio().format(formatter) : "Data Indisponível" %></span>
             </div>

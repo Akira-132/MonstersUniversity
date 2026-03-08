@@ -154,7 +154,8 @@ tbody td:last-child {
   align-items: center;
 }
 
-.modal-campo input {
+.modal-campo input,
+.modal-campo select {
   width: 100%;
   background: #f0f4f8;
   border: 0.1rem solid #e8edf3;
@@ -163,12 +164,14 @@ tbody td:last-child {
   font-size: 0.95rem;
   font-weight: 600;
   color: #1a1a2e;
+  appearance: menulist-button;
   outline: none;
 }
 
 .modal-campo input:focus {
   border-color: #2563eb;
 }
+
 
 .input-content .icone-lapis {
   position: absolute;
@@ -185,7 +188,20 @@ tbody td:last-child {
   margin-top: 0.3rem;
 }
 
-#btn-cancelar,
+#btn-cancelar {
+  padding: 0.75rem 2.3rem;
+  border-radius: 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  background: #f0f4f8;
+  color: #1a1a2e;
+  border: 0.1rem solid #d0d8e4;
+  height: fit-content;
+}
+
 #btn-adicionar {
   padding: 0.75rem 2.3rem;
   border-radius: 0.6rem;
@@ -195,15 +211,6 @@ tbody td:last-child {
   border: none;
   transition: all 0.2s;
   text-align: center;
-}
-
-#btn-cancelar {
-  background: #f0f4f8;
-  color: #1a1a2e;
-  border: 0.1rem solid #d0d8e4;
-}
-
-#btn-adicionar {
   background: #2563eb;
   color: #ffffff;
   box-shadow: 0 0.3rem 0.8rem rgba(37, 99, 235, 0.3);
