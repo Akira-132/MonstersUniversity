@@ -43,7 +43,7 @@
     <span>
     <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() + " "
             + usuarioLogado.getSobrenome() : "Aluno" %></strong>
-    Meu Boletim
+    Aluno
   </span>
   </div>
 </aside>

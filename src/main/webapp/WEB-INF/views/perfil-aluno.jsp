@@ -49,7 +49,7 @@
         </div>
         <span>
                 <strong><%= usuarioLogado != null ? usuarioLogado.getNome() : "Aluno" %></strong>
-                Universitário
+                Aluno
             </span>
     </div>
 </aside>

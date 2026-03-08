@@ -103,13 +103,11 @@
     <% if (matriculado) { %>
     <a href="${pageContext.request.contextPath}/disciplina-detalhe-read?id=<%= d.getId() %>">
       <div class="card <%= corCard %>">
-        <img src="${pageContext.request.contextPath}/assets/imgs/icone-diciplinas.png" alt="" />
         <span><%= d.getNome() %></span>
       </div>
     </a>
     <% } else { %>
     <div class="card" style="opacity:0.45;cursor:not-allowed;filter:grayscale(1);">
-      <img src="${pageContext.request.contextPath}/assets/imgs/icone-diciplinas.png" alt="" />
       <span><%= d.getNome() %></span>
       <span style="margin-left:auto;font-size:0.75rem;color:#888;white-space:nowrap;">Não matriculado</span>
     </div>
