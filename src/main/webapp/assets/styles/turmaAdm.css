@@ -79,7 +79,22 @@ button:hover {
   justify-content: space-between;
 }
 
-.icone-lixeira {
+#modal-adicionar-aluno{
+  background: #2563eb;
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 62.4rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  box-shadow: 0 0.3rem 0.5rem rgba(37, 99, 235, 0.329);
+}
+#modal-adicionar-aluno{
+  transform: translateY(-0.1rem);
+}
+.icone-acao {
   width: 2rem;
   border-radius: 0.5rem;
   box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.282);
@@ -88,6 +103,12 @@ button:hover {
 }
 
 .icone-lixeira:hover {
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+
+.icone-acao:hover {
   transform: translateY(-0.1rem);
 }
 

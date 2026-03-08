@@ -298,7 +298,7 @@
             <div>
 
                 <label for="modal-adicionar-disciplina"
-                       id="btn-adicionar-disciplina"
+                       id="btn-adicionar-turma"
                        style="margin-right:10px;">
 
                     + Adicionar Disciplina
@@ -306,7 +306,7 @@
                 </label>
 
                 <label for="modal-adicionar"
-                       class="btn-adicionar-turma">
+                       id="btn-adicionar-disciplina">
 
                     + Adicionar turma
 
@@ -475,6 +475,35 @@
                                    value="<%= t.getSala() %>"
                                    disabled
                                    style="border:none;" />
+
+                        </div>
+
+                        <div class="campo">
+
+                            <label for="per-excluir-<%= t.getId() %>">
+                                Período
+                            </label>
+
+                            <select id="per-excluir-<%= t.getId() %>"
+                                    name="periodo"
+                                    disabled>
+
+                                <option value="manha"
+                                        <%= "manha".equals(t.getPeriodo()) ? "selected" : "" %>>
+                                    Manhã
+                                </option>
+
+                                <option value="tarde"
+                                        <%= "tarde".equals(t.getPeriodo()) ? "selected" : "" %>>
+                                    Tarde
+                                </option>
+
+                                <option value="noite"
+                                        <%= "noite".equals(t.getPeriodo()) ? "selected" : "" %>>
+                                    Noite
+                                </option>
+
+                            </select>
 
                         </div>
 
