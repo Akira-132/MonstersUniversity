@@ -79,15 +79,16 @@ button:hover {
   justify-content: space-between;
 }
 
-.icone-lixeira {
+.icone-acao {
   width: 2rem;
   border-radius: 0.5rem;
   box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.282);
   transition: all 0.2s;
+  cursor: pointer;
   flex-shrink: 0;
 }
 
-.icone-lixeira:hover {
+.icone-acao:hover {
   transform: translateY(-0.1rem);
 }
 

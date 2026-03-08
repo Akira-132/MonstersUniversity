@@ -306,7 +306,7 @@
                 </label>
 
                 <label for="modal-adicionar"
-                       class="btn-adicionar-turma">
+                       id="btn-adicionar-disciplina">
 
                     + Adicionar turma
 
