@@ -1,21 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.example.models.Usuario" %>
-<%@ page import="com.example.models.Aluno" %>
 <%@ page import="com.example.models.Telefone" %>
 
 <%
-    Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-    Aluno alunoLogado = (Aluno) request.getAttribute("alunoLogado");
-    Telefone telefoneDoAluno = (Telefone) request.getAttribute("telefoneDoUsuario");
+    Usuario usuarioLogado = (Usuario)  session.getAttribute("usuarioLogado");
+    Telefone telefone = (Telefone) request.getAttribute("telefoneDoUsuario");
 
-    String nomeCompleto = (usuarioLogado != null) ? usuarioLogado.getNome() + " " + usuarioLogado.getSobrenome() : "Aluno";
+    String nomeCompleto = (usuarioLogado != null) ? usuarioLogado.getNome() + " " + usuarioLogado.getSobrenome() : "Professor";
     String email = (usuarioLogado != null) ? usuarioLogado.getEmail() : "";
-    String cpf = (alunoLogado != null) ? alunoLogado.getCpf() : "Não informado";
-    String matricula = (alunoLogado != null) ? alunoLogado.getMatricula() : "Sem matrícula";
-    String telefone = (telefoneDoAluno != null) ? telefoneDoAluno.getTelefone() : "";
+    String tel = (telefone != null) ? telefone.getTelefone()   : "";
 
-    String erro = (String) request.getAttribute("erro");
     String sucesso = (String) request.getAttribute("sucesso");
+    String erro = (String) request.getAttribute("erro");
 %>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -28,18 +24,19 @@
     <title>Perfil - Monsters University</title>
 </head>
 <body>
+
 <aside>
     <div id="logo">
         <img src="${pageContext.request.contextPath}/assets/imgs/Logo.png" alt="" />
     </div>
     <nav>
-        <a href="${pageContext.request.contextPath}/disciplina-read">
+        <a href="${pageContext.request.contextPath}/turma-read">
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-diciplinas.png" alt="" />
-            Disciplinas
+            Disciplina
         </a>
-        <a href="${pageContext.request.contextPath}/boletim-read">
+        <a href="${pageContext.request.contextPath}/dashboard">
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-boletim.png" alt="" />
-            Boletim
+            Dashboards
         </a>
     </nav>
 
@@ -48,9 +45,9 @@
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png" alt="" />
         </div>
         <span>
-                <strong><%= usuarioLogado != null ? usuarioLogado.getNome() : "Aluno" %></strong>
-                Universitário
-            </span>
+            <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() : "Professor" %></strong>
+            Docente
+        </span>
     </div>
 </aside>
 
@@ -85,25 +82,15 @@
                     <div class="campo-perfil">
                         <label for="telefone">Telefone</label>
                         <div class="input-editavel">
-                            <input type="tel" id="telefone" name="telefone" value="<%= telefone %>" maxlength="15" />
+                            <input type="tel" id="telefone" name="telefone" value="<%= tel %>" maxlength="15" />
                             <img src="${pageContext.request.contextPath}/assets/imgs/icone-editar.png" alt="Editar" class="icone-editar-campo" />
                         </div>
-                    </div>
-
-                    <div class="campo-perfil">
-                        <label for="cpf">CPF</label>
-                        <input type="text" id="cpf" value="<%= cpf %>" readonly style="background-color: #f0f0f0;"/>
-                    </div>
-
-                    <div class="campo-perfil">
-                        <label for="matricula">Matrícula</label>
-                        <input type="text" id="matricula" value="<%= matricula %>" readonly style="background-color: #f0f0f0;"/>
                     </div>
                 </div>
 
                 <div class="campo-perfil campo-descricao">
                     <label for="sobre">Sobre mim</label>
-                    <textarea id="sobre" rows="6" readonly style="background-color: #f0f0f0; cursor: default;">Aluno dedicado da Monsters University, apaixonado por técnicas de susto e camuflagem. Membro ativo da equipe de gritos aterrorizantes.</textarea>
+                    <textarea id="sobre" rows="6" readonly style="background-color: #f0f0f0; cursor: default;">Professor dedicado da Monsters University, apaixonado por técnicas de susto e camuflagem. Membro ativo da equipe de gritos aterrorizantes.</textarea>
                 </div>
 
                 <button type="submit" id="btn-salvar" style="background-color: #0d47a1; color: white; padding: 12px; border-radius: 8px; width: 100%; font-weight: bold; border: none; cursor: pointer; margin-bottom: 15px;">SALVAR ALTERAÇÕES</button>
@@ -112,7 +99,6 @@
             <form action="${pageContext.request.contextPath}/logout" method="get" style="width: 100%;">
                 <button type="submit" id="btn-sair">SAIR DA CONTA</button>
             </form>
-
         </div>
     </div>
 </main>

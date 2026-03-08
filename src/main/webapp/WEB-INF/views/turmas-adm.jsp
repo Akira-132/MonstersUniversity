@@ -20,10 +20,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" href="<%= contextPath %>/assets/imgs/Logo.png" type="image/x-icon" />
-    <link rel="stylesheet" href="<%= contextPath %>/assets/styles/turmasAdm.css" />
-    <link rel="stylesheet" href="<%= contextPath %>/assets/styles/globalApp.css" />
-    <link rel="stylesheet" href="<%= contextPath %>/assets/styles/modal.css">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/imgs/Logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/styles/turmasAdm.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/styles/globalApp.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/styles/modal.css">
 
     <title>Monsters University - Administração</title>
 
@@ -66,7 +66,7 @@
 
         <h2>Nova Turma</h2>
 
-        <form action="<%= contextPath %>/turma-create" method="post">
+        <form action="${pageContext.request.contextPath}/turma-create" method="post">
 
             <div class="campo">
                 <label for="sala-new">Sala</label>
@@ -124,7 +124,7 @@
 
         <h2>Nova Disciplina</h2>
 
-        <form action="<%= contextPath %>/disciplina-create" method="post">
+        <form action="${pageContext.request.contextPath}/disciplina-create" method="post">
 
             <div class="campo">
 
@@ -191,23 +191,23 @@
 <aside>
 
     <div id="logo">
-        <img src="<%= contextPath %>/assets/imgs/Logo.png" alt="" />
+        <img src="${pageContext.request.contextPath}/assets/imgs/Logo.png" alt="" />
     </div>
 
     <nav>
 
-        <a href="<%= contextPath %>/turma-read" class="ativo">
-            <img src="<%= contextPath %>/assets/imgs/icone-diciplinas.png" alt="" />
+        <a href="${pageContext.request.contextPath}/turma-read" class="ativo">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-diciplinas.png" alt="" />
             Disciplina
         </a>
 
-        <a href="<%= contextPath %>/adicionar-view">
-            <img src="<%= contextPath %>/assets/imgs/icone-adicionar.png" alt="" />
+        <a href="${pageContext.request.contextPath}/adicionar-view">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-adicionar.png" alt="" />
             Adicionar
         </a>
 
-        <a href="<%= contextPath %>/professor-read">
-            <img src="<%= contextPath %>/assets/imgs/icone-professores.png" alt=""/>
+        <a href="${pageContext.request.contextPath}/professor-read">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-professores.png" alt=""/>
             Professores
         </a>
 
@@ -216,7 +216,7 @@
     <div id="info-usuario" onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'" style="cursor: pointer;">
 
         <div id="avatar">
-            <img src="<%= contextPath %>/assets/imgs/icone-usuario.png" alt="" />
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png" alt="" />
         </div>
 
         <span>
@@ -253,7 +253,7 @@
 
             <div id="filtro-disciplina">
 
-                <form action="<%= contextPath %>/turma-read"
+                <form action="${pageContext.request.contextPath}/turma-read"
                       method="get"
                       style="display:flex;gap:10px;align-items:center;">
 
@@ -337,7 +337,7 @@
 
             <div class="turma-card">
 
-                <a href="<%= contextPath %>/turma-aluno-read?id=<%= t.getId() %>"
+                <a href="${pageContext.request.contextPath}/turma-aluno-read?id=<%= t.getId() %>"
                    class="turma-link">
 
 <span>

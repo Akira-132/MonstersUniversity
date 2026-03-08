@@ -23,10 +23,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="shortcut icon" href="<%= contextPath %>/assets/imgs/Logo.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/imgs/Logo.png" type="image/x-icon" />
 
-    <link rel="stylesheet" href="<%= contextPath %>/assets/styles/turmasAdm.css" />
-    <link rel="stylesheet" href="<%= contextPath %>/assets/styles/globalApp.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/styles/turmasAdm.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/styles/globalApp.css" />
 
     <title>Monsters University - Minhas Turmas</title>
 
@@ -51,19 +51,23 @@
 <aside>
 
     <div id="logo">
-        <img src="<%= contextPath %>/assets/imgs/Logo.png" alt="Logo" />
+        <img src="${pageContext.request.contextPath}/assets/imgs/Logo.png" alt="Logo" />
     </div>
 
     <nav>
-        <a href="<%= contextPath %>/turma-read" class="ativo">
-            <img src="<%= contextPath %>/assets/imgs/icone-diciplinas.png" alt="" />
+        <a href="${pageContext.request.contextPath}/turma-read" class="ativo">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-diciplinas.png" alt="" />
             Disciplina
+        </a>
+        <a href="${pageContext.request.contextPath}/dashboard">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-boletim.png" alt="" />
+            Dashboards
         </a>
     </nav>
 
     <div id="info-usuario" onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'" style="cursor: pointer;">
         <div id="avatar">
-            <img src="<%= contextPath %>/assets/imgs/icone-usuario.png" alt="Usuário" />
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png" alt="Usuário" />
         </div>
 
         <span>
@@ -107,7 +111,7 @@
 
             <div class="turma-card">
 
-                <a href="<%= contextPath %>/turma-aluno-read?id=<%= t.getId() %>" class="turma-link">
+                <a href="${pageContext.request.contextPath}/turma-aluno-read?id=<%= t.getId() %>" class="turma-link">
 
                 <span style="padding-left:20px; font-weight:bold;">
                     <%= (t.getSala() != null) ? t.getSala() : "Turma" %>

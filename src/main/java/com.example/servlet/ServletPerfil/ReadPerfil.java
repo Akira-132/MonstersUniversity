@@ -56,7 +56,7 @@ public class ReadPerfil extends HttpServlet {
             Professor prof = professorDAO.readByUsuarioId(usuarioLogado.getId());
             if (prof != null) {
                 request.setAttribute("profLogado", prof);
-                request.getRequestDispatcher("/WEB-INF/views/perfil-prof.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/perfil-professor.jsp").forward(request, response);
                 return;
             }
 
