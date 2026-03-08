@@ -42,7 +42,7 @@ public class DisciplinaDAO {
                         "FROM disciplina d " +
                         "INNER JOIN professor p ON d.id_professor = p.id_professor " +
                         "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
-                        "ORDER BY d.id_disciplina ASC";
+                        "ORDER BY d.nome ASC";
 
         Conexao conexao = new Conexao();
         List<Disciplina> lista = new LinkedList<>();
@@ -100,7 +100,8 @@ public class DisciplinaDAO {
                         "FROM disciplina d " +
                         "INNER JOIN professor p ON d.id_professor = p.id_professor " +
                         "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
-                        "WHERE d.id_disciplina = ?";
+                        "WHERE d.id_disciplina = ? " +
+                        "ORDER BY d.nome ASC";
 
         Conexao conexao = new Conexao();
         Disciplina disciplina = null;
@@ -160,7 +161,8 @@ public class DisciplinaDAO {
                         "FROM disciplina d " +
                         "INNER JOIN professor p ON d.id_professor = p.id_professor " +
                         "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
-                        "WHERE d.nome = ?";
+                        "WHERE d.nome = ? " +
+                        "ORDER BY d.nome ASC";
 
         Conexao conexao = new Conexao();
         Disciplina disciplina = null;

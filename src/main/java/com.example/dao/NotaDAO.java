@@ -42,7 +42,7 @@ public class NotaDAO {
                         "INNER JOIN disciplina d ON n.id_disciplina = d.id_disciplina " +
                         "INNER JOIN professor p ON d.id_professor = p.id_professor " +
                         "INNER JOIN usuario up ON p.id_usuario = up.id_usuario " +
-                        "ORDER BY n.id_nota ASC";
+                        "ORDER BY ua.nome ASC";
 
 
         Conexao conexao = new Conexao();
@@ -98,7 +98,7 @@ public class NotaDAO {
     public List<Nota> readByAlunoId(int alunoId) throws SQLException {
 
         String sql = "SELECT id_nota, tipo, semestre, ano, nota, id_aluno, id_disciplina " +
-                "FROM nota WHERE id_aluno = ? ORDER BY id_nota ASC";
+                "FROM nota WHERE id_aluno = ? ORDER BY id_disciplina ASC, semestre ASC";
 
         Conexao conexao = new Conexao();
         List<Nota> lista = new LinkedList<>();
@@ -146,7 +146,7 @@ public class NotaDAO {
                         "INNER JOIN professor p ON d.id_professor = p.id_professor " +
                         "INNER JOIN usuario up ON p.id_usuario = up.id_usuario " +
                         "WHERE n.id_disciplina = ? " +
-                        "ORDER BY n.id_nota ASC";
+                        "ORDER BY ua.nome ASC";
 
         Conexao conexao = new Conexao();
         List<Nota> lista = new LinkedList<>();

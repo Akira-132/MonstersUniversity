@@ -30,7 +30,7 @@ public class ProfessorDAO {
                 "u.nome, u.sobrenome, u.email, u.senha " +
                 "FROM professor p " +
                 "INNER JOIN usuario u ON p.id_usuario = u.id_usuario " +
-                "ORDER BY p.id_professor ASC";
+                "ORDER BY u.nome ASC";
 
         Conexao conexao = new Conexao();
         List<Professor> listaProfessor = new LinkedList<>();

@@ -23,7 +23,7 @@ public class AdminDAO {
     }
 
     public List<Admin> read() throws SQLException {
-        String sql = "SELECT a.id_admin, a.id_usuario, u.id_usuario, u.nome, u.sobrenome, u.email, u.senha FROM admin a INNER JOIN usuario u ON a.id_usuario = u.id_usuario ORDER BY a.id_admin ASC";
+        String sql = "SELECT a.id_admin, a.id_usuario, u.id_usuario, u.nome, u.sobrenome, u.email, u.senha FROM admin a INNER JOIN usuario u ON a.id_usuario = u.id_usuario ORDER BY u.nome ASC";
 
         Conexao conexao = new Conexao();
         List<Admin> lista = new LinkedList<>();

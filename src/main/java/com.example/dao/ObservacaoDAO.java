@@ -39,7 +39,7 @@ public class ObservacaoDAO {
                         "INNER JOIN usuario up ON p.id_usuario = up.id_usuario " +
                         "INNER JOIN aluno a ON o.id_aluno = a.id_aluno " +
                         "INNER JOIN usuario ua ON a.id_usuario = ua.id_usuario " +
-                        "ORDER BY o.id_observacao ASC";
+                        "ORDER BY o.comentario ASC";
 
         Conexao conexao = new Conexao();
         List<Observacao> lista = new LinkedList<>();
@@ -92,7 +92,7 @@ public class ObservacaoDAO {
     public List<Observacao> readByAlunoId(int alunoId) throws SQLException {
 
         String sql = "SELECT id_observacao, comentario, data_envio, id_professor, id_aluno " +
-                "FROM observacoes WHERE id_aluno = ? ORDER BY id_observacao ASC";
+                "FROM observacoes WHERE id_aluno = ? ORDER BY comentario ASC";
 
         Conexao conexao = new Conexao();
         List<Observacao> lista = new LinkedList<>();
@@ -125,7 +125,7 @@ public class ObservacaoDAO {
     public List<Observacao> readByProfessorId(int professorId) throws SQLException {
 
         String sql = "SELECT id_observacao, comentario, data_envio, id_professor, id_aluno " +
-                "FROM observacoes WHERE id_professor = ? ORDER BY id_observacao ASC";
+                "FROM observacoes WHERE id_professor = ? ORDER BY comentario ASC";
 
         Conexao conexao = new Conexao();
         List<Observacao> lista = new LinkedList<>();

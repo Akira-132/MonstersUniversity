@@ -27,7 +27,7 @@ public class UsuarioDAO {
     }
 
     public List<Usuario> read() throws SQLException {
-        String sql = "SELECT id_usuario, nome, sobrenome, email, senha FROM usuario ORDER BY id_usuario ASC";
+        String sql = "SELECT id_usuario, nome, sobrenome, email, senha FROM usuario ORDER BY nome ASC";
 
         Conexao conexao = new Conexao();
         List<Usuario> lista = new LinkedList<>();
