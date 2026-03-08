@@ -47,7 +47,7 @@
 
 
                     <div id="buttons">
-                        <a href="${pageContext.request.contextPath}/" id="btn-voltar">Voltar</a>
+                        <a href="${pageContext.request.contextPath}/grito" id="btn-voltar">Voltar</a>
                         <input type="submit" value="Entrar" id="btn-login">
                     </div>
                 </form>
