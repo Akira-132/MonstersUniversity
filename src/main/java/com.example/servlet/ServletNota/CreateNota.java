@@ -25,6 +25,7 @@ public class CreateNota extends HttpServlet {
         String notaValorStr = request.getParameter("nota");
         String idAlunoStr = request.getParameter("fkAlunoId");
         String idDisciplinaStr = request.getParameter("fkDisciplinaId");
+        String idTurmaStr = request.getParameter("idTurma");
 
         NotaDAO notaDAO = new NotaDAO();
         String erro = null;
@@ -42,7 +43,11 @@ public class CreateNota extends HttpServlet {
             Nota novaNota = new Nota(tipo, semestre, ano, valor, fkAlunoId, fkDisciplinaId);
 
             if (notaDAO.create(novaNota)) {
-                response.sendRedirect(request.getContextPath() + "/nota-read");
+                String redirecionamento = request.getContextPath() + "/nota-read?idDisciplina=" + fkDisciplinaId;
+                if (idTurmaStr != null && !idTurmaStr.equals("0")) {
+                    redirecionamento += "&idTurma=" + idTurmaStr;
+                }
+                response.sendRedirect(redirecionamento);
                 return;
             } else {
                 erro = "Erro ao lançar nota no banco de dados.";

@@ -36,6 +36,6 @@ public class DeleteObservacao extends HttpServlet {
         }
 
         request.setAttribute("erro", erro);
-        request.getRequestDispatcher("/observacao-read?id=" + idStr).forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/observacao-read?id=" + idStr);
     }
 }

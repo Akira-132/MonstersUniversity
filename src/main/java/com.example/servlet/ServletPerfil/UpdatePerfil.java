@@ -60,6 +60,9 @@ public class UpdatePerfil extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/perfil-read?sucesso=ok");
             return;
 
+        } catch (IllegalArgumentException iae) {
+            iae.printStackTrace();
+            erro = "Telefone e/ou email inválidos. Verifique se foram digitados corretamente";
         } catch (Exception e) {
             e.printStackTrace();
             erro = "Erro de banco de dados ao atualizar os dados.";

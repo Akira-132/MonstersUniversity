@@ -65,19 +65,19 @@
 
     <div>
       <div id="card-situacao">
-        <p id="descricao">Bem-vindo à disciplina de <%= nomeDisciplina %>. Aqui você aprenderá as melhores técnicas aplicadas na Monsters University.</p>
+        <p id="descricao" style="height: 100px">Bem-vindo à disciplina de <%= nomeDisciplina %>. Aqui você aprenderá as melhores técnicas aplicadas na Monsters University.</p>
       </div>
     </div>
 
     <% if (listaObservacoes != null && !listaObservacoes.isEmpty()) { %>
     <%  for (Observacao obs : listaObservacoes) { %>
-    <div class="historico-item">
-      <div class="item-conteudo">
+    <div style="background: #fff; border-radius: 1rem; box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.329); padding: 20px;">
+      <div>
         <h3>Registro de Observação</h3>
         <p><%= obs.getComentario() %></p>
-        <span class="item-data">Enviado em <%= (obs.getDataEnvio() != null) ? obs.getDataEnvio().format(formatter) : "Data Indisponível" %></span>
+        <span>Enviado em <%= (obs.getDataEnvio() != null) ? obs.getDataEnvio().format(formatter) : "Data Indisponível" %></span>
       </div>
-      <div class="item-borda"></div>
+      <div></div>
     </div>
     <%  } %>
     <% } else if (listaObservacoes != null) { %>
