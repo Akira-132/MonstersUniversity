@@ -48,14 +48,18 @@
     </div>
     <span>
             <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() + " " + usuarioLogado.getSobrenome() : "Aluno" %></strong>
-            Universitário
+            Aluno
         </span>
   </a>
 </aside>
 
 <main>
-  <header>Minhas disciplinas</header>
+  <header>Disciplina</header>
   <div id="conteudo">
+
+    <a href="${pageContext.request.contextPath}/disciplina-read" style="position: absolute">
+      <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" alt="Voltar" />
+    </a>
 
     <% if (erro != null) { %>
     <div style="color: #ff4d4d; margin-bottom: 15px;"><%= erro %></div>
@@ -63,10 +67,8 @@
 
     <h1 id="disciplina-titulo"><%= nomeDisciplina %></h1>
 
-    <div>
-      <div id="card-situacao">
-        <p id="descricao" style="height: 100px">Bem-vindo à disciplina de <%= nomeDisciplina %>. Aqui você aprenderá as melhores técnicas aplicadas na Monsters University.</p>
-      </div>
+    <div id="card-situacao">
+      <p id="descricao">Bem-vindo à disciplina de <%= nomeDisciplina %>. Aqui você aprenderá as melhores técnicas aplicadas na Monsters University.</p>
     </div>
 
     <% if (listaObservacoes != null && !listaObservacoes.isEmpty()) { %>

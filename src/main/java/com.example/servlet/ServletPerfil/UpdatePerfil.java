@@ -39,6 +39,13 @@ public class UpdatePerfil extends HttpServlet {
 
         try {
             if (email != null && !email.trim().isEmpty()) {
+                Usuario emailExistente = usuarioDAO.readByEmail(email);
+                if (emailExistente != null && emailExistente.getId() != usuarioLogado.getId()) {
+                    request.setAttribute("erro", "Este e-mail já está em uso.");
+                    request.getRequestDispatcher("/WEB-INF/views/perfil-aluno.jsp").forward(request, response);
+                    return;
+                }
+
                 usuarioLogado.setEmail(email);
                 usuarioDAO.update(usuarioLogado);
 

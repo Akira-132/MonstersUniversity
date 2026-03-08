@@ -42,6 +42,10 @@ public class ReadNota extends HttpServlet {
         String idTurmaStr = request.getParameter("idTurma");
         String idDisciplinaStr = request.getParameter("idDisciplina");
 
+        if ("ok".equals(request.getParameter("sucesso"))) {
+            request.setAttribute("sucesso", "Operação realizada com sucesso!");
+        }
+
         List<Nota> lista = null;
 
         try {

@@ -62,7 +62,7 @@ public class UpdateNota extends HttpServlet {
 
             if (notaDAO.update(nota) > 0) {
 
-                String redirecionamento = request.getContextPath() + "/nota-read?idDisciplina=" + fkDisciplinaId;
+                String redirecionamento = request.getContextPath() + "/nota-read?sucesso=ok&idDisciplina=" + fkDisciplinaId;
                 if (idTurmaStr != null && !idTurmaStr.equals("0")) {
                     redirecionamento += "&idTurma=" + idTurmaStr;
                 }

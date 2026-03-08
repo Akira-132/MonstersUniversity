@@ -25,9 +25,9 @@ public class DeleteNota extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
 
             if (notaDAO.deleteById(id) > 0) {
-                String redirecionamento = request.getContextPath() + "/nota-read";
+                String redirecionamento = request.getContextPath() + "/nota-read?sucesso=ok";
                 if (idDisciplinaStr != null && !idDisciplinaStr.equals("0")) {
-                    redirecionamento += "?idDisciplina=" + idDisciplinaStr;
+                    redirecionamento += "&idDisciplina=" + idDisciplinaStr;
                     if (idTurmaStr != null && !idTurmaStr.equals("0")) {
                         redirecionamento += "&idTurma=" + idTurmaStr;
                     }

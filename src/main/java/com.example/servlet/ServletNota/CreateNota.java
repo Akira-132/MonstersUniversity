@@ -43,7 +43,7 @@ public class CreateNota extends HttpServlet {
             Nota novaNota = new Nota(tipo, semestre, ano, valor, fkAlunoId, fkDisciplinaId);
 
             if (notaDAO.create(novaNota)) {
-                String redirecionamento = request.getContextPath() + "/nota-read?idDisciplina=" + fkDisciplinaId;
+                String redirecionamento = request.getContextPath() + "/nota-read?sucesso=ok&idDisciplina=" + fkDisciplinaId;
                 if (idTurmaStr != null && !idTurmaStr.equals("0")) {
                     redirecionamento += "&idTurma=" + idTurmaStr;
                 }

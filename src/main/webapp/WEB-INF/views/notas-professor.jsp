@@ -18,6 +18,13 @@
         erro = (String) session.getAttribute("erro");
         if (erro != null) session.removeAttribute("erro");
     }
+
+    String sucesso = (String) request.getAttribute("sucesso");
+    if (sucesso == null) {
+        sucesso = (String) session.getAttribute("sucesso");
+        if (sucesso != null) session.removeAttribute("sucesso");
+    }
+
     String idTurma = request.getParameter("idTurma");
     if(idTurma == null) idTurma = "0";
 
@@ -91,6 +98,12 @@ Minha Disciplina
         <% if (erro != null) { %>
         <div style="color:#ff4d4d;margin-bottom:15px;text-align:center;">
             <%= erro %>
+        </div>
+        <% } %>
+
+        <% if (sucesso != null) { %>
+        <div style="color:#2e7d32;margin-bottom:15px;text-align:center;">
+            <%= sucesso %>
         </div>
         <% } %>
 
