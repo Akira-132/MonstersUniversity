@@ -21,7 +21,11 @@ public class CreateObservacao extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
 
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
 
         if (usuarioLogado == null) {
@@ -47,8 +51,8 @@ public class CreateObservacao extends HttpServlet {
                 // professor logado
                 fkProfessorId = professor.getId();
             } else {
-                // admin criando observação
-                fkProfessorId = usuarioLogado.getId();
+                response.sendRedirect(request.getContextPath() + "/turma-read");
+                return;
             }
 
             Observacao novaObservacao = new Observacao(texto, fkProfessorId, fkAlunoId);

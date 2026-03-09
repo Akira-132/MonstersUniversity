@@ -61,9 +61,11 @@ public class UpdateTurma extends HttpServlet {
             request.setAttribute("listaTurmas", turmaDAO.read());
             request.setAttribute("listaDisciplinas", disciplinaDAO.read());
 
-            if (idStr != null) {
-                request.setAttribute("turmaModal", turmaDAO.readById(Integer.parseInt(idStr)));
-            }
+            try {
+                if (idStr != null) {
+                    request.setAttribute("turmaModal", turmaDAO.readById(Integer.parseInt(idStr)));
+                }
+            } catch (NumberFormatException ignored) {}
 
         } catch (Exception e) {
             e.printStackTrace();

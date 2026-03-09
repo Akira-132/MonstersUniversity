@@ -54,7 +54,6 @@ public class UpdateObservacao extends HttpServlet {
             erro = "Erro: " + e.getMessage();
         }
 
-        request.setAttribute("erro", erro);
-        response.sendRedirect(request.getContextPath() + "/observacao-read?id=" + idStr);
+        response.sendRedirect(request.getContextPath() + "/observacao-read?id=" + idStr + "&erro=update");
     }
 }

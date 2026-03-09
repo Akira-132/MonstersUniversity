@@ -41,12 +41,9 @@ public class BoletimDAO {
                             rset.getInt("id_aluno"),
                             rset.getString("nome_completo"),
                             rset.getString("disciplina"),
-                            rset.wasNull() || rset.getObject("media_p1") == null
-                                    ? null : rset.getDouble("media_p1"),
-                            rset.wasNull() || rset.getObject("media_p2") == null
-                                    ? null : rset.getDouble("media_p2"),
-                            rset.wasNull() || rset.getObject("media_final") == null
-                                    ? null : rset.getDouble("media_final"),
+                            rset.getObject("media_p1") == null ? null : rset.getDouble("media_p1"),
+                            rset.getObject("media_p2") == null ? null : rset.getDouble("media_p2"),
+                            rset.getObject("media_final") == null ? null : rset.getDouble("media_final"),
                             rset.getString("situacao"),
                             rset.getInt("semestre"),
                             rset.getInt("ano")

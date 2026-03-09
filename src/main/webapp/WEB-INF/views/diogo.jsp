@@ -26,7 +26,9 @@
     String textoVal = (observacao != null && observacao.getComentario() != null) ? observacao.getComentario() : "";
     String nomeCompletoAluno = "Aluno";
     if (alunoAtual != null) {
-        nomeCompletoAluno = alunoAtual.getUsuario().getNome() + " " + alunoAtual.getUsuario().getSobrenome();
+        nomeCompletoAluno = (alunoAtual.getUsuario() != null)
+                ? alunoAtual.getUsuario().getNome() + " " + alunoAtual.getUsuario().getSobrenome()
+                : "Aluno #" + alunoAtual.getId();
     }
 %>
 

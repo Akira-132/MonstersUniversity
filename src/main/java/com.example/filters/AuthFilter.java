@@ -52,15 +52,6 @@ public class AuthFilter implements Filter {
             return;
         }
 
-        if (path.equals("/matricula.jsp") || path.equals("/ativar-matricula")) {
-            if (session != null && session.getAttribute("alunoAtivacao") != null) {
-                chain.doFilter(request, response);
-            } else {
-                res.sendRedirect(context + "/verificacao-aluno.jsp");
-            }
-            return;
-        }
-
         if (path.equals("/verificacao.jsp") || path.equals("/verificar-codigo")) {
             if (session != null && session.getAttribute("emailRecuperacao") != null) {
                 chain.doFilter(request, response);

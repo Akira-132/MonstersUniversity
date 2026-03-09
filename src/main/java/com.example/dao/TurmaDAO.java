@@ -15,13 +15,12 @@ public class TurmaDAO {
     public boolean create(Turma turma) throws SQLException {
 
         String sqlTurma = "INSERT INTO turma (periodo, sala, id_disciplina) VALUES (?, ?, ?)";
-        String sqlBuscarId = "SELECT id_turma FROM turma WHERE sala = ?";
         String sqlRelacao = "INSERT INTO turma_aluno (id_turma, id_aluno) VALUES (?, ?)";
 
         Conexao conexao = new Conexao();
 
         try (Connection conn = conexao.conectar();
-             PreparedStatement pstmtTurma = conn.prepareStatement(sqlTurma)) {
+             PreparedStatement pstmtTurma = conn.prepareStatement(sqlTurma, Statement.RETURN_GENERATED_KEYS)) {
 
             pstmtTurma.setString(1, turma.getPeriodo());
             pstmtTurma.setString(2, turma.getSala());
@@ -31,24 +30,15 @@ public class TurmaDAO {
 
             if (criada && turma.getAlunos() != null && !turma.getAlunos().isEmpty()) {
 
-                try (PreparedStatement pstmtBuscar = conn.prepareStatement(sqlBuscarId)) {
+                try (ResultSet generatedKeys = pstmtTurma.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int turmaId = generatedKeys.getInt(1);
 
-                    pstmtBuscar.setString(1, turma.getSala());
-
-                    try (ResultSet rset = pstmtBuscar.executeQuery()) {
-
-                        if (rset.next()) {
-
-                            int turmaId = rset.getInt("id_turma");
-
-                            try (PreparedStatement pstmtRel = conn.prepareStatement(sqlRelacao)) {
-
-                                for (Aluno aluno : turma.getAlunos()) {
-
-                                    pstmtRel.setInt(1, turmaId);
-                                    pstmtRel.setInt(2, aluno.getId());
-                                    pstmtRel.executeUpdate();
-                                }
+                        try (PreparedStatement pstmtRel = conn.prepareStatement(sqlRelacao)) {
+                            for (Aluno aluno : turma.getAlunos()) {
+                                pstmtRel.setInt(1, turmaId);
+                                pstmtRel.setInt(2, aluno.getId());
+                                pstmtRel.executeUpdate();
                             }
                         }
                     }
