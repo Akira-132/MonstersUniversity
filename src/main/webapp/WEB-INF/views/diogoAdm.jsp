@@ -88,7 +88,8 @@ String textoVal = (observacao != null && observacao.getComentario() != null) ? o
         <%= alunoAtual.getUsuario().getNome() + " " + alunoAtual.getUsuario().getSobrenome() %>
       </h1>
 
-      <a href="${pageContext.request.contextPath}/observacao-read?idAluno=<%= alunoIdVal %>" id="btn-historico">
+      <a href="${pageContext.request.contextPath}/observacao-read?idAluno=<%= alunoIdVal %>&idTurma=<%= request.getAttribute("idTurmaAtual") != null ? request.getAttribute("idTurmaAtual") : "" %>
+" id="btn-historico">
         Ver histórico
       </a>
     </div>

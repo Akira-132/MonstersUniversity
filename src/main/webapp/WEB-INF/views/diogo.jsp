@@ -96,7 +96,8 @@ Professor
                 <%= nomeCompletoAluno %>
             </h1>
 
-            <a href="${pageContext.request.contextPath}/observacao-read?idAluno=<%= alunoIdVal %>" id="btn-historico">
+            <a href="${pageContext.request.contextPath}/observacao-read?idAluno=<%= alunoIdVal %>&idTurma=<%= request.getAttribute("idTurmaAtual") != null ? request.getAttribute("idTurmaAtual") : "" %>
+" id="btn-historico">
                 Ver histórico
             </a>
 

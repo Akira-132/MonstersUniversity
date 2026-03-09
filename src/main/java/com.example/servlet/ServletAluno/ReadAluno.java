@@ -65,10 +65,9 @@ public class ReadAluno extends HttpServlet {
                         .forward(request, response);
 
             } else if (ehProfessor) {
-                TurmaDAO turmaDAO = new TurmaDAO();
-                Turma turma = turmaDAO.readByAlunoId(alunoSelecionado.getId());
-                if (turma != null) {
-                    request.setAttribute("idTurmaAtual", turma.getId());
+                String idTurmaStr = request.getParameter("idTurma");
+                if (idTurmaStr != null && !idTurmaStr.isEmpty()) {
+                    request.setAttribute("idTurmaAtual", idTurmaStr);
                 }
                 request.getRequestDispatcher("/WEB-INF/views/diogo.jsp")
                         .forward(request, response);
