@@ -4,9 +4,9 @@ public class Boletim {
     private int idAluno;
     private String nomeCompleto;
     private String disciplina;
-    private double mediaP1;
-    private double mediaP2;
-    private double mediaFinal;
+    private Double mediaP1;
+    private Double mediaP2;
+    private Double mediaFinal;
     private String situacao;
     private int semestre;
     private int ano;
@@ -14,7 +14,8 @@ public class Boletim {
     public Boletim() {
     }
 
-    public Boletim(int idAluno, String nomeCompleto, String disciplina, double mediaP1, double mediaP2, double mediaFinal, String situacao, int semestre, int ano) {
+    public Boletim(int idAluno, String nomeCompleto, String disciplina, Double mediaP1, Double mediaP2,
+                   Double mediaFinal, String situacao, int semestre, int ano) {
         this.idAluno = idAluno;
         this.nomeCompleto = nomeCompleto;
         this.disciplina = disciplina;
@@ -29,9 +30,9 @@ public class Boletim {
     public int getIdAluno() { return idAluno; }
     public String getNomeCompleto() { return nomeCompleto; }
     public String getDisciplina() { return disciplina; }
-    public double getMediaP1() { return mediaP1; }
-    public double getMediaP2() { return mediaP2; }
-    public double getMediaFinal() { return mediaFinal; }
+    public Double getMediaP1() { return mediaP1; }
+    public Double getMediaP2() { return mediaP2; }
+    public Double getMediaFinal() { return mediaFinal; }
     public String getSituacao() { return situacao; }
     public int getSemestre() { return semestre; }
     public int getAno() { return ano; }

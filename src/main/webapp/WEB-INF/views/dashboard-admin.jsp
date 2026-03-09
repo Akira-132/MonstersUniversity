@@ -78,63 +78,66 @@ if (disciplinasJson == null)  disciplinasJson = "[]";
 </aside>
 
 <main>
+  <header>Dashboard</header>
 
-  <% if (erro != null && !erro.isEmpty()) { %>
-  <div style="background:#ffe5e5; border:1px solid #f44336; color:#b71c1c;
-                  padding:1rem 1.5rem; border-radius:0.5rem; margin-bottom:1.5rem;">
-    <%= erro %>
+  <div id="conteudo">
+    <% if (erro != null && !erro.isEmpty()) { %>
+    <div style="background:#ffe5e5; border:1px solid #f44336; color:#b71c1c;
+                    padding:1rem 1.5rem; border-radius:0.5rem; margin-bottom:1.5rem;">
+      <%= erro %>
+    </div>
+    <% } %>
+
+    <section id="dashboard">
+
+      <div class="card verde">
+        <div class="info">
+          <h2>Total de Alunos</h2>
+          <p id="total"><%= totalAlunos %></p>
+        </div>
+      </div>
+
+      <div class="card roxo">
+        <div class="info">
+          <h2>Média Geral</h2>
+          <p id="mediaG"><%= mediaGeral %></p>
+        </div>
+      </div>
+
+      <div class="card verde">
+        <div class="info">
+          <h2>Quantidade de disciplinas</h2>
+          <p id="qtd_disciplinas"><%= totalDisciplinas %></p>
+        </div>
+      </div>
+
+      <div class="card roxo">
+        <div class="info">
+          <h2>Melhor Aluno</h2>
+          <p id="melhor_aluno"><%= melhorAluno %></p>
+        </div>
+      </div>
+
+      <div class="card grafico">
+        <h2>Desempenho Geral</h2>
+
+        <div class="filtros">
+          <select id="alunoSelect">
+            <option value="">Todos os alunos</option>
+          </select>
+
+          <select id="disciplinaSelect">
+            <option value="">Todas as disciplinas</option>
+          </select>
+
+          <button onclick="atualizarGrafico()">Filtrar</button>
+        </div>
+
+        <canvas id="grafico"></canvas>
+      </div>
+
+    </section>
   </div>
-  <% } %>
-
-  <section id="dashboard">
-
-    <div class="card verde">
-      <div class="info">
-        <h2>Total de Alunos</h2>
-        <p id="total"><%= totalAlunos %></p>
-      </div>
-    </div>
-
-    <div class="card roxo">
-      <div class="info">
-        <h2>Média Geral</h2>
-        <p id="mediaG"><%= mediaGeral %></p>
-      </div>
-    </div>
-
-    <div class="card verde">
-      <div class="info">
-        <h2>Quantidade de disciplinas</h2>
-        <p id="qtd_disciplinas"><%= totalDisciplinas %></p>
-      </div>
-    </div>
-
-    <div class="card roxo">
-      <div class="info">
-        <h2>Melhor Aluno</h2>
-        <p id="melhor_aluno"><%= melhorAluno %></p>
-      </div>
-    </div>
-
-    <div class="card grafico">
-      <h2>Desempenho Geral</h2>
-
-      <div class="filtros">
-        <select id="alunoSelect">
-          <option value="">Todos os alunos</option>
-        </select>
-
-        <select id="disciplinaSelect">
-          <option value="">Todas as disciplinas</option>
-        </select>
-
-        <button onclick="atualizarGrafico()">Filtrar</button>
-      </div>
-
-      <canvas id="grafico"></canvas>
-    </div>
-
-  </section>
 </main>
 
 <script>

@@ -49,7 +49,7 @@
         </div>
         <span>
                 <strong><%= usuarioLogado != null ? usuarioLogado.getNome() : "Aluno" %></strong>
-                Universitário
+                Aluno
             </span>
     </div>
 </aside>
@@ -92,18 +92,18 @@
 
                     <div class="campo-perfil">
                         <label for="cpf">CPF</label>
-                        <input type="text" id="cpf" value="<%= cpf %>" readonly style="background-color: #f0f0f0;"/>
+                        <input type="text" id="cpf" value="<%= cpf %>" readonly style="background-color: #f0f0f0;" disabled/>
                     </div>
 
                     <div class="campo-perfil">
                         <label for="matricula">Matrícula</label>
-                        <input type="text" id="matricula" value="<%= matricula %>" readonly style="background-color: #f0f0f0;"/>
+                        <input type="text" id="matricula" value="<%= matricula %>" readonly style="background-color: #f0f0f0;" disabled/>
                     </div>
                 </div>
 
                 <div class="campo-perfil campo-descricao">
                     <label for="sobre">Sobre mim</label>
-                    <textarea id="sobre" rows="6" readonly style="background-color: #f0f0f0; cursor: default;">Aluno dedicado da Monsters University, apaixonado por técnicas de susto e camuflagem. Membro ativo da equipe de gritos aterrorizantes.</textarea>
+                    <textarea id="sobre" rows="6" readonly style="background-color: #f0f0f0; cursor: default;" disabled>Aluno dedicado da Monsters University, apaixonado por técnicas de susto e camuflagem. Membro ativo da equipe de gritos aterrorizantes.</textarea>
                 </div>
 
                 <button type="submit" id="btn-salvar" style="background-color: #0d47a1; color: white; padding: 12px; border-radius: 8px; width: 100%; font-weight: bold; border: none; cursor: pointer; margin-bottom: 15px;">SALVAR ALTERAÇÕES</button>
