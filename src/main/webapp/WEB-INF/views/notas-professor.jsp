@@ -18,6 +18,13 @@
         erro = (String) session.getAttribute("erro");
         if (erro != null) session.removeAttribute("erro");
     }
+
+    String sucesso = (String) request.getAttribute("sucesso");
+    if (sucesso == null) {
+        sucesso = (String) session.getAttribute("sucesso");
+        if (sucesso != null) session.removeAttribute("sucesso");
+    }
+
     String idTurma = request.getParameter("idTurma");
     if(idTurma == null) idTurma = "0";
 
@@ -70,7 +77,7 @@
         ? usuarioLogado.getNome()+" "+usuarioLogado.getSobrenome()
         : "Professor" %>
 </strong>
-Minha Disciplina
+Professor
 </span>
 
     </div>
@@ -84,13 +91,19 @@ Minha Disciplina
 
     <div id="conteudo">
 
-        <a href="${pageContext.request.contextPath}/turma-read" id="btn-voltar">
+        <a href="${pageContext.request.contextPath}/turma-aluno-read?id=<%= idTurma %>" id="btn-voltar">
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" width="36"/>
         </a>
 
         <% if (erro != null) { %>
         <div style="color:#ff4d4d;margin-bottom:15px;text-align:center;">
             <%= erro %>
+        </div>
+        <% } %>
+
+        <% if (sucesso != null) { %>
+        <div style="color:#2e7d32;margin-bottom:15px;text-align:center;">
+            <%= sucesso %>
         </div>
         <% } %>
 
@@ -136,9 +149,9 @@ Minha Disciplina
                     </td>
 
                     <td>
-<span class="nota <%= (n.getNota() < 6.0) ? "baixa" : "" %>">
-<%= String.format("%.1f", n.getNota()) %>
-</span>
+                        <span class="nota <%= (n.getNota() < 6.0) ? "baixa" : "" %>">
+                            <%= String.format("%.1f", n.getNota()) %>
+                        </span>
                     </td>
 
                     <td style="display:flex;gap:10px;justify-content:center;">

@@ -120,11 +120,73 @@ main {
 }
 
 @media (max-width: 768px) {
+  body {
+    overflow: auto;
+    height: auto;
+  }
+
+  aside {
+    position: relative;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0.8rem 1rem;
+  }
+
+  aside #logo {
+    display: none;
+  }
+
+  aside nav {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    flex: 1;
+  }
+
+  aside nav a {
+    flex-direction: row;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  aside nav a img {
+    width: 18px;
+  }
+
+  aside #info-usuario {
+    display: none;
+  }
+
+  main {
+    margin-left: 0;
+    height: auto;
+    overflow-y: visible;
+    padding: 1rem;
+  }
+
   #dashboard {
     grid-template-columns: 1fr;
   }
 
   .grafico {
     grid-column: span 1;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    padding: 0.75rem;
+  }
+
+  .card p {
+    font-size: 1.4rem;
+  }
+
+  aside nav a span,
+  aside nav a {
+    font-size: 0.75rem;
   }
 }

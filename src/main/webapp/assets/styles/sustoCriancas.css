@@ -4,7 +4,7 @@
   padding: 2rem 6.3rem;
   display: flex;
   flex-direction: column;
-  gap: 4rem;
+  gap: 1.5rem;
 }
 
 #disciplina-titulo {
@@ -19,10 +19,9 @@
   background: #ededef;
   border-radius: 1rem;
   padding: 1.3rem;
-  min-height: 28.1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  min-height: auto;
+  align-self: flex-start;
+  width: 100%;
 }
 
 #descricao {
@@ -42,7 +41,7 @@
   }
 
   #card-situacao {
-    min-height: 24rem;
+    min-height: auto;
   }
 }
 

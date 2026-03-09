@@ -59,57 +59,63 @@
             <strong>
                 <%= (usuarioLogado != null) ? usuarioLogado.getNome() : "Professor" %>
             </strong>
-            Docente
+            Professor
         </span>
     </div>
 </aside>
 
 <main>
 
-    <section id="dashboard">
+    <header>
+        Dashboard
+    </header>
 
-        <div class="card verde">
-            <div class="info">
-                <h2>Total de Alunos</h2>
-                <p><%= totalAlunos %></p>
-            </div>
-        </div>
+    <div id="conteudo">
+        <section id="dashboard">
 
-        <div class="card roxo">
-            <div class="info">
-                <h2>Média Geral</h2>
-                <p><%= mediaGeral %></p>
-            </div>
-        </div>
-
-        <div class="card verde">
-            <div class="info">
-                <h2>Disciplina</h2>
-                <p><%= nomeDisciplina %></p>
-            </div>
-        </div>
-
-        <div class="card roxo">
-            <div class="info">
-                <h2>Melhor Aluno</h2>
-                <p><%= melhorAluno %></p>
-            </div>
-        </div>
-
-        <div class="card grafico">
-            <h2>Desempenho da Turma</h2>
-
-            <div class="filtros">
-                <select id="alunoSelect">
-                    <option value="">Todos os alunos</option>
-                </select>
-                <button onclick="atualizarGrafico()">Filtrar</button>
+            <div class="card verde">
+                <div class="info">
+                    <h2>Total de Alunos</h2>
+                    <p><%= totalAlunos %></p>
+                </div>
             </div>
 
-            <canvas id="grafico"></canvas>
-        </div>
+            <div class="card roxo">
+                <div class="info">
+                    <h2>Média Geral</h2>
+                    <p><%= mediaGeral %></p>
+                </div>
+            </div>
 
-    </section>
+            <div class="card verde">
+                <div class="info">
+                    <h2>Disciplina</h2>
+                    <p><%= nomeDisciplina %></p>
+                </div>
+            </div>
+
+            <div class="card roxo">
+                <div class="info">
+                    <h2>Melhor Aluno</h2>
+                    <p><%= melhorAluno %></p>
+                </div>
+            </div>
+
+            <div class="card grafico">
+                <h2>Desempenho da Turma</h2>
+
+                <div class="filtros">
+                    <select id="alunoSelect">
+                        <option value="">Todos os alunos</option>
+                    </select>
+                    <button onclick="atualizarGrafico()">Filtrar</button>
+                </div>
+
+                <canvas id="grafico"></canvas>
+            </div>
+
+        </section>
+    </div>
 </main>
 
 <script>

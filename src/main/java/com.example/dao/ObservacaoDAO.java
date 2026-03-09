@@ -110,9 +110,11 @@ public class ObservacaoDAO {
                     Observacao observacao = new Observacao(
                             rset.getInt("id_observacao"),
                             rset.getString("comentario"),
-                            rset.getTimestamp("data_envio").toInstant()
+                            rset.getTimestamp("data_envio") != null
+                                    ? rset.getTimestamp("data_envio").toInstant()
                                     .atZone(ZoneId.of("America/Sao_Paulo"))
-                                    .toLocalDateTime(),
+                                    .toLocalDateTime()
+                                    : null,
                             rset.getInt("id_professor"),
                             rset.getInt("id_aluno")
                     );
@@ -145,9 +147,11 @@ public class ObservacaoDAO {
                     Observacao observacao = new Observacao(
                             rset.getInt("id_observacao"),
                             rset.getString("comentario"),
-                            rset.getTimestamp("data_envio").toInstant()
-                                .atZone(ZoneId.of("America/Sao_Paulo"))
-                                .toLocalDateTime(),
+                            rset.getTimestamp("data_envio") != null
+                                    ? rset.getTimestamp("data_envio").toInstant()
+                                    .atZone(ZoneId.of("America/Sao_Paulo"))
+                                    .toLocalDateTime()
+                                    : null,
                             rset.getInt("id_professor"),
                             rset.getInt("id_aluno")
                     );
@@ -252,9 +256,11 @@ public class ObservacaoDAO {
         Observacao observacao = new Observacao(
                 rset.getInt("id_observacao"),
                 rset.getString("comentario"),
-                rset.getTimestamp("data_envio").toInstant()
-                    .atZone(ZoneId.of("America/Sao_Paulo"))
-                    .toLocalDateTime(),
+                rset.getTimestamp("data_envio") != null
+                        ? rset.getTimestamp("data_envio").toInstant()
+                        .atZone(ZoneId.of("America/Sao_Paulo"))
+                        .toLocalDateTime()
+                        : null,
                 rset.getInt("id_professor"),
                 rset.getInt("id_aluno")
         );

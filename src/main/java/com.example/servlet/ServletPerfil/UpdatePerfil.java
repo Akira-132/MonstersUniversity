@@ -39,10 +39,22 @@ public class UpdatePerfil extends HttpServlet {
 
         try {
             if (email != null && !email.trim().isEmpty()) {
-                usuarioLogado.setEmail(email);
-                usuarioDAO.update(usuarioLogado);
+                Usuario emailExistente = usuarioDAO.readByEmail(email);
+                if (emailExistente != null && emailExistente.getId() != usuarioLogado.getId()) {
+                    request.setAttribute("erro", "Este e-mail já está em uso.");
+                    request.getRequestDispatcher("/perfil-read").forward(request, response);
+                    return;
+                }
 
-                session.setAttribute("usuarioLogado", usuarioLogado);
+                String emailAntigo = usuarioLogado.getEmail();
+                usuarioLogado.setEmail(email);
+                try {
+                    usuarioDAO.update(usuarioLogado);
+                    session.setAttribute("usuarioLogado", usuarioLogado);
+                } catch (Exception e) {
+                    usuarioLogado.setEmail(emailAntigo);
+                    erro = "Erro de banco de dados ao atualizar os dados.";
+                }
             }
 
             if (numero != null && !numero.trim().isEmpty()) {

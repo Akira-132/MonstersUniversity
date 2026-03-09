@@ -98,7 +98,7 @@
 
                 <div class="campo-perfil campo-descricao">
                     <label for="sobre">Sobre mim</label>
-                    <textarea id="sobre" rows="6" readonly style="background-color: #f0f0f0; cursor: default;">Super Visor dedicado da Monsters University. Membro ativo da equipe de super visão.</textarea>
+                    <textarea id="sobre" rows="6" readonly style="background-color: #f0f0f0; cursor: default;" disabled>Super Visor dedicado da Monsters University. Membro ativo da equipe de super visão.</textarea>
                 </div>
 
                 <button type="submit" id="btn-salvar" style="background-color: #0d47a1; color: white; padding: 12px; border-radius: 8px; width: 100%; font-weight: bold; border: none; cursor: pointer; margin-bottom: 15px;">SALVAR ALTERAÇÕES</button>

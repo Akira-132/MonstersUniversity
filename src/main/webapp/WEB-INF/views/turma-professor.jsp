@@ -47,14 +47,19 @@
         </div>
         <span>
                 <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() + " " + usuarioLogado.getSobrenome() : "Professor" %></strong>
-                Minha Disciplina
+                Professor
             </span>
     </div>
 </aside>
 
 <main>
-    <header>Minha disciplina</header>
+    <header>Minha turma</header>
     <div id="conteudo">
+
+        <a href="${pageContext.request.contextPath}/turma-read" id="btn-voltar"
+           style="position: absolute">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" width="36"/>
+        </a>
 
         <% if (erro != null) { %>
         <div style="color: #ff4d4d; text-align: center; margin-bottom: 20px;"><%= erro %></div>

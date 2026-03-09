@@ -46,7 +46,7 @@
         </div>
         <span>
             <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() : "Professor" %></strong>
-            Docente
+            Professor
         </span>
     </div>
 </aside>
@@ -90,7 +90,7 @@
 
                 <div class="campo-perfil campo-descricao">
                     <label for="sobre">Sobre mim</label>
-                    <textarea id="sobre" rows="6" readonly style="background-color: #f0f0f0; cursor: default;">Professor dedicado da Monsters University, apaixonado por técnicas de susto e camuflagem. Membro ativo da equipe de gritos aterrorizantes.</textarea>
+                    <textarea id="sobre" rows="6" readonly style="background-color: #f0f0f0; cursor: default;" disabled>Professor dedicado da Monsters University, apaixonado por técnicas de susto e camuflagem. Membro ativo da equipe de gritos aterrorizantes.</textarea>
                 </div>
 
                 <button type="submit" id="btn-salvar" style="background-color: #0d47a1; color: white; padding: 12px; border-radius: 8px; width: 100%; font-weight: bold; border: none; cursor: pointer; margin-bottom: 15px;">SALVAR ALTERAÇÕES</button>
