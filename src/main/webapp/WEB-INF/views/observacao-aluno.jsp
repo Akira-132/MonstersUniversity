@@ -36,18 +36,17 @@
         </div>
         <span>
         <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() : "Professor" %></strong>
-        Docente
+        Professor
       </span>
     </div>
 </aside>
 
 <main>
-    <header>Minha disciplina</header>
+    <header>Observação do Aluno</header>
 
     <div id="conteudo">
         <div id="topo">
-            <a href="${pageContext.request.contextPath}/observacao-read?idAluno=<%= (alunoAtual != null) ? alunoAtual.getId() : "" %>">
-                <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" alt="" width="50">
+            <a href="${pageContext.request.contextPath}<%= (alunoAtual != null) ? "/observacao-read?idAluno=" + alunoAtual.getId() : "/turma-read" %>">                <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" alt="" width="50">
             </a>
             <h1><%= (alunoAtual != null && alunoAtual.getUsuario() != null) ? alunoAtual.getUsuario().getNome() + " " + alunoAtual.getUsuario().getSobrenome() : "Aluno" %></h1>
         </div>
@@ -57,8 +56,6 @@
             <input type="hidden" name="id" value="<%= (observacao != null) ? observacao.getId() : "" %>">
             <input type="hidden" name="fkAlunoId" value="<%= (alunoAtual != null) ? alunoAtual.getId() : "" %>">
             <input type="hidden" name="fkProfessorId" value="<%= (usuarioLogado != null) ? usuarioLogado.getId() : "" %>">
-
-            <input type="text" name="titulo" placeholder="Título" value="Registro de Observação" required>
 
             <textarea name="texto" minlength="10" required><%= (observacao != null) ? observacao.getComentario() : "" %></textarea>
 

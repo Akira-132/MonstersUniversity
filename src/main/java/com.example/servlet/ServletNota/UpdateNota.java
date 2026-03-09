@@ -26,6 +26,7 @@ public class UpdateNota extends HttpServlet {
         String notaValorStr = request.getParameter("nota");
         String idAlunoStr = request.getParameter("fkAlunoId");
         String idDisciplinaStr = request.getParameter("fkDisciplinaId");
+        String idTurmaStr = request.getParameter("idTurma");
 
         NotaDAO notaDAO = new NotaDAO();
         String erro = null;
@@ -38,6 +39,13 @@ public class UpdateNota extends HttpServlet {
             double valor = Double.parseDouble(notaValorStr.replace(",", "."));
             int fkAlunoId = Integer.parseInt(idAlunoStr);
             int fkDisciplinaId = Integer.parseInt(idDisciplinaStr);
+
+            if (!tipo.equals("N1") && !tipo.equals("N2")) {
+                throw new IllegalArgumentException("Tipo deve ser N1 ou N2.");
+            }
+            if (semestre != 1 && semestre != 2) {
+                throw new IllegalArgumentException("Semestre deve ser 1 ou 2.");
+            }
 
             Nota nota = notaDAO.readById(id);
 
@@ -54,11 +62,11 @@ public class UpdateNota extends HttpServlet {
 
             if (notaDAO.update(nota) > 0) {
 
-                // REDIRECIONA PARA O READ DA DISCIPLINA
-                response.sendRedirect(
-                        request.getContextPath() +
-                                "/nota-read?idDisciplina=" + fkDisciplinaId
-                );
+                String redirecionamento = request.getContextPath() + "/nota-read?sucesso=ok&idDisciplina=" + fkDisciplinaId;
+                if (idTurmaStr != null && !idTurmaStr.equals("0")) {
+                    redirecionamento += "&idTurma=" + idTurmaStr;
+                }
+                response.sendRedirect(redirecionamento);
                 return;
 
             } else {
@@ -76,8 +84,12 @@ public class UpdateNota extends HttpServlet {
 
         request.setAttribute("erro", erro);
 
-        request.getRequestDispatcher(
-                "/nota-read?acao=prepararUpdate&id=" + idStr
-        ).forward(request, response);
+        String urlErro = request.getContextPath()
+                + "/nota-read?acao=prepararUpdate&id=" + idStr;
+
+        if (idDisciplinaStr != null) urlErro += "&idDisciplina=" + idDisciplinaStr;
+        if (idTurmaStr != null)      urlErro += "&idTurma=" + idTurmaStr;
+
+        response.sendRedirect(urlErro);
     }
 }

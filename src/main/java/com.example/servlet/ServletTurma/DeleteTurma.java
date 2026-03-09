@@ -23,7 +23,7 @@ public class DeleteTurma extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
 
             if (turmaDAO.deleteById(id) > 0) {
-                response.sendRedirect(request.getContextPath() + "/turma-read");
+                response.sendRedirect(request.getContextPath() + "/turma-read?sucesso=ok");
                 return;
             } else {
                 erro = "Não foi possível excluir a turma.";

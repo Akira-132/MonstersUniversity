@@ -39,7 +39,7 @@ public class UpdateTurma extends HttpServlet {
             turma.setSala(sala);
 
             if (turmaDAO.update(turma) > 0) {
-                response.sendRedirect(request.getContextPath() + "/turma-read");
+                response.sendRedirect(request.getContextPath() + "/turma-read?sucesso=ok");
                 return;
             } else {
                 erro = "Erro ao atualizar turma no banco.";

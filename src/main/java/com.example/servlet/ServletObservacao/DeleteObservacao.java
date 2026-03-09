@@ -35,7 +35,7 @@ public class DeleteObservacao extends HttpServlet {
             erro = "Erro inesperado ao excluir.";
         }
 
-        request.setAttribute("erro", erro);
-        request.getRequestDispatcher("/observacao-read?id=" + idStr).forward(request, response);
+        request.getSession().setAttribute("erro", erro);
+        response.sendRedirect(request.getContextPath() + "/observacao-read?id=" + idStr);
     }
 }

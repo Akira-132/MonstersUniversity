@@ -103,6 +103,10 @@ public class ReadTurma extends HttpServlet {
         String idStr = request.getParameter("id");
         String idDisciplinaStr = request.getParameter("idDisciplina");
 
+        if ("ok".equals(request.getParameter("sucesso"))) {
+            request.setAttribute("sucesso", "Operação realizada com sucesso!");
+        }
+
         try {
 
             List<Turma> lista;

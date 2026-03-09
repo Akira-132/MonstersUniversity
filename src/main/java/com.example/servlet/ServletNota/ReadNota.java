@@ -3,16 +3,15 @@ package com.example.servlet.ServletNota;
 import java.io.IOException;
 import java.util.List;
 
-import com.example.models.Nota;
-import com.example.models.Professor;
-import com.example.models.Usuario;
-import com.example.models.Turma;
+import com.example.models.*;
 
+import java.util.ArrayList;
+
+import com.example.dao.TurmaDAO;
 import com.example.dao.NotaDAO;
 import com.example.dao.ProfessorDAO;
 import com.example.dao.AlunoDAO;
 import com.example.dao.DisciplinaDAO;
-import com.example.dao.TurmaDAO;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -38,6 +37,10 @@ public class ReadNota extends HttpServlet {
         String idStr = request.getParameter("id");
         String idTurmaStr = request.getParameter("idTurma");
         String idDisciplinaStr = request.getParameter("idDisciplina");
+
+        if ("ok".equals(request.getParameter("sucesso"))) {
+            request.setAttribute("sucesso", "Operação realizada com sucesso!");
+        }
 
         List<Nota> lista = null;
 
@@ -86,8 +89,22 @@ public class ReadNota extends HttpServlet {
                ========================= */
             else {
 
-                lista = notaDAO.read();
+                ProfessorDAO professorDAO = new ProfessorDAO();
+                Professor prof = (usuarioLogado != null)
+                        ? professorDAO.readByUsuarioId(usuarioLogado.getId()) : null;
 
+                if (prof != null) {
+                    DisciplinaDAO disciplinaDAO2 = new DisciplinaDAO();
+                    List<com.example.models.Disciplina> todasDisc = disciplinaDAO2.read();
+                    lista = new ArrayList<>();
+                    for (com.example.models.Disciplina d : todasDisc) {
+                        if (d.getFkProfessorId() == prof.getId()) {
+                            lista.addAll(notaDAO.readByDisciplinaId(d.getId()));
+                        }
+                    }
+                } else {
+                    lista = notaDAO.read();
+                }
             }
 
             request.setAttribute("listaNotas", lista);
@@ -98,9 +115,30 @@ public class ReadNota extends HttpServlet {
 
             if ("prepararCreate".equals(acao) || "prepararUpdate".equals(acao)) {
 
-                request.setAttribute("listaAlunos", alunoDAO.read());
-                request.setAttribute("listaDisciplinas", disciplinaDAO.read());
+                // Busca o idDisciplina atual para filtrar os alunos
+                Integer idDiscAtual = (Integer) request.getAttribute("idDisciplinaAtual");
 
+                List<Aluno> alunosFiltrados = new ArrayList<>();
+
+                if (idDiscAtual != null) {
+                    // Pega alunos só das turmas dessa disciplina
+                    for (Turma t : turmaDAO.readByDisciplinaId(idDiscAtual)) {
+                        for (Aluno a : t.getAlunos()) {
+                            boolean jaAdicionado = alunosFiltrados.stream()
+                                    .anyMatch(x -> x.getId() == a.getId());
+                            if (!jaAdicionado) {
+                                alunosFiltrados.add(a);
+                            }
+                        }
+                    }
+                } else {
+                    alunosFiltrados = alunoDAO.read();
+                }
+
+                List<Disciplina> disciplinas = disciplinaDAO.read();
+
+                request.setAttribute("listaAlunos", alunosFiltrados);
+                request.setAttribute("listaDisciplinas", disciplinas);
             }
 
             if ("prepararCreate".equals(acao)) {

@@ -45,6 +45,13 @@ public class MatricularAluno extends HttpServlet {
                 return;
             }
 
+            Usuario emailExistente = usuarioDAO.readByEmail(email);
+            if (emailExistente != null && emailExistente.getId() != idUsuario) {
+                request.setAttribute("erro", "Este e-mail já está em uso por outro usuário.");
+                request.getRequestDispatcher("/WEB-INF/views/matricula.jsp").forward(request, response);
+                return;
+            }
+
             usuarioExistente.setEmail(email);
             usuarioExistente.setSenha(senha);
 

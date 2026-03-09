@@ -22,9 +22,12 @@
     }
 
     String alunoIdVal = (alunoAtual != null) ? String.valueOf(alunoAtual.getId()) : "";
-    String professorIdVal = String.valueOf(usuarioLogado.getId());
     String observacaoIdVal = (observacao != null) ? String.valueOf(observacao.getId()) : "";
     String textoVal = (observacao != null && observacao.getComentario() != null) ? observacao.getComentario() : "";
+    String nomeCompletoAluno = "Aluno";
+    if (alunoAtual != null) {
+        nomeCompletoAluno = alunoAtual.getUsuario().getNome() + " " + alunoAtual.getUsuario().getSobrenome();
+    }
 %>
 
 <!DOCTYPE html>
@@ -55,6 +58,10 @@
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-diciplinas.png" alt="" />
             Disciplina
         </a>
+        <a href="${pageContext.request.contextPath}/dashboard">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-boletim.png" alt="" />
+            Dashboards
+        </a>
     </nav>
 
     <div id="info-usuario" onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'" style="cursor: pointer;">
@@ -74,28 +81,17 @@ Professor
 
 <main>
 
-    <header>Minha disciplina</header>
+    <header>Criar Observação</header>
     <div id="conteudo">
 
         <div id="topo">
 
-            <a href="${pageContext.request.contextPath}/turma-read">
+            <a href="${pageContext.request.contextPath}/turma-aluno-read?id=<%= request.getAttribute("idTurmaAtual") != null ? request.getAttribute("idTurmaAtual") : "" %>">
                 <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" width="50"/>
             </a>
 
             <h1>
-
-                <%
-                    if(alunoAtual != null){
-                %>
-
-                <%= alunoAtual.getUsuario().getNome() %>
-                <%= alunoAtual.getUsuario().getSobrenome() %>
-
-                <%
-                    }
-                %>
-
+                <%= nomeCompletoAluno %>
             </h1>
 
             <a href="${pageContext.request.contextPath}/observacao-read?idAluno=<%= alunoIdVal %>" id="btn-historico">
@@ -115,7 +111,7 @@ Professor
             }
 
             if("observacao".equals(erro)){
-                mensagem = "Erro ao registrar observação.";
+                mensagem = "Erro ao registrar observação. Sua mensagem excede o limite de 200?";
             }
         %>
 
@@ -133,8 +129,13 @@ Professor
                 alertBox.style.top="20px";
                 alertBox.style.left="50%";
                 alertBox.style.transform="translateX(-50%)";
-                alertBox.style.background="#E8F0FE";
-                alertBox.style.color="#1a3c7c";
+                <% if ("observacaoCriada".equals(sucesso)) {%>
+                    alertBox.style.background="#E8F0FE";
+                    alertBox.style.color="#1a3c7c";
+                <% } else { %>
+                    alertBox.style.background="#FF4D4D";
+                    alertBox.style.color="#FFF";
+                <% } %>
                 alertBox.style.padding="15px 25px";
                 alertBox.style.borderRadius="8px";
                 alertBox.style.boxShadow="0 4px 10px rgba(0,0,0,0.15)";
@@ -162,6 +163,7 @@ Professor
         <% } %>
 
         <form action="<%= actionUrl %>" method="post">
+            <h3>Escreva uma observação </h3>
 
             <% if (!observacaoIdVal.isEmpty()) { %>
             <input type="hidden" name="id" value="<%= observacaoIdVal %>">
@@ -172,12 +174,6 @@ Professor
             <% } %>
 
             <div class="campo">
-                <label for="titulo">Título</label>
-                <input type="text" id="titulo" name="titulo" placeholder="Título">
-            </div>
-
-            <div class="campo">
-                <label for="texto">Observação</label>
                 <textarea id="texto" name="texto" minlength="10" required><%= textoVal %></textarea>
             </div>
 

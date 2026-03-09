@@ -6,8 +6,24 @@
 <%
   Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
   List<Disciplina> listaDisciplinas = (List<Disciplina>) request.getAttribute("listaDisciplinas");
+  List<Disciplina> disciplinasDoAluno = (List<Disciplina>) request.getAttribute("disciplinasDoAluno");
   String erro = (String) request.getAttribute("erro");
+
+  String filtro = request.getParameter("filtro");
+  if (filtro == null) filtro = "minhas";
+
+  List<Disciplina> listaExibida = ("todas".equals(filtro) || disciplinasDoAluno == null)
+          ? listaDisciplinas
+          : disciplinasDoAluno;
+
+  java.util.Set<Integer> idsDoAluno = new java.util.HashSet<>();
+  if (disciplinasDoAluno != null) {
+    for (Disciplina da : disciplinasDoAluno) {
+      idsDoAluno.add(da.getId());
+    }
+  }
 %>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -44,7 +60,7 @@
     </div>
     <span>
         <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() + " " + usuarioLogado.getSobrenome() : "Aluno" %></strong>
-        Turma A
+        Aluno
       </span>
   </div>
 </aside>
@@ -52,25 +68,51 @@
 <main>
   <header>Minhas disciplinas</header>
 
+  <div style="display:flex;gap:10px;margin-bottom:1.5rem;padding:20px">
+    <a href="?filtro=minhas"
+       style="padding:8px 20px;border-radius:20px;font-weight:700;text-decoration:none;
+               background:<%= "minhas".equals(filtro) ? "#0d47a1" : "#e0e4ef" %>;
+               color:<%= "minhas".equals(filtro) ? "#fff" : "#1a1a2e" %>;">
+      Minhas disciplinas
+    </a>
+    <a href="?filtro=todas"
+       style="padding:8px 20px;border-radius:20px;font-weight:700;text-decoration:none;
+               background:<%= "todas".equals(filtro) ? "#0d47a1" : "#e0e4ef" %>;
+               color:<%= "todas".equals(filtro) ? "#fff" : "#1a1a2e" %>;">
+      Todas
+    </a>
+  </div>
+
   <div id="conteudo">
 
     <% if (erro != null) { %>
     <div class="msg-erro"><%= erro %></div>
     <% } %>
 
+
     <%
-      if (listaDisciplinas != null && !listaDisciplinas.isEmpty()) {
+      if (listaExibida != null && !listaExibida.isEmpty()) {
         int count = 0;
-        for (Disciplina d : listaDisciplinas) {
+        for (Disciplina d : listaExibida) {
           String corCard = (count % 2 == 0) ? "verde" : "roxo";
           count++;
+
+          boolean matriculado = idsDoAluno.contains(d.getId());
     %>
+
+    <% if (matriculado) { %>
     <a href="${pageContext.request.contextPath}/disciplina-detalhe-read?id=<%= d.getId() %>">
-      <div id="disciplina-<%= d.getId() %>" class="card <%= corCard %>">
-        <img src="${pageContext.request.contextPath}/assets/imgs/icone-diciplinas.png" alt="" />
+      <div class="card <%= corCard %>">
         <span><%= d.getNome() %></span>
       </div>
     </a>
+    <% } else { %>
+    <div class="card" style="opacity:0.45;cursor:not-allowed;filter:grayscale(1);">
+      <span><%= d.getNome() %></span>
+      <span style="margin-left:auto;font-size:0.75rem;color:#888;white-space:nowrap;">Não matriculado</span>
+    </div>
+    <% } %>
+
     <%
       }
     } else {

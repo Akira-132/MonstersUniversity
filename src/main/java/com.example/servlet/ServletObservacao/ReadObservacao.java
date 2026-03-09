@@ -59,15 +59,8 @@ public class ReadObservacao extends HttpServlet {
                 int idAluno = Integer.parseInt(idAlunoStr);
                 Aluno aluno = alunoDAO.readById(idAluno);
 
-                List<Observacao> todas = observacaoDAO.read();
-                List<Observacao> doAluno = new ArrayList<>();
-                if (todas != null) {
-                    for (Observacao o : todas) {
-                        if (o.getFkAlunoId() == idAluno) {
-                            doAluno.add(o);
-                        }
-                    }
-                }
+                List<Observacao> doAluno = observacaoDAO.readByAlunoId(idAluno);
+                if (doAluno == null) doAluno = new ArrayList<>();
 
                 request.setAttribute("alunoAtual", aluno);
                 request.setAttribute("listaObservacoes", doAluno);
