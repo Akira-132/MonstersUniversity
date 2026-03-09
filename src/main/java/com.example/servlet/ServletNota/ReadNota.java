@@ -18,6 +18,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/nota-read")
 public class ReadNota extends HttpServlet {
@@ -31,7 +32,8 @@ public class ReadNota extends HttpServlet {
         DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
         TurmaDAO turmaDAO = new TurmaDAO();
 
-        Usuario usuarioLogado = (Usuario) request.getSession().getAttribute("usuarioLogado");
+        HttpSession session = request.getSession(false);
+        Usuario usuarioLogado = (session != null) ? (Usuario) session.getAttribute("usuarioLogado") : null;
 
         String acao = request.getParameter("acao");
         String idStr = request.getParameter("id");
@@ -94,8 +96,7 @@ public class ReadNota extends HttpServlet {
                         ? professorDAO.readByUsuarioId(usuarioLogado.getId()) : null;
 
                 if (prof != null) {
-                    DisciplinaDAO disciplinaDAO2 = new DisciplinaDAO();
-                    List<com.example.models.Disciplina> todasDisc = disciplinaDAO2.read();
+                    List<com.example.models.Disciplina> todasDisc = disciplinaDAO.read();
                     lista = new ArrayList<>();
                     for (com.example.models.Disciplina d : todasDisc) {
                         if (d.getFkProfessorId() == prof.getId()) {

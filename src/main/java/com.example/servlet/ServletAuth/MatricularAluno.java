@@ -27,7 +27,7 @@ public class MatricularAluno extends HttpServlet {
 
             if (idUsuarioStr == null || email == null || senha == null) {
                 request.setAttribute("erro", "Dados inválidos.");
-                request.getRequestDispatcher("/matricula.jsp")
+                request.getRequestDispatcher("/WEB-INF/views/matricula.jsp")
                         .forward(request, response);
                 return;
             }
@@ -40,7 +40,7 @@ public class MatricularAluno extends HttpServlet {
 
             if (usuarioExistente == null) {
                 request.setAttribute("erro", "Usuário não encontrado.");
-                request.getRequestDispatcher("/matricula.jsp")
+                request.getRequestDispatcher("/WEB-INF/views/matricula.jsp")
                         .forward(request, response);
                 return;
             }
@@ -55,21 +55,27 @@ public class MatricularAluno extends HttpServlet {
             usuarioExistente.setEmail(email);
             usuarioExistente.setSenha(senha);
 
-            usuarioDAO.update(usuarioExistente);
+            int linhasAfetadas = usuarioDAO.update(usuarioExistente);
+
+            if (linhasAfetadas <= 0) {
+                request.setAttribute("erro", "Não foi possível salvar os dados. Tente novamente.");
+                request.getRequestDispatcher("/WEB-INF/views/matricula.jsp").forward(request, response);
+                return;
+            }
 
             response.sendRedirect(request.getContextPath() + "/?origem=aluno-sucesso");
 
         } catch (NumberFormatException e) {
 
             request.setAttribute("erro", "ID inválido.");
-            request.getRequestDispatcher("/matricula.jsp")
+            request.getRequestDispatcher("/WEB-INF/views/matricula.jsp")
                     .forward(request, response);
 
         } catch (SQLException e) {
             e.printStackTrace();
 
             request.setAttribute("erro", "Erro ao atualizar dados.");
-            request.getRequestDispatcher("/matricula.jsp")
+            request.getRequestDispatcher("/WEB-INF/views/matricula.jsp")
                     .forward(request, response);
         }
     }

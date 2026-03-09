@@ -26,8 +26,8 @@ public class AlunoDAO {
     }
 
     public List<Aluno> read() throws SQLException {
-        String sql = "SELECT a.id_aluno, a.cpf, a.matricula, a.id_usuario, u.id_usuario, u.nome, u.sobrenome, u.email, u.senha FROM aluno a INNER JOIN usuario u ON a.id_usuario = u.id_usuario ORDER BY a.id_aluno ASC";
-
+        String sql = "SELECT a.id_aluno, a.cpf, a.matricula, a.id_usuario, u.nome, u.sobrenome, u.email, u.senha" +
+                " FROM aluno a INNER JOIN usuario u ON a.id_usuario = u.id_usuario ORDER BY a.id_aluno ASC";
         Conexao conexao = new Conexao();
         List<Aluno> listaAluno = new LinkedList<>();
 
@@ -62,8 +62,8 @@ public class AlunoDAO {
     }
 
     public Aluno readById(int id) throws SQLException {
-        String sql = "SELECT a.id_aluno, a.cpf, a.matricula, a.id_usuario, u.id_usuario, u.nome, u.sobrenome, u.email, u.senha FROM aluno a INNER JOIN usuario u ON a.id_usuario = u.id_usuario WHERE a.id_aluno = ?";
-
+        String sql = "SELECT a.id_aluno, a.cpf, a.matricula, a.id_usuario, u.nome, u.sobrenome, u.email, u.senha "
+                + " FROM aluno a INNER JOIN usuario u ON a.id_usuario = u.id_usuario WHERE a.id_aluno = ?";
         Conexao conexao = new Conexao();
         Aluno aluno = null;
 
@@ -100,8 +100,8 @@ public class AlunoDAO {
     }
 
     public Aluno readByMatricula(String matricula) throws SQLException {
-        String sql = "SELECT a.id_aluno, a.cpf, a.matricula, a.id_usuario, u.id_usuario, u.nome, u.sobrenome, u.email, u.senha FROM aluno a INNER JOIN usuario u ON a.id_usuario = u.id_usuario WHERE a.matricula = ?";
-
+        String sql = "SELECT a.id_aluno, a.cpf, a.matricula, a.id_usuario, u.nome, u.sobrenome, u.email, u.senha "
+                + "FROM aluno a INNER JOIN usuario u ON a.id_usuario = u.id_usuario WHERE a.matricula = ?";
         Conexao conexao = new Conexao();
         Aluno aluno = null;
 

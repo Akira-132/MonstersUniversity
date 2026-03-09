@@ -69,15 +69,15 @@ public class ReadTurma extends HttpServlet {
                     }
                 }
 
+                if ("ok".equals(request.getParameter("sucesso"))) {
+                    request.setAttribute("sucesso", "Operação realizada com sucesso!");
+                }
+
                 if (!turmasProfessor.isEmpty()) {
-
                     request.setAttribute("listaTurmas", turmasProfessor);
-
                 } else {
-
                     request.setAttribute("listaTurmas", new ArrayList<>());
                     request.setAttribute("erro", "Você ainda não possui turmas vinculadas no sistema.");
-
                 }
 
                 request.getRequestDispatcher("/WEB-INF/views/turmas-professor.jsp")

@@ -67,7 +67,6 @@ public class Login extends HttpServlet {
             request.setAttribute("erro", "Erro interno ao tentar fazer login.");
         }
 
-        request.setAttribute("erro", request.getAttribute("erro"));
         request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
 }

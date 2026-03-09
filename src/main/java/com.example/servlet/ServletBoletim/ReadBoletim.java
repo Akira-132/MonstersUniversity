@@ -26,7 +26,6 @@ public class ReadBoletim extends HttpServlet {
         int idAlunoParaBuscar = -1;
 
         try {
-            String idStr = request.getParameter("id");
             HttpSession session = request.getSession(false);
 
             if (session != null && session.getAttribute("usuarioLogado") != null) {

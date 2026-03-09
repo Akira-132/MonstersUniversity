@@ -30,7 +30,7 @@ public class NotaDAO {
     public List<Nota> read() throws SQLException {
 
         String sql =
-                "SELECT n.id_nota, n.tipo, n.semestre, n.ano, n.nota, n.id_aluno, n.id_disciplina, " +
+                "SELECT n.id_nota, n.tipo, n.semestre, n.ano, n.nota, n.id_aluno AS nota_aluno_id, n.id_disciplina AS nota_disciplina_id, " +
                         "a.id_aluno, a.cpf, a.matricula, a.id_usuario AS aluno_usuario_id, " +
                         "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha, " +
                         "d.id_disciplina, d.nome AS disciplina_nome, d.id_professor, " +
@@ -63,7 +63,7 @@ public class NotaDAO {
     public Nota readById(int id) throws SQLException {
 
         String sql =
-                "SELECT n.id_nota, n.tipo, n.semestre, n.ano, n.nota, n.id_aluno, n.id_disciplina, " +
+                "SELECT n.id_nota, n.tipo, n.semestre, n.ano, n.nota, n.id_aluno AS nota_aluno_id, n.id_disciplina AS nota_disciplina_id, " +
                         "a.id_aluno, a.cpf, a.matricula, a.id_usuario AS aluno_usuario_id, " +
                         "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha, " +
                         "d.id_disciplina, d.nome AS disciplina_nome, d.id_professor, " +
@@ -133,7 +133,7 @@ public class NotaDAO {
     public List<Nota> readByDisciplinaId(int disciplinaId) throws SQLException {
 
         String sql =
-                "SELECT n.id_nota, n.tipo, n.semestre, n.ano, n.nota, n.id_aluno, n.id_disciplina, " +
+                "SELECT n.id_nota, n.tipo, n.semestre, n.ano, n.nota, n.id_aluno AS nota_aluno_id, n.id_disciplina AS nota_disciplina_id, " +
                         "a.id_aluno, a.cpf, a.matricula, a.id_usuario AS aluno_usuario_id, " +
                         "ua.id_usuario AS usuario_aluno_id, ua.nome AS aluno_nome, ua.sobrenome AS aluno_sobrenome, ua.email AS aluno_email, ua.senha AS aluno_senha, " +
                         "d.id_disciplina, d.nome AS disciplina_nome, d.id_professor, " +

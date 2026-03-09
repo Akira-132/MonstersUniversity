@@ -41,8 +41,8 @@
   </div>
 
   <nav>
-    <a href="<%= request.getContextPath() %>/turma-read" class="ativo">
-      <img src="<%= request.getContextPath() %>/assets/imgs/icone-diciplinas.png" alt="" />
+    <a href="${pageContext.request.contextPath}/turma-read" class="ativo">
+      <img src="${pageContext.request.contextPath}/assets/imgs/icone-diciplinas.png" alt="" />
       Disciplinas
     </a>
     <a href="${pageContext.request.contextPath}/dashboard">

@@ -43,11 +43,9 @@ public class DeleteNota extends HttpServlet {
             erro = "Erro inesperado ao excluir.";
         }
 
-        request.getSession().setAttribute("erro", erro);
-
-        String urlErro = request.getContextPath() + "/nota-read";
+        String urlErro = request.getContextPath() + "/nota-read?erro=delete";
         if (idDisciplinaStr != null && !idDisciplinaStr.equals("0")) {
-            urlErro += "?idDisciplina=" + idDisciplinaStr;
+            urlErro += "&idDisciplina=" + idDisciplinaStr;
         }
         response.sendRedirect(urlErro);
     }

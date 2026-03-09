@@ -47,6 +47,6 @@ public class IdentificadorCpf extends HttpServlet {
             request.setAttribute("erro", "Erro ao verificar o CPF.");
         }
 
-        request.getRequestDispatcher("/WEB-INF/views/verificaçaoUsuario.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/verificacaoUsuario.jsp").forward(request, response);
     }
 }

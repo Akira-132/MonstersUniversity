@@ -20,7 +20,7 @@ public class VerificadorCodigo extends HttpServlet {
             return;
         }
 
-        request.getRequestDispatcher("/WEB-INF/views/verificaçao.jsp")
+        request.getRequestDispatcher("/WEB-INF/views/verificacao.jsp")
                 .forward(request, response);
     }
 
@@ -59,7 +59,7 @@ public class VerificadorCodigo extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/redefinir-senha");
         } else {
             request.setAttribute("erro", "Código inválido. Tente novamente.");
-            request.getRequestDispatcher("/WEB-INF/views/verificaçao.jsp")
+            request.getRequestDispatcher("/WEB-INF/views/verificacao.jsp")
                     .forward(request, response);
         }
     }
