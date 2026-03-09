@@ -81,7 +81,8 @@
                                 ? a.getUsuario().getNome() + " " + a.getUsuario().getSobrenome()
                                 : "Aluno Matrícula: " + a.getMatricula();
             %>
-            <a href="${pageContext.request.contextPath}/aluno-read?id=<%= a.getId() %>" class="aluno-card">
+            <a href="${pageContext.request.contextPath}/aluno-read?id=<%= a.getId() %>&idTurma=<%= idTurma %>"
+               class="aluno-card">
                 <%= nomeAluno %>
             </a>
             <%

@@ -63,7 +63,8 @@ DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:m
 
         <div id="conteudo">
             <div id="topo">
-                <a href="${pageContext.request.contextPath}/aluno-read?id=<%= (alunoAtual != null) ? alunoAtual.getId() : "" %>" id="btn-voltar">
+                <a href="${pageContext.request.contextPath}/aluno-read?id=<%= (alunoAtual != null) ? alunoAtual.getId() : "" %>&idTurma=<%= request.getAttribute("idTurmaAtual") != null ? request.getAttribute("idTurmaAtual") : "" %>
+" id="btn-voltar">
                 <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" alt="" width="50">
                 </a>
                 <h1><%= (alunoAtual != null && alunoAtual.getUsuario() != null) ? alunoAtual.getUsuario().getNome() + " " + alunoAtual.getUsuario().getSobrenome() : "Nome do Aluno" %></h1>

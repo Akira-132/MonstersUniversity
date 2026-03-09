@@ -89,37 +89,35 @@
     <div class="msg-erro"><%= erro %></div>
     <% } %>
 
+      <%
+        if (listaExibida != null && !listaExibida.isEmpty()) {
+          int count = 0;
+          for (Disciplina d : listaExibida) {
+            String corCard = (count % 2 == 0) ? "verde" : "roxo";
+            count++;
 
-    <%
-      if (listaExibida != null && !listaExibida.isEmpty()) {
-        int count = 0;
-        for (Disciplina d : listaExibida) {
-          String corCard = (count % 2 == 0) ? "verde" : "roxo";
-          count++;
+            boolean matriculado = idsDoAluno.contains(d.getId());
+      %>
 
-          boolean matriculado = idsDoAluno.contains(d.getId());
-    %>
-
-    <% if (matriculado) { %>
-    <a href="${pageContext.request.contextPath}/disciplina-detalhe-read?id=<%= d.getId() %>">
-      <div class="card <%= corCard %>">
+      <% if (matriculado) { %>
+      <a href="${pageContext.request.contextPath}/disciplina-detalhe-read?id=<%= d.getId() %>">
+        <div class="card <%= corCard %>">
+          <span><%= d.getNome() %></span>
+        </div>
+      </a>
+      <% } else { %>
+      <div class="card" style="opacity:0.45;cursor:not-allowed;filter:grayscale(1);">
         <span><%= d.getNome() %></span>
+        <span style="margin-left:auto;font-size:0.75rem;color:#888;white-space:nowrap;">Não matriculado</span>
       </div>
-    </a>
-    <% } else { %>
-    <div class="card" style="opacity:0.45;cursor:not-allowed;filter:grayscale(1);">
-      <span><%= d.getNome() %></span>
-      <span style="margin-left:auto;font-size:0.75rem;color:#888;white-space:nowrap;">Não matriculado</span>
-    </div>
-    <% } %>
+      <% } %>
 
-    <%
-      }
-    } else {
-    %>
-    <p>Nenhuma disciplina encontrada.</p>
-    <% } %>
-
+      <%
+        }
+      } else {
+      %>
+      <p>Nenhuma disciplina encontrada.</p>
+      <% } %>
   </div>
 </main>
 </body>
