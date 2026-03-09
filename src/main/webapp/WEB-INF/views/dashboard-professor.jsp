@@ -64,7 +64,7 @@
     </div>
 </aside>
 
-<main>
+<main style="padding: 0">
 
     <header>
         Dashboard
