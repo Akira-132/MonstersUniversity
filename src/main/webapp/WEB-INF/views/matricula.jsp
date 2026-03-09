@@ -81,7 +81,7 @@
         %>
 
         <div>
-            <form action="<%= request.getContextPath() %>/aluno-matricula" method="post">
+            <form action="${pageContext.request.contextPath}/aluno-matricula" method="post">
 
                 <input type="hidden" name="id" value="<%= idAlunoVal %>">
                 <input type="hidden" name="idUsuario" value="<%= idUsuarioVal %>">

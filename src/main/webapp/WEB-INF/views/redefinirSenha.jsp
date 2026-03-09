@@ -6,8 +6,8 @@
     <title>Criar Senha - Monsters University</title>
 
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/imgs/Logo.png" type="image/x-icon">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/styles/globaLogin.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/styles/redefinirSenha.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/styles/globaLogin.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/styles/redefinirSenha.css">
 
     <script>
         function validarSenha() {
@@ -34,12 +34,12 @@
 <body>
 
 <header>
-    <img src="<%=request.getContextPath()%>/assets/imgs/Logo.png" width="120">
+    <img src="${pageContext.request.contextPath}/assets/imgs/Logo.png" width="120">
 </header>
 
 <div id="fundo">
     <div id="container">
-        <img src="<%=request.getContextPath()%>/assets/imgs/crianca_veri.png"
+        <img src="${pageContext.request.contextPath}/assets/imgs/crianca_veri.png"
              alt="Personagem Esquerda"
              style="height: 320px; align-self: flex-end;">
 
@@ -80,7 +80,7 @@
             </script>
             <% } %>
 
-            <form action="<%=request.getContextPath()%>/redefinir-senha"
+            <form action="${pageContext.request.contextPath}/redefinir-senha"
                   method="post"
                   onsubmit="return validarSenha()">
 
@@ -103,13 +103,13 @@
                 <p id="erroSenha" style="color:red;"></p>
 
                 <div id="buttons">
-                    <a href="<%=request.getContextPath()%>/esqueci-senha" id="btn-voltar">Voltar</a>
+                    <a href="${pageContext.request.contextPath}/esqueci-senha" id="btn-voltar">Voltar</a>
                     <input type="submit" value="Entrar" id="btn-login">
                 </div>
             </form>
         </div>
 
-        <img src="<%=request.getContextPath()%>/assets/imgs/mike_pequeno.png"
+        <img src="${pageContext.request.contextPath}/assets/imgs/mike_pequeno.png"
              alt="Personagem Direita"
              style="height: 280px; align-self: flex-end;">
     </div>

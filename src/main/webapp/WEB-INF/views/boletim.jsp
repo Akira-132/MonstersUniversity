@@ -26,11 +26,11 @@
     <img src="${pageContext.request.contextPath}/assets/imgs/Logo.png" alt="" />
   </div>
   <nav>
-    <a href="<%= request.getContextPath() %>/disciplina-read">
+    <a href="${pageContext.request.contextPath}/disciplina-read">
       <img src="${pageContext.request.contextPath}/assets/imgs/icone-diciplinas.png" alt="" />
       Disciplinas
     </a>
-    <a href="<%= request.getContextPath() %>/boletim-read" class="ativo">
+    <a href="${pageContext.request.contextPath}/boletim-read" class="ativo">
       <img src="${pageContext.request.contextPath}/assets/imgs/icone-boletim.png" alt="" />
       Boletim
     </a>

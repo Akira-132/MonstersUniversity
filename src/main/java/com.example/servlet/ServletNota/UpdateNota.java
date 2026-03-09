@@ -62,7 +62,7 @@ public class UpdateNota extends HttpServlet {
 
             if (notaDAO.update(nota) > 0) {
 
-                String redirecionamento = request.getContextPath() + "/nota-read?sucesso=ok&idDisciplina=" + fkDisciplinaId;
+                String redirecionamento = request.getContextPath() + "/nota-read?sucesso=notaAtualizada&idDisciplina=" + fkDisciplinaId;
                 if (idTurmaStr != null && !idTurmaStr.equals("0")) {
                     redirecionamento += "&idTurma=" + idTurmaStr;
                 }
@@ -85,11 +85,9 @@ public class UpdateNota extends HttpServlet {
         request.setAttribute("erro", erro);
 
         String urlErro = request.getContextPath()
-                + "/nota-read?acao=prepararUpdate&id=" + idStr;
-
+                + "/nota-read?erro=update&acao=prepararUpdate&id=" + idStr;
         if (idDisciplinaStr != null) urlErro += "&idDisciplina=" + idDisciplinaStr;
         if (idTurmaStr != null)      urlErro += "&idTurma=" + idTurmaStr;
-
         response.sendRedirect(urlErro);
     }
 }

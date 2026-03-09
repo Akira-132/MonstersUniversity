@@ -38,55 +38,34 @@ public class ReadNota extends HttpServlet {
         String idTurmaStr = request.getParameter("idTurma");
         String idDisciplinaStr = request.getParameter("idDisciplina");
 
-        if ("ok".equals(request.getParameter("sucesso"))) {
-            request.setAttribute("sucesso", "Operação realizada com sucesso!");
-        }
-
         List<Nota> lista = null;
 
         try {
 
-            /* =========================
-               FILTRO POR DISCIPLINA
-               ========================= */
             if (idDisciplinaStr != null) {
 
                 int idDisciplina = Integer.parseInt(idDisciplinaStr);
-
                 lista = notaDAO.readByDisciplinaId(idDisciplina);
-
                 request.setAttribute("idDisciplinaAtual", idDisciplina);
 
             }
 
-            /* =========================
-               FILTRO POR TURMA
-               ========================= */
             else if (idTurmaStr != null) {
 
                 int idTurma = Integer.parseInt(idTurmaStr);
-
                 Turma turma = turmaDAO.readById(idTurma);
 
                 if (turma != null) {
-
                     int idDisciplina = turma.getFkDisciplinaId();
-
                     lista = notaDAO.readByDisciplinaId(idDisciplina);
-
                     request.setAttribute("idTurmaAtual", idTurma);
                     request.setAttribute("idDisciplinaAtual", idDisciplina);
-
                 } else {
-
                     lista = notaDAO.read();
                 }
 
             }
 
-            /* =========================
-               SEM FILTRO
-               ========================= */
             else {
 
                 ProfessorDAO professorDAO = new ProfessorDAO();
@@ -94,10 +73,9 @@ public class ReadNota extends HttpServlet {
                         ? professorDAO.readByUsuarioId(usuarioLogado.getId()) : null;
 
                 if (prof != null) {
-                    DisciplinaDAO disciplinaDAO2 = new DisciplinaDAO();
-                    List<com.example.models.Disciplina> todasDisc = disciplinaDAO2.read();
+                    List<Disciplina> todasDisc = disciplinaDAO.read();
                     lista = new ArrayList<>();
-                    for (com.example.models.Disciplina d : todasDisc) {
+                    for (Disciplina d : todasDisc) {
                         if (d.getFkProfessorId() == prof.getId()) {
                             lista.addAll(notaDAO.readByDisciplinaId(d.getId()));
                         }
@@ -109,98 +87,70 @@ public class ReadNota extends HttpServlet {
 
             request.setAttribute("listaNotas", lista);
 
-            /* =========================
-               PREPARAÇÃO DE MODAIS
-               ========================= */
+            Integer idDiscAtual = (Integer) request.getAttribute("idDisciplinaAtual");
 
-            if ("prepararCreate".equals(acao) || "prepararUpdate".equals(acao)) {
-
-                // Busca o idDisciplina atual para filtrar os alunos
-                Integer idDiscAtual = (Integer) request.getAttribute("idDisciplinaAtual");
-
-                List<Aluno> alunosFiltrados = new ArrayList<>();
-
-                if (idDiscAtual != null) {
-                    // Pega alunos só das turmas dessa disciplina
-                    for (Turma t : turmaDAO.readByDisciplinaId(idDiscAtual)) {
-                        for (Aluno a : t.getAlunos()) {
-                            boolean jaAdicionado = alunosFiltrados.stream()
-                                    .anyMatch(x -> x.getId() == a.getId());
-                            if (!jaAdicionado) {
-                                alunosFiltrados.add(a);
-                            }
+            List<Aluno> alunosFiltrados = new ArrayList<>();
+            if (idDiscAtual != null) {
+                for (Turma t : turmaDAO.readByDisciplinaId(idDiscAtual)) {
+                    for (Aluno a : t.getAlunos()) {
+                        boolean jaAdicionado = alunosFiltrados.stream()
+                                .anyMatch(x -> x.getId() == a.getId());
+                        if (!jaAdicionado) {
+                            alunosFiltrados.add(a);
                         }
                     }
-                } else {
-                    alunosFiltrados = alunoDAO.read();
                 }
-
-                List<Disciplina> disciplinas = disciplinaDAO.read();
-
-                request.setAttribute("listaAlunos", alunosFiltrados);
-                request.setAttribute("listaDisciplinas", disciplinas);
+            } else {
+                alunosFiltrados = alunoDAO.read();
             }
+            request.setAttribute("listaAlunos", alunosFiltrados);
+
+            List<Disciplina> disciplinasFiltradas = new ArrayList<>();
+            if (idDiscAtual != null) {
+                Disciplina discAtual = disciplinaDAO.readById(idDiscAtual);
+                if (discAtual != null) {
+                    disciplinasFiltradas.add(discAtual);
+                }
+            } else {
+                disciplinasFiltradas = disciplinaDAO.read();
+            }
+            request.setAttribute("listaDisciplinas", disciplinasFiltradas);
 
             if ("prepararCreate".equals(acao)) {
-
                 request.setAttribute("modalAtivo", "create");
-
             }
 
             if (idStr != null) {
-
                 int id = Integer.parseInt(idStr);
-
                 Nota nota = notaDAO.readById(id);
-
                 if (nota != null) {
-
                     request.setAttribute("notaModal", nota);
-
                     if ("prepararUpdate".equals(acao)) {
-
                         request.setAttribute("modalAtivo", "update");
-
                     } else if ("prepararDelete".equals(acao)) {
-
                         request.setAttribute("modalAtivo", "delete");
-
                     }
-
                 }
-
             }
 
         } catch (Exception e) {
-
             e.printStackTrace();
             request.setAttribute("erro", "Erro inesperado ao carregar dados.");
-
         }
 
         try {
-
             ProfessorDAO professorDAO = new ProfessorDAO();
-
             if (usuarioLogado != null &&
                     professorDAO.readByUsuarioId(usuarioLogado.getId()) != null) {
-
                 request.getRequestDispatcher("/WEB-INF/views/notas-professor.jsp")
                         .forward(request, response);
-
             } else {
-
                 request.getRequestDispatcher("/WEB-INF/views/notas-adm.jsp")
                         .forward(request, response);
-
             }
-
         } catch (Exception e) {
-
             request.getRequestDispatcher("/WEB-INF/views/notas-adm.jsp")
                     .forward(request, response);
-
         }
-
     }
 }

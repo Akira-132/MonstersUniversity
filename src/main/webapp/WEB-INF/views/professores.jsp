@@ -124,10 +124,10 @@
         </a>
     </nav>
 
-    <div id="info-usuario">
-        <div id="avatar">
-            <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png" alt="" />
-        </div>
+    <div id="info-usuario" onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'" style="cursor: pointer;">
+    <div id="avatar">
+        <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png" alt="" />
+    </div>
         <span>
             <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() : "Admin" %></strong>
             Super Administrador
