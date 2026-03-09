@@ -55,7 +55,7 @@ public class TurmaDAO {
                 "d.id_disciplina AS d_id_disciplina, d.nome, d.id_professor " +
                 "FROM turma t " +
                 "INNER JOIN disciplina d ON t.id_disciplina = d.id_disciplina " +
-                "ORDER BY t.id_turma ASC";
+                "ORDER BY d.nome ASC";
 
         Conexao conexao = new Conexao();
         List<Turma> listaTurma = new LinkedList<>();
@@ -180,7 +180,7 @@ public class TurmaDAO {
                 "FROM turma t " +
                 "INNER JOIN disciplina d ON t.id_disciplina = d.id_disciplina " +
                 "WHERE t.id_disciplina = ? " +
-                "ORDER BY t.id_turma ASC";
+                "ORDER BY t.sala ASC";
 
         Conexao conexao = new Conexao();
         List<Turma> listaTurma = new LinkedList<>();
@@ -400,7 +400,8 @@ public class TurmaDAO {
                 "FROM turma_aluno ta " +
                 "INNER JOIN aluno a ON ta.id_aluno = a.id_aluno " +
                 "INNER JOIN usuario u ON a.id_usuario = u.id_usuario " +
-                "WHERE ta.id_turma = ?";
+                "WHERE ta.id_turma = ? " +
+                "ORDER BY u.nome ASC";
 
         List<Aluno> lista = new LinkedList<>();
 

@@ -26,7 +26,7 @@ public class CreateTurmaAluno extends HttpServlet {
             int fkAlunoId = Integer.parseInt(idAlunoStr);
 
             if (dao.addAlunoInTurma(fkTurmaId, fkAlunoId)) {
-                response.sendRedirect(request.getContextPath() + "/turma-aluno-read?id=" + fkTurmaId);
+                response.sendRedirect(request.getContextPath() + "/turma-aluno-read?id=" + fkTurmaId + "&sucesso=alunoMatriculado");
             } else {
                 response.sendRedirect(request.getContextPath() + "/turma-aluno-read?id=" + fkTurmaId + "&erro=falha");
             }

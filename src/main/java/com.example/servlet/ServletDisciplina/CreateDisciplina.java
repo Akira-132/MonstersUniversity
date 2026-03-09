@@ -33,7 +33,7 @@ public class CreateDisciplina extends HttpServlet {
 
             if (disciplinaDAO.create(novaDisciplina)) {
 
-                response.sendRedirect(request.getContextPath() + "/turma-read");
+                response.sendRedirect(request.getContextPath() + "/turma-read?sucesso=disciplinaAdicionada");
                 return;
 
             } else {

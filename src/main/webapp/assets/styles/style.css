@@ -76,8 +76,22 @@ input {
     background: #0374c7;
 }
 
-#jake, #mical {
-    display: none;
+#jake {
+    position: absolute;
+    bottom: 0;
+    left: 3rem;
+    height: 75%;
+}
+
+#mical {
+    position: absolute;
+    bottom: 0;
+    right: 3rem;
+    z-index: 16;
+    height: 48%;
+}
+#btn-login{
+    margin-top: 2rem;
 }
 
 @media (max-width: 1024px) {

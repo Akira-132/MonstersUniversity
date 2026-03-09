@@ -19,33 +19,32 @@ public class DeleteNota extends HttpServlet {
         NotaDAO notaDAO = new NotaDAO();
         String idDisciplinaStr = request.getParameter("idDisciplina");
         String idTurmaStr = request.getParameter("idTurma");
-        String erro = null;
 
         try {
             int id = Integer.parseInt(request.getParameter("id"));
 
             if (notaDAO.deleteById(id) > 0) {
-                String redirecionamento = request.getContextPath() + "/nota-read?sucesso=ok";
+                String redirecionamento = request.getContextPath() + "/nota-read?sucesso=notaExcluida";
                 if (idDisciplinaStr != null && !idDisciplinaStr.equals("0")) {
                     redirecionamento += "&idDisciplina=" + idDisciplinaStr;
-                    if (idTurmaStr != null && !idTurmaStr.equals("0")) {
-                        redirecionamento += "&idTurma=" + idTurmaStr;
-                    }
+                }
+                if (idTurmaStr != null && !idTurmaStr.equals("0")) {
+                    redirecionamento += "&idTurma=" + idTurmaStr;
                 }
                 response.sendRedirect(redirecionamento);
                 return;
-            } else {
-                erro = "Não foi possível excluir a nota.";
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            erro = "Erro inesperado ao excluir.";
         }
 
         String urlErro = request.getContextPath() + "/nota-read?erro=delete";
         if (idDisciplinaStr != null && !idDisciplinaStr.equals("0")) {
             urlErro += "&idDisciplina=" + idDisciplinaStr;
+        }
+        if (idTurmaStr != null && !idTurmaStr.equals("0")) {
+            urlErro += "&idTurma=" + idTurmaStr;
         }
         response.sendRedirect(urlErro);
     }

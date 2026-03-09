@@ -28,7 +28,6 @@ public class CreateNota extends HttpServlet {
         String idTurmaStr = request.getParameter("idTurma");
 
         NotaDAO notaDAO = new NotaDAO();
-        String erro = null;
 
         try {
             int semestre = Integer.parseInt(semestreStr);
@@ -43,29 +42,23 @@ public class CreateNota extends HttpServlet {
             Nota novaNota = new Nota(tipo, semestre, ano, valor, fkAlunoId, fkDisciplinaId);
 
             if (notaDAO.create(novaNota)) {
-                String redirecionamento = request.getContextPath() + "/nota-read?sucesso=ok&idDisciplina=" + fkDisciplinaId;
+                String redirecionamento = request.getContextPath() + "/nota-read?sucesso=notaCriada&idDisciplina=" + fkDisciplinaId;
                 if (idTurmaStr != null && !idTurmaStr.equals("0")) {
                     redirecionamento += "&idTurma=" + idTurmaStr;
                 }
                 response.sendRedirect(redirecionamento);
                 return;
-            } else {
-                erro = "Erro ao lançar nota no banco de dados.";
             }
 
         } catch (NumberFormatException e) {
-            erro = "Verifique os valores numéricos digitados.";
         } catch (IllegalArgumentException e) {
-            erro = "Validação: " + e.getMessage();
         } catch (Exception e) {
             e.printStackTrace();
-            erro = "Erro inesperado ao lançar nota.";
         }
 
-        request.setAttribute("erro", erro);
-        request.setAttribute("modalAtivo", "create");
-        request.setAttribute("tipo_previo", tipo);
-
-        request.getRequestDispatcher("/nota-read?acao=prepararCreate").forward(request, response);
+        String urlErro = request.getContextPath() + "/nota-read?erro=create&acao=prepararCreate";
+        if (idDisciplinaStr != null) urlErro += "&idDisciplina=" + idDisciplinaStr;
+        if (idTurmaStr != null && !idTurmaStr.equals("0")) urlErro += "&idTurma=" + idTurmaStr;
+        response.sendRedirect(urlErro);
     }
 }

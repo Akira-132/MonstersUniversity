@@ -37,19 +37,28 @@
     </div>
 
     <nav>
-        <a href="<%= request.getContextPath() %>/turma-read" class="ativo">
-            <img src="<%= request.getContextPath() %>/assets/imgs/icone-diciplinas.png" alt="" />
+
+        <a href="${pageContext.request.contextPath}/turma-read" class="ativo">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-diciplinas.png" alt="" />
             Disciplina
         </a>
-        <a href="<%= request.getContextPath() %>/adicionar-view">
-            <img src="<%= request.getContextPath() %>/assets/imgs/icone-adicionar.png" alt="" />
+
+        <a href="${pageContext.request.contextPath}/adicionar-view">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-adicionar.png" alt="" />
             Adicionar
         </a>
-        <a href="<%= request.getContextPath() %>/professor-read">
-            <img src="<%= request.getContextPath() %>/assets/imgs/icone-professores.png" alt=""/>
+
+        <a href="${pageContext.request.contextPath}/professor-read">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-professores.png" alt=""/>
             Professores
         </a>
+        <a href="${pageContext.request.contextPath}/dashboard">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-boletim.png" alt="" />
+            Dashboards
+        </a>
+
     </nav>
+
 
     <a href="${pageContext.request.contextPath}/perfil-professor" id="info-usuario">
         <div id="avatar">

@@ -7,6 +7,24 @@
     Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
     List<Professor> listaProfessores = (List<Professor>) request.getAttribute("listaProfessores");
     String erro = (String) request.getAttribute("erro");
+
+    String sucessoParam = request.getParameter("sucesso");
+    String erroParam = request.getParameter("erro");
+
+    String mensagemSucesso = null;
+    String mensagemErro = null;
+
+    if ("professorAtualizado".equals(sucessoParam)) {
+        mensagemSucesso = "Professor atualizado com sucesso!";
+    } else if ("professorExcluido".equals(sucessoParam)) {
+        mensagemSucesso = "Professor excluído com sucesso!";
+    }
+
+    if ("update".equals(erroParam)) {
+        mensagemErro = "Erro ao atualizar professor.";
+    } else if ("delete".equals(erroParam)) {
+        mensagemErro = "Erro ao excluir professor.";
+    }
 %>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -22,6 +40,66 @@
 </head>
 
 <body>
+
+<% if (mensagemSucesso != null) { %>
+<script>
+    window.addEventListener("load", function() {
+        const alertBox = document.createElement("div");
+        alertBox.innerText = "<%= mensagemSucesso %>";
+        alertBox.style.position = "fixed";
+        alertBox.style.top = "20px";
+        alertBox.style.left = "50%";
+        alertBox.style.transform = "translateX(-50%)";
+        alertBox.style.backgroundColor = "#E8F0FE";
+        alertBox.style.color = "#1a3c7c";
+        alertBox.style.padding = "15px 25px";
+        alertBox.style.borderRadius = "8px";
+        alertBox.style.boxShadow = "0 4px 10px rgba(0,0,0,0.15)";
+        alertBox.style.fontFamily = "Montserrat";
+        alertBox.style.fontSize = "14px";
+        alertBox.style.zIndex = "9999";
+        alertBox.style.opacity = "0";
+        alertBox.style.transition = "opacity 0.4s ease";
+        document.body.appendChild(alertBox);
+        setTimeout(() => { alertBox.style.opacity = "1"; }, 100);
+        setTimeout(() => {
+            alertBox.style.opacity = "0";
+            setTimeout(() => alertBox.remove(), 400);
+        }, 4000);
+    });
+</script>
+<% } %>
+
+<% if (mensagemErro != null || erro != null) {
+    String msgErroFinal = mensagemErro != null ? mensagemErro : erro;
+%>
+<script>
+    window.addEventListener("load", function() {
+        const alertBox = document.createElement("div");
+        alertBox.innerText = "<%= msgErroFinal %>";
+        alertBox.style.position = "fixed";
+        alertBox.style.top = "20px";
+        alertBox.style.left = "50%";
+        alertBox.style.transform = "translateX(-50%)";
+        alertBox.style.backgroundColor = "#FDE8E8";
+        alertBox.style.color = "#7c1a1a";
+        alertBox.style.padding = "15px 25px";
+        alertBox.style.borderRadius = "8px";
+        alertBox.style.boxShadow = "0 4px 10px rgba(0,0,0,0.15)";
+        alertBox.style.fontFamily = "Montserrat";
+        alertBox.style.fontSize = "14px";
+        alertBox.style.zIndex = "9999";
+        alertBox.style.opacity = "0";
+        alertBox.style.transition = "opacity 0.4s ease";
+        document.body.appendChild(alertBox);
+        setTimeout(() => { alertBox.style.opacity = "1"; }, 100);
+        setTimeout(() => {
+            alertBox.style.opacity = "0";
+            setTimeout(() => alertBox.remove(), 400);
+        }, 4000);
+    });
+</script>
+<% } %>
 
 <aside>
     <div id="logo">
@@ -40,26 +118,26 @@
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-professores.png" alt=""/>
             Professores
         </a>
+        <a href="${pageContext.request.contextPath}/dashboard">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-boletim.png" alt="" />
+            Dashboards
+        </a>
     </nav>
 
-    <div id="info-usuario">
-        <div id="avatar">
-            <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png" alt="" />
-        </div>
+    <div id="info-usuario" onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'" style="cursor: pointer;">
+    <div id="avatar">
+        <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png" alt="" />
+    </div>
         <span>
-                <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() : "Admin" %></strong>
-                Super Administrador
-            </span>
+            <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() : "Admin" %></strong>
+            Super Administrador
+        </span>
     </div>
 </aside>
 
 <main>
     <header>Professores</header>
     <div id="conteudo">
-
-        <% if (erro != null) { %>
-        <div style="color: #ff4d4d; text-align: center; margin-bottom: 10px;"><%= erro %></div>
-        <% } %>
 
         <h1>PROFESSORES</h1>
 
@@ -79,32 +157,32 @@
 
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <label for="<%= modalEditId %>">
-                        <img src="${pageContext.request.contextPath}/assets/imgs/icone-editar.png" alt="Editar" class="icone-acao"  />
+                        <img src="${pageContext.request.contextPath}/assets/imgs/icone-editar.png" alt="Editar" class="icone-acao" />
                     </label>
-
                     <label for="<%= modalDeleteId %>">
                         <img src="${pageContext.request.contextPath}/assets/imgs/icone-lixeira.png" alt="Excluir" class="icone-acao" />
                     </label>
                 </div>
             </div>
 
-            <!-- Modal Editar Professor -->
             <input type="checkbox" id="<%= modalEditId %>" hidden>
             <div id="overlay-editar-<%= p.getId() %>" class="overlay-dinamico">
                 <div class="modal">
                     <h2>Editar Professor</h2>
-
                     <form action="${pageContext.request.contextPath}/professor-update" method="post">
                         <input type="hidden" name="id" value="<%= p.getId() %>">
+                        <input type="hidden" name="idUsuario" value="<%= (p.getUsuario() != null) ? p.getUsuario().getId() : "" %>">
 
                         <div class="campo">
                             <label for="nome-edit-<%= p.getId() %>">Nome</label>
-                            <input type="text" id="nome-edit-<%= p.getId() %>" name="nome" value="<%= (p.getUsuario() != null && p.getUsuario().getNome() != null) ? p.getUsuario().getNome() : "" %>" />
+                            <input type="text" id="nome-edit-<%= p.getId() %>" name="nome"
+                                   value="<%= (p.getUsuario() != null && p.getUsuario().getNome() != null) ? p.getUsuario().getNome() : "" %>" />
                         </div>
 
                         <div class="campo">
                             <label for="sobrenome-edit-<%= p.getId() %>">Sobrenome</label>
-                            <input type="text" id="sobrenome-edit-<%= p.getId() %>" name="sobrenome" value="<%= (p.getUsuario() != null && p.getUsuario().getSobrenome() != null) ? p.getUsuario().getSobrenome() : "" %>" />
+                            <input type="text" id="sobrenome-edit-<%= p.getId() %>" name="sobrenome"
+                                   value="<%= (p.getUsuario() != null && p.getUsuario().getSobrenome() != null) ? p.getUsuario().getSobrenome() : "" %>" />
                         </div>
 
                         <div class="modal-botoes">
@@ -115,12 +193,10 @@
                 </div>
             </div>
 
-            <!-- Modal Excluir Professor -->
             <input type="checkbox" id="<%= modalDeleteId %>" hidden>
             <div id="overlay-excluir-<%= p.getId() %>" class="overlay-dinamico">
                 <div class="modal">
                     <h2>Excluir Professor</h2>
-
                     <form action="${pageContext.request.contextPath}/professor-delete" method="post">
                         <input type="hidden" name="id" value="<%= p.getId() %>">
 

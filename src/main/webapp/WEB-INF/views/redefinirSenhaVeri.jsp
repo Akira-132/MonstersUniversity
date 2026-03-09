@@ -15,7 +15,6 @@
 </header>
 
 <div id="fundo">
-
     <div id="container">
         <img src="${pageContext.request.contextPath}/assets/imgs/montro_ponte.png"
              alt="Ilustração"
@@ -27,23 +26,41 @@
 
             <%
                 String erro = (String) request.getAttribute("erro");
-                if (erro != null) {
             %>
-            <div style="
-                        background-color: #ffe6e6;
-                        color: #b00020;
-                        border: 1px solid #ffb3b3;
-                        padding: 8px;
-                        border-radius: 6px;
-                        margin-bottom: 12px;
-                        text-align: center;
-                        font-size: 14px;">
-                <%= erro %>
-            </div>
+
+            <% if (erro != null) { %>
+            <script>
+                window.addEventListener("load", function() {
+                    const alertBox = document.createElement("div");
+                    alertBox.innerText = "<%= erro %>";
+
+                    alertBox.style.position = "fixed";
+                    alertBox.style.top = "20px";
+                    alertBox.style.left = "50%";
+                    alertBox.style.transform = "translateX(-50%)";
+                    alertBox.style.backgroundColor = "#FDE8E8";
+                    alertBox.style.color = "#7c1a1a";
+                    alertBox.style.padding = "15px 25px";
+                    alertBox.style.borderRadius = "8px";
+                    alertBox.style.boxShadow = "0 4px 10px rgba(0,0,0,0.15)";
+                    alertBox.style.fontFamily = "Montserrat";
+                    alertBox.style.fontSize = "14px";
+                    alertBox.style.zIndex = "9999";
+                    alertBox.style.opacity = "0";
+                    alertBox.style.transition = "opacity 0.4s ease";
+
+                    document.body.appendChild(alertBox);
+
+                    setTimeout(() => { alertBox.style.opacity = "1"; }, 100);
+                    setTimeout(() => {
+                        alertBox.style.opacity = "0";
+                        setTimeout(() => alertBox.remove(), 400);
+                    }, 4000);
+                });
+            </script>
             <% } %>
 
             <form action="${pageContext.request.contextPath}/esqueci-senha" method="post">
-
                 <input type="email"
                        id="email"
                        name="email"
@@ -56,11 +73,9 @@
                     <a href="${pageContext.request.contextPath}/" id="btn-voltar">Voltar</a>
                     <input type="submit" value="Enviar Código" id="btn-login">
                 </div>
-
             </form>
         </div>
     </div>
-
 </div>
 </body>
 </html>

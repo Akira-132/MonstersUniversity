@@ -83,7 +83,6 @@
 
                 <div class="form-grid">
 
-                    <!-- Linha 1 -->
                     <input type="text"
                            id="nome"
                            name="nome"
@@ -118,7 +117,6 @@
                            title="A senha deve ter pelo menos 8 caracteres, um número e um caractere especial">
 
 
-                    <!-- Linha 3 -->
                     <input type="text"
                            id="cpf"
                            name="cpf"
@@ -151,12 +149,10 @@
 
         let erro = "";
 
-        // 🔹 Validação Email
         if (!emailRegex.test(email)) {
             erro = "Digite um email válido.";
         }
 
-        // 🔹 Validações da senha (uma por vez)
         else if (senha.length < 8) {
             erro = "A senha deve ter pelo menos 8 caracteres.";
         }

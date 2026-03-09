@@ -17,44 +17,30 @@ public class DeleteAluno extends HttpServlet {
             throws ServletException, IOException {
 
         AlunoDAO alunoDAO = new AlunoDAO();
-        String erro = null;
+        String idTurmaStr = request.getParameter("idTurma");
 
         try {
             int id = Integer.parseInt(request.getParameter("id"));
 
             if (alunoDAO.deleteById(id) > 0) {
-                response.sendRedirect(request.getContextPath() + "/aluno-read");
+                String redirect = request.getContextPath()
+                        + "/turma-aluno-read?sucesso=alunoRemovido";
+                if (idTurmaStr != null && !idTurmaStr.isEmpty()) {
+                    redirect += "&id=" + idTurmaStr;
+                }
+                response.sendRedirect(redirect);
                 return;
-            } else {
-                erro = "Não foi possível remover o aluno.";
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (e.getMessage() != null && e.getMessage().contains("foreign key")) {
-                erro = "Não é possível excluir: Este aluno possui matrículas ou registros vinculados.";
-            } else {
-                erro = "Erro inesperado ao excluir aluno.";
-            }
         }
 
-        request.setAttribute("erro", erro);
-        request.setAttribute("modalAtivo", "delete");
-
-        try {
-            request.setAttribute("listaAlunos", alunoDAO.read());
-
-            String idStr = request.getParameter("id");
-            if (idStr != null) {
-                request.setAttribute("alunoModal", alunoDAO.readById(Integer.parseInt(idStr)));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (request.getAttribute("erro") == null) {
-                request.setAttribute("erro", "Erro ao recarregar a lista.");
-            }
+        String urlErro = request.getContextPath()
+                + "/turma-aluno-read?erro=delete";
+        if (idTurmaStr != null && !idTurmaStr.isEmpty()) {
+            urlErro += "&id=" + idTurmaStr;
         }
-
-        request.getRequestDispatcher("/WEB-INF/views/alunos.jsp").forward(request, response);
+        response.sendRedirect(urlErro);
     }
 }
