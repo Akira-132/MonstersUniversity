@@ -77,7 +77,7 @@ if (disciplinasJson == null)  disciplinasJson = "[]";
   </div>
 </aside>
 
-<main>
+<main style="padding: 0;">
   <header>Dashboard</header>
 
   <div id="conteudo">
