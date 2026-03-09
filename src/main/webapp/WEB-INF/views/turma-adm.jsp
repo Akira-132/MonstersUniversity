@@ -38,6 +38,22 @@
             justify-content: center; align-items: center; z-index: 1000;
         }
         #overlay-adicionar-aluno { display: none; }
+
+        input[id^="modal-editar-"]:checked + .overlay-dinamico,
+        input[id^="modal-excluir-"]:checked + .overlay-dinamico {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .overlay-dinamico { display:none; }
+
         .modal { background: white; padding: 20px; border-radius: 8px; width: 90%; max-width: 500px; }
     </style>
 </head>
@@ -127,9 +143,8 @@
                 </button>
             </a>
 
-            <label for="modal-adicionar-aluno" style="cursor: pointer; display: flex; align-items: center; gap: 15px; padding: 20px 0 20px 30px; font-weight: 500;">
-                <img src="${pageContext.request.contextPath}/assets/imgs/icone-adicionar.png" alt="" />
-                Matricular Aluno
+            <label for="modal-adicionar-aluno" id="modal-adicionar-aluno" >
+                + Matricular Aluno
             </label>
         </div>
 
@@ -140,6 +155,9 @@
                         String nomeDisplay = (a.getUsuario() != null)
                                 ? a.getUsuario().getNome() + " " + a.getUsuario().getSobrenome()
                                 : "Matrícula: " + a.getMatricula();
+
+                        String modalEditId = "modal-editar-" + a.getId();
+                        String modalDeleteId = "modal-excluir-" + a.getId();
             %>
 
             <div class="aluno-card">
@@ -148,14 +166,67 @@
                     <%= nomeDisplay %>
                 </a>
 
-                <form action="${pageContext.request.contextPath}/turma-aluno-delete" method="post" style="margin: 0;">
-                    <input type="hidden" name="idTurma" value="<%= idTurmaAtual %>" />
-                    <input type="hidden" name="idAluno" value="<%= a.getId() %>" />
+                <div id="modal" style="display: flex; gap: 10px; align-items: center;">
+                    <label for="<%= modalEditId %>">
+                        <img src="${pageContext.request.contextPath}/assets/imgs/icone-editar.png" alt="Editar" class="icone-acao"  />
+                    </label>
 
-                    <button type="submit" style="background: none; border: none; cursor: pointer;" onclick="return confirm('Tem certeza que deseja remover <%= nomeDisplay %> desta turma?');">
-                        <img src="${pageContext.request.contextPath}/assets/imgs/icone-lixeira.png" alt="Remover" style="width: 20px; height: 20px;" />
-                    </button>
-                </form>
+                    <label for="<%= modalDeleteId %>">
+                        <img src="${pageContext.request.contextPath}/assets/imgs/icone-lixeira.png" alt="Remover" class="icone-acao"  />
+                    </label>
+                </div>
+            </div>
+
+            <!-- Modal Editar Aluno -->
+            <input type="checkbox" id="<%= modalEditId %>" hidden />
+            <div id="overlay-editar-<%= a.getId() %>" class="overlay-dinamico">
+                <div class="modal">
+                    <h2>Editar Aluno</h2>
+                    <form action="${pageContext.request.contextPath}/aluno-update" method="post">
+                        <input type="hidden" name="id" value="<%= a.getId() %>" />
+
+                        <div class="campo">
+                            <label>Nome do Aluno</label>
+                            <input type="text" value="<%= nomeDisplay %>" disabled style="border:none;" />
+                        </div>
+
+                        <div class="campo">
+                            <label for="matricula-edit-<%= a.getId() %>">Matrícula</label>
+                            <input type="text" id="matricula-edit-<%= a.getId() %>" name="matricula" value="<%= a.getMatricula() %>" />
+                        </div>
+
+                        <div class="modal-botoes">
+                            <label for="<%= modalEditId %>" class="btn-cancelar">Cancelar</label>
+                            <button type="submit" class="btn-confirmar">Confirmar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal Excluir Aluno -->
+            <input type="checkbox" id="<%= modalDeleteId %>" hidden />
+            <div id="overlay-excluir-<%= a.getId() %>" class="overlay-dinamico">
+                <div class="modal">
+                    <h2>Remover Aluno da Turma</h2>
+                    <form action="${pageContext.request.contextPath}/turma-aluno-delete" method="post">
+                        <input type="hidden" name="idTurma" value="<%= idTurmaAtual %>" />
+                        <input type="hidden" name="idAluno" value="<%= a.getId() %>" />
+
+                        <div class="campo">
+                            <label>Aluno</label>
+                            <input type="text" value="<%= nomeDisplay %>" disabled style="border:none;" />
+                        </div>
+
+                        <div class="campo">
+                            <label>Tem certeza que deseja remover este aluno da turma?</label>
+                        </div>
+
+                        <div class="modal-botoes">
+                            <label for="<%= modalDeleteId %>" class="btn-cancelar">Cancelar</label>
+                            <button type="submit" class="btn-confirmar">Confirmar</button>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <%

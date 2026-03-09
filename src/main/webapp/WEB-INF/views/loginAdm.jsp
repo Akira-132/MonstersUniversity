@@ -11,7 +11,7 @@
 </head>
 <body>
 <header>
-    <a href="${pageContext.request.contextPath}/login-admin">
+    <a href="${pageContext.request.contextPath}/index.jsp">
         <img src="${pageContext.request.contextPath}/assets/imgs/Logo.png" alt="LOGO">
     </a>
 </header>

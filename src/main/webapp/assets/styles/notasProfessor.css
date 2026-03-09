@@ -1,4 +1,3 @@
-/* Layout Geral */
 #conteudo {
   overflow-y: auto;
   padding: 3.2rem 2.5rem;
@@ -79,13 +78,27 @@ tbody td:last-child {
 }
 
 /*POPUP*/
-
+#btn-adicionar{
+  background: #2563eb;
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 62.4rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  box-shadow: 0 0.3rem 0.5rem rgba(37, 99, 235, 0.329);
+}
+#btn-adicionar{
+  transform: translateY(-0.1rem);
+}
 #modal-input {
   display: none;
 }
 
 #modal-overlay {
-  display: none; 
+  display: none;
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
@@ -155,7 +168,8 @@ tbody td:last-child {
   align-items: center;
 }
 
-.modal-campo input {
+.modal-campo input,
+.modal-campo select {
   width: 100%;
   background: #f0f4f8;
   border: 0.1rem solid #e8edf3;
@@ -164,12 +178,17 @@ tbody td:last-child {
   font-size: 0.95rem;
   font-weight: 600;
   color: #1a1a2e;
+  appearance: menulist-button;
   outline: none;
 }
 
 .modal-campo input:focus {
   border-color: #2563eb;
 }
+.modal-botoes{
+  margin-top: 1rem;
+}
+
 
 .input-content .icone-lapis {
   position: absolute;
@@ -186,7 +205,20 @@ tbody td:last-child {
   margin-top: 0.3rem;
 }
 
-#btn-cancelar,
+#btn-cancelar {
+  padding: 0.75rem 2.3rem;
+  border-radius: 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  background: #f0f4f8;
+  color: #1a1a2e;
+  border: 0.1rem solid #d0d8e4;
+  height: fit-content;
+}
+
 #btn-adicionar {
   padding: 0.75rem 2.3rem;
   border-radius: 0.6rem;
@@ -196,29 +228,16 @@ tbody td:last-child {
   border: none;
   transition: all 0.2s;
   text-align: center;
-}
-
-#btn-cancelar {
-  background: #f0f4f8;
-  color: #1a1a2e;
-  border: 0.1rem solid #d0d8e4;
-}
-
-#btn-adicionar {
   background: #2563eb;
   color: #ffffff;
   box-shadow: 0 0.3rem 0.8rem rgba(37, 99, 235, 0.3);
 }
 
-#btn-cancelar:hover, 
+#btn-cancelar:hover,
 #btn-adicionar:hover {
   transform: translateY(-0.1rem);
   filter: brightness(0.95);
 }
-
-/* ========================= */
-/* RESPONSIVIDADE */
-/* ========================= */
 
 @media (max-width: 768px) {
 
@@ -232,7 +251,7 @@ tbody td:last-child {
   }
 
   thead {
-    display: none; /* Esconde cabeçalho no mobile */
+    display: none;
   }
 
   tbody tr {
@@ -269,7 +288,6 @@ tbody td:last-child {
     width: 2.5rem;
   }
 
-  /* Modal ajuste mobile */
   .modal {
     width: 95%;
     padding: 1.5rem;

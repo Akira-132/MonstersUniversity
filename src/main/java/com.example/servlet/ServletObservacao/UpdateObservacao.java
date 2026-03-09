@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.ZoneId;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -39,7 +40,7 @@ public class UpdateObservacao extends HttpServlet {
             observacao.setComentario(texto);
             observacao.setFkProfessorId(fkProfessorId);
             observacao.setFkAlunoId(fkAlunoId);
-            observacao.setDataEnvio(LocalDateTime.now());
+            observacao.setDataEnvio(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 
             if (observacaoDAO.update(observacao) > 0) {
                 response.sendRedirect(request.getContextPath() + "/observacao-read?idAluno=" + fkAlunoId);
@@ -54,6 +55,6 @@ public class UpdateObservacao extends HttpServlet {
         }
 
         request.setAttribute("erro", erro);
-        request.getRequestDispatcher("/observacao-read?id=" + idStr).forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/observacao-read?id=" + idStr);
     }
 }

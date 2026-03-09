@@ -1,16 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.example.models.Usuario" %>
 <%@ page import="com.example.models.Disciplina" %>
+<%@ page import="com.example.models.Observacao" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 
 <%
-  Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-  Disciplina disciplina = (Disciplina) request.getAttribute("disciplinaAtual");
+  Usuario usuarioLogado  = (Usuario)   session.getAttribute("usuarioLogado");
+  Disciplina disciplina  = (Disciplina) request.getAttribute("disciplinaAtual");
+  List<Observacao> listaObservacoes = (List<Observacao>) request.getAttribute("listaObservacoes");
   String erro = (String) request.getAttribute("erro");
 
   String nomeDisciplina = (disciplina != null) ? disciplina.getNome() : "Disciplina não encontrada";
+  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 %>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -44,9 +47,9 @@
       <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png" alt="" />
     </div>
     <span>
-        <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() + " " + usuarioLogado.getSobrenome() : "Aluno" %></strong>
-        Universitário
-      </span>
+            <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() + " " + usuarioLogado.getSobrenome() : "Aluno" %></strong>
+            Universitário
+        </span>
   </a>
 </aside>
 
@@ -62,9 +65,24 @@
 
     <div>
       <div id="card-situacao">
-        <p id="descricao">Bem-vindo à disciplina de <%= nomeDisciplina %>. Aqui você aprenderá as melhores técnicas aplicadas na Monsters University.</p>
+        <p id="descricao" style="height: 100px">Bem-vindo à disciplina de <%= nomeDisciplina %>. Aqui você aprenderá as melhores técnicas aplicadas na Monsters University.</p>
       </div>
     </div>
+
+    <% if (listaObservacoes != null && !listaObservacoes.isEmpty()) { %>
+    <%  for (Observacao obs : listaObservacoes) { %>
+    <div style="background: #fff; border-radius: 1rem; box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.329); padding: 20px;">
+      <div>
+        <h3>Registro de Observação</h3>
+        <p><%= obs.getComentario() %></p>
+        <span>Enviado em <%= (obs.getDataEnvio() != null) ? obs.getDataEnvio().format(formatter) : "Data Indisponível" %></span>
+      </div>
+      <div></div>
+    </div>
+    <%  } %>
+    <% } else if (listaObservacoes != null) { %>
+    <p style="margin-top: 20px;">Nenhuma observação registrada para esta disciplina.</p>
+    <% } %>
 
   </div>
 </main>

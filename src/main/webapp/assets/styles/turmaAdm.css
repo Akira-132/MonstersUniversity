@@ -1,51 +1,51 @@
 #conteudo {
-    flex: 1;
-    overflow-y: auto;
-    padding: 2rem 2.5rem;
-  }
-  
-  h1 {
-    font-size: 2.2rem;
-    font-weight: 900;
-    color: #1a1a2e;
-    text-align: center;
-    letter-spacing: 0.1rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  a {
-    text-decoration: none;
-    color: #1a1a2e;
-  }
-  select{
-    appearance: none;
-  
-  }
-  button {
-    display: block;
-    width: fit-content;
-    margin: 0 auto 2rem;
-    background: #fff;
-    box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.329);
-    border: none;
-    border-radius: 62.4rem;
-    padding: 0.8rem 3rem;
-    font-size: 0.95rem;
-    font-weight: 800;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  button:hover {
-    transform: translateY(-0.1rem);
-  }
-  #alunos-lista,
-  #professores-lista {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem 2.5rem;
+}
+
+h1 {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #1a1a2e;
+  text-align: center;
+  letter-spacing: 0.1rem;
+  margin-bottom: 1.5rem;
+}
+
+a {
+  text-decoration: none;
+  color: #1a1a2e;
+}
+select{
+  appearance: none;
+
+}
+button {
+  display: block;
+  width: fit-content;
+  margin: 0 auto 2rem;
+  background: #fff;
+  box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.329);
+  border: none;
+  border-radius: 62.4rem;
+  padding: 0.8rem 3rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+button:hover {
+  transform: translateY(-0.1rem);
+}
+#alunos-lista,
+#professores-lista {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
-  
+
 .aluno-card,
 .professor-card {
   background: #fff;
@@ -58,39 +58,60 @@
   color: #1a1a2e;
   cursor: pointer;
   text-decoration: none;
-  display: flex; 
-  align-items: center; 
+  display: flex;
+  align-items: center;
   justify-content: space-between;
   transition: all 0.2s;
 }
-  
-  .aluno-card:hover,.professor-card:hover {
-    transform: translateY(-0.1rem);
-    border-color: rgb(58, 56, 56);
-  }
-  
-  .aluno-card.ativo {
-    background: #ffffff;
-    border-color: #2563eb;
-  }
-  .aluno-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .icone-lixeira {
-    width: 2rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.282);
-    transition: all 0.2s;
-    flex-shrink: 0;
-  }
-  
-  .icone-lixeira:hover {
-    transform: translateY(-0.1rem);
-  }
-  
+
+.aluno-card:hover,.professor-card:hover {
+  transform: translateY(-0.1rem);
+  border-color: rgb(58, 56, 56);
+}
+
+.aluno-card.ativo {
+  background: #ffffff;
+  border-color: #2563eb;
+}
+.aluno-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#modal-adicionar-aluno{
+  background: #2563eb;
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 62.4rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  box-shadow: 0 0.3rem 0.5rem rgba(37, 99, 235, 0.329);
+}
+#modal-adicionar-aluno{
+  transform: translateY(-0.1rem);
+}
+.icone-acao {
+  width: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.282);
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.icone-lixeira:hover {
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+
+.icone-acao:hover {
+  transform: translateY(-0.1rem);
+}
+
 @media (max-width: 1024px) {
   #conteudo {
     padding: 1.5rem;

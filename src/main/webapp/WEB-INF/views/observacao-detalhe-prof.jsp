@@ -45,9 +45,13 @@
       <img src="<%= request.getContextPath() %>/assets/imgs/icone-diciplinas.png" alt="" />
       Disciplinas
     </a>
+    <a href="${pageContext.request.contextPath}/dashboard">
+      <img src="${pageContext.request.contextPath}/assets/imgs/icone-boletim.png" alt="" />
+      Dashboards
+    </a>
   </nav>
 
-  <a href="${pageContext.request.contextPath}/perfil-professor" id="info-usuario">
+  <div id="info-usuario" onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'" style="cursor: pointer;">
 
     <div id="avatar">
       <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png"/>
@@ -58,13 +62,13 @@
             Professor
         </span>
 
-  </a>
+  </div>
 
 </aside>
 
 <main>
 
-  <header>Minha disciplina</header>
+  <header>Observação do Aluno</header>
 
   <div id="conteudo">
 
@@ -85,19 +89,6 @@
     <% if(observacao != null){ %>
 
     <div class="campo">
-
-      <label>Título</label>
-
-      <input
-              type="text"
-              value="Registro de Observação"
-              readonly>
-
-    </div>
-
-    <div class="campo">
-
-      <label>Observação</label>
 
       <textarea readonly>
 <%= observacao.getComentario() %>

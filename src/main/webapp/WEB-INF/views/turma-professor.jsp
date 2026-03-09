@@ -35,6 +35,10 @@
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-diciplinas.png" alt="" />
             Disciplina
         </a>
+        <a href="${pageContext.request.contextPath}/dashboard">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-boletim.png" alt="" />
+            Dashboards
+        </a>
     </nav>
 
     <div id="info-usuario" onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'" style="cursor: pointer;">
