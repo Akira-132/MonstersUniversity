@@ -26,8 +26,6 @@ public class UpdateProfessor extends HttpServlet {
         String idUsuarioStr = request.getParameter("idUsuario");
         String nome = request.getParameter("nome");
         String sobrenome = request.getParameter("sobrenome");
-        String email = request.getParameter("email");
-        String senha = request.getParameter("senha");
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         ProfessorDAO professorDAO = new ProfessorDAO();
@@ -43,14 +41,9 @@ public class UpdateProfessor extends HttpServlet {
 
             usuario.setNome(nome);
             usuario.setSobrenome(sobrenome);
-            usuario.setEmail(email);
-
-            if (senha != null && !senha.trim().isEmpty()) {
-                usuario.setSenha(senha);
-            }
 
             if (usuarioDAO.update(usuario) > 0) {
-                response.sendRedirect(request.getContextPath() + "/professor-read");
+                response.sendRedirect(request.getContextPath() + "/professor-read?sucesso=professorAtualizado");
                 return;
             } else {
                 erro = "Não foi possível atualizar os dados.";
@@ -60,21 +53,15 @@ public class UpdateProfessor extends HttpServlet {
             erro = "Validação: " + e.getMessage();
         } catch (SQLException e) {
             e.printStackTrace();
-            if (e.getMessage().contains("Duplicate") || e.getMessage().contains("UNIQUE")) {
-                erro = "Este e-mail já pertence a outro usuário.";
-            } else {
-                erro = "Erro de banco de dados ao atualizar.";
-            }
+            erro = "Erro de banco de dados ao atualizar.";
         } catch (Exception e) {
             e.printStackTrace();
             erro = "Erro inesperado ao atualizar professor.";
         }
 
         request.setAttribute("erro", erro);
-        request.setAttribute("modalAtivo", "update");
         request.setAttribute("nome_previo", nome);
         request.setAttribute("sobrenome_previo", sobrenome);
-        request.setAttribute("email_previo", email);
 
         try {
             request.setAttribute("listaProfessores", professorDAO.read());
@@ -90,6 +77,6 @@ public class UpdateProfessor extends HttpServlet {
             }
         }
 
-        request.getRequestDispatcher("/professor-read").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/professores.jsp").forward(request, response);
     }
 }

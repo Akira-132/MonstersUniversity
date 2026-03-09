@@ -23,7 +23,7 @@ public class DeleteProfessor extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
 
             if (professorDAO.deleteById(id) > 0) {
-                response.sendRedirect(request.getContextPath() + "/professor-read");
+                response.sendRedirect(request.getContextPath() + "/professor-read?sucesso=professorExcluido");
                 return;
             } else {
                 erro = "Não foi possível remover o registro.";
