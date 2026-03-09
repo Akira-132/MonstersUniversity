@@ -34,7 +34,7 @@ public class CreateTurma extends HttpServlet {
             Turma novaTurma = new Turma(periodo, sala, fkDisciplinaId);
 
             if (turmaDAO.create(novaTurma)) {
-                response.sendRedirect(request.getContextPath() + "/turma-read?sucesso=ok");
+                response.sendRedirect(request.getContextPath() + "/turma-read?sucesso=turmaAdicionada");
                 return;
             } else {
                 erro = "Erro ao cadastrar a turma no banco.";
