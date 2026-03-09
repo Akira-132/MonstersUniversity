@@ -88,11 +88,12 @@ public class RedefinirSenha extends HttpServlet {
 
             request.setAttribute("erro", "Erro ao atualizar senha.");
 
+        } catch (IllegalArgumentException e) {
+            request.setAttribute("erro", "Valor de campo inválido: " + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("erro", "Erro interno ao salvar nova senha.");
         }
-
         request.getRequestDispatcher("/WEB-INF/views/redefinirSenha.jsp")
                 .forward(request, response);
     }

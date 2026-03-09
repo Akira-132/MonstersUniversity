@@ -23,7 +23,11 @@ public class ReadObservacao extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
 
         ObservacaoDAO observacaoDAO = new ObservacaoDAO();
@@ -77,8 +81,7 @@ public class ReadObservacao extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("erro", "Erro ao carregar dados.");
-            response.sendRedirect(request.getContextPath() + "/turma-read");
+            response.sendRedirect(request.getContextPath() + "/turma-read?erro=carregamento");
         }
     }
 }

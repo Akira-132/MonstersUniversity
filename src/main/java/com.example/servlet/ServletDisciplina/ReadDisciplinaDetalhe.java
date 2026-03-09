@@ -25,8 +25,8 @@ public class ReadDisciplinaDetalhe extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession();
-        Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
+        HttpSession session = request.getSession(false);
+        Usuario usuarioLogado = (session != null) ? (Usuario) session.getAttribute("usuarioLogado") : null;
 
         if (usuarioLogado == null) {
             response.sendRedirect("login");

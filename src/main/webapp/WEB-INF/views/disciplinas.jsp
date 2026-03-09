@@ -13,7 +13,7 @@
   if (filtro == null) filtro = "minhas";
 
   List<Disciplina> listaExibida = ("todas".equals(filtro) || disciplinasDoAluno == null)
-          ? listaDisciplinas
+          ? (listaDisciplinas != null ? listaDisciplinas : new java.util.ArrayList<>())
           : disciplinasDoAluno;
 
   java.util.Set<Integer> idsDoAluno = new java.util.HashSet<>();

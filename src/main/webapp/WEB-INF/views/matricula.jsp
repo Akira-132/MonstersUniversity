@@ -67,10 +67,6 @@
                 }
                 matriculaVal = aluno.getMatricula() != null ? aluno.getMatricula() : "";
 
-                if (matriculaVal.length() == 7) {
-                    matriculaVal = matriculaVal.replaceAll("(\\d{3})(\\d{3})(\\d{1})", "$1.$2-$3");
-                }
-
                 Usuario usu = aluno.getUsuario();
                 if (usu != null) {
                     String nome = usu.getNome() != null ? usu.getNome() : "";
@@ -83,7 +79,6 @@
         <div>
             <form action="${pageContext.request.contextPath}/aluno-matricula" method="post">
 
-                <input type="hidden" name="id" value="<%= idAlunoVal %>">
                 <input type="hidden" name="idUsuario" value="<%= idUsuarioVal %>">
 
                 <div class="form-grid">

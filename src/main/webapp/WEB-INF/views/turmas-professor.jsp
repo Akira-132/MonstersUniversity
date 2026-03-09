@@ -78,6 +78,11 @@
         </div>
         <% } %>
 
+        <% String sucesso = (String) request.getAttribute("sucesso"); %>
+        <% if (sucesso != null) { %>
+        <div style="color:#4CAF50; text-align:center; margin-bottom:10px;"><%= sucesso %></div>
+        <% } %>
+
         <h1>TURMAS</h1>
 
         <div id="turmas-lista">

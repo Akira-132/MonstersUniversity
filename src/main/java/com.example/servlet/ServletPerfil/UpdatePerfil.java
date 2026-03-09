@@ -22,7 +22,11 @@ public class UpdatePerfil extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
 
         if (usuarioLogado == null) {
@@ -53,7 +57,9 @@ public class UpdatePerfil extends HttpServlet {
                     session.setAttribute("usuarioLogado", usuarioLogado);
                 } catch (Exception e) {
                     usuarioLogado.setEmail(emailAntigo);
-                    erro = "Erro de banco de dados ao atualizar os dados.";
+                    request.setAttribute("erro", "Erro de banco de dados ao atualizar os dados.");
+                    request.getRequestDispatcher("/perfil-read").forward(request, response);
+                    return;
                 }
             }
 
@@ -72,9 +78,8 @@ public class UpdatePerfil extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/perfil-read?sucesso=ok");
             return;
 
-        } catch (IllegalArgumentException iae) {
-            iae.printStackTrace();
-            erro = "Telefone e/ou email inválidos. Verifique se foram digitados corretamente";
+        } catch (IllegalArgumentException e) {
+            erro = "Valor de campo inválido: " + e.getMessage();
         } catch (Exception e) {
             e.printStackTrace();
             erro = "Erro de banco de dados ao atualizar os dados.";

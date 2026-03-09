@@ -21,7 +21,11 @@ public class ReadTurmaAluno extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
 
         if (usuarioLogado == null) {
@@ -46,12 +50,17 @@ public class ReadTurmaAluno extends HttpServlet {
 
                 Turma turma = turmaDAO.readById(idTurma);
 
-                request.setAttribute("turmaAtual", turma);
-                request.setAttribute("listaAlunos", turma.getAlunos());
+                if (turma != null) {
+                    request.setAttribute("turmaAtual", turma);
+                    request.setAttribute("listaAlunos", turma.getAlunos());
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/turma-read");
+                    return;
+                }
 
                 request.setAttribute("listaTodosAlunos", alunoDAO.read());
             } else {
-                response.sendRedirect("/turma-read");
+                response.sendRedirect(request.getContextPath() + "/turma-read");
                 return;
             }
 
