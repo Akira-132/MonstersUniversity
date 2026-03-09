@@ -27,11 +27,18 @@ public class DeleteTurmaAluno extends HttpServlet {
 
             dao.removeAlunoFromTurma(idTurma, idAluno);
 
-            response.sendRedirect(request.getContextPath() + "/turma-aluno-read?id=" + idTurma);
+            response.sendRedirect(request.getContextPath()
+                    + "/turma-aluno-read?sucesso=alunoRemovido&id=" + idTurma);
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/turma-read");
+            String urlErro = request.getContextPath();
+            if (idTurmaStr != null && !idTurmaStr.isEmpty() && !idTurmaStr.equals("0")) {
+                urlErro += "/turma-aluno-read?erro=delete&id=" + idTurmaStr;
+            } else {
+                urlErro += "/turma-read?erro=delete";
+            }
+            response.sendRedirect(urlErro);
         }
     }
 }

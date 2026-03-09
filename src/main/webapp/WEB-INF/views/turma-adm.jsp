@@ -12,6 +12,30 @@
 
     String erro = (String) request.getAttribute("erro");
 
+    String sucessoParam = request.getParameter("sucesso");
+    String erroParam = request.getParameter("erro");
+
+    String mensagemSucesso = null;
+    String mensagemErro = null;
+
+    if ("alunoMatriculado".equals(sucessoParam)) {
+        mensagemSucesso = "Aluno matriculado com sucesso!";
+    } else if ("alunoAtualizado".equals(sucessoParam)) {
+        mensagemSucesso = "Aluno atualizado com sucesso!";
+    } else if ("alunoRemovido".equals(sucessoParam)) {
+        mensagemSucesso = "Aluno removido da turma com sucesso!";
+    }
+
+    if ("matricular".equals(erroParam)) {
+        mensagemErro = "Erro ao matricular aluno.";
+    } else if ("update".equals(erroParam)) {
+        mensagemErro = "Erro ao atualizar aluno.";
+    } else if ("delete".equals(erroParam)) {
+        mensagemErro = "Erro ao remover aluno da turma.";
+    } else if (erro != null) {
+        mensagemErro = erro;
+    }
+
     int idTurmaAtual = (turmaAtual != null) ? turmaAtual.getId() : 0;
     String nomeTurma = (turmaAtual != null) ? turmaAtual.getSala() : "Turma";
 %>
@@ -43,22 +67,78 @@
         input[id^="modal-excluir-"]:checked + .overlay-dinamico {
             display: flex;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
             background-color: rgba(0,0,0,0.5);
             justify-content: center;
             align-items: center;
             z-index: 1000;
         }
-        .overlay-dinamico { display:none; }
-
+        .overlay-dinamico { display: none; }
         .modal { background: white; padding: 20px; border-radius: 8px; width: 90%; max-width: 500px; }
     </style>
 </head>
 
 <body>
+
+<% if (mensagemSucesso != null) { %>
+<script>
+    window.addEventListener("load", function() {
+        const alertBox = document.createElement("div");
+        alertBox.innerText = "<%= mensagemSucesso %>";
+        alertBox.style.position = "fixed";
+        alertBox.style.top = "20px";
+        alertBox.style.left = "50%";
+        alertBox.style.transform = "translateX(-50%)";
+        alertBox.style.backgroundColor = "#E8F0FE";
+        alertBox.style.color = "#1a3c7c";
+        alertBox.style.padding = "15px 25px";
+        alertBox.style.borderRadius = "8px";
+        alertBox.style.boxShadow = "0 4px 10px rgba(0,0,0,0.15)";
+        alertBox.style.fontFamily = "Montserrat";
+        alertBox.style.fontSize = "14px";
+        alertBox.style.zIndex = "9999";
+        alertBox.style.opacity = "0";
+        alertBox.style.transition = "opacity 0.4s ease";
+        document.body.appendChild(alertBox);
+        setTimeout(() => { alertBox.style.opacity = "1"; }, 100);
+        setTimeout(() => {
+            alertBox.style.opacity = "0";
+            setTimeout(() => alertBox.remove(), 400);
+        }, 4000);
+    });
+</script>
+<% } %>
+
+<% if (mensagemErro != null) { %>
+<script>
+    window.addEventListener("load", function() {
+        const alertBox = document.createElement("div");
+        alertBox.innerText = "<%= mensagemErro %>";
+        alertBox.style.position = "fixed";
+        alertBox.style.top = "20px";
+        alertBox.style.left = "50%";
+        alertBox.style.transform = "translateX(-50%)";
+        alertBox.style.backgroundColor = "#FDE8E8";
+        alertBox.style.color = "#7c1a1a";
+        alertBox.style.padding = "15px 25px";
+        alertBox.style.borderRadius = "8px";
+        alertBox.style.boxShadow = "0 4px 10px rgba(0,0,0,0.15)";
+        alertBox.style.fontFamily = "Montserrat";
+        alertBox.style.fontSize = "14px";
+        alertBox.style.zIndex = "9999";
+        alertBox.style.opacity = "0";
+        alertBox.style.transition = "opacity 0.4s ease";
+        document.body.appendChild(alertBox);
+        setTimeout(() => { alertBox.style.opacity = "1"; }, 100);
+        setTimeout(() => {
+            alertBox.style.opacity = "0";
+            setTimeout(() => alertBox.remove(), 400);
+        }, 4000);
+    });
+</script>
+<% } %>
+
 <input type="checkbox" id="modal-adicionar-aluno" hidden />
 
 <div id="overlay-adicionar-aluno" class="overlay-statico">
@@ -78,12 +158,8 @@
                                         ? a.getUsuario().getNome() + " " + a.getUsuario().getSobrenome()
                                         : "Aluno Matrícula: " + a.getMatricula();
                     %>
-                    <option value="<%= a.getId() %>">
-                        <%= nomeAluno %>
-                    </option>
-                    <%      }
-                    }
-                    %>
+                    <option value="<%= a.getId() %>"><%= nomeAluno %></option>
+                    <% } } %>
                 </select>
             </div>
 
@@ -134,10 +210,6 @@
 
     <div id="conteudo">
 
-        <% if (erro != null) { %>
-        <div style="color: #ff4d4d; text-align: center; margin-bottom: 15px;"><%= erro %></div>
-        <% } %>
-
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h1>TURMA <%= nomeTurma %></h1>
 
@@ -159,24 +231,22 @@
                         String nomeDisplay = (a.getUsuario() != null)
                                 ? a.getUsuario().getNome() + " " + a.getUsuario().getSobrenome()
                                 : "Matrícula: " + a.getMatricula();
-
-                        String modalEditId = "modal-editar-" + a.getId();
+                        String modalEditId  = "modal-editar-"  + a.getId();
                         String modalDeleteId = "modal-excluir-" + a.getId();
             %>
 
             <div class="aluno-card">
-
-                <a href="${pageContext.request.contextPath}/aluno-read?id=<%= a.getId() %>" style="text-decoration: none; color: inherit; font-weight: bold; flex-grow: 1;">
+                <a href="${pageContext.request.contextPath}/aluno-read?id=<%= a.getId() %>"
+                   style="text-decoration: none; color: inherit; font-weight: bold; flex-grow: 1;">
                     <%= nomeDisplay %>
                 </a>
 
-                <div id="modal" style="display: flex; gap: 10px; align-items: center;">
+                <div style="display: flex; gap: 10px; align-items: center;">
                     <label for="<%= modalEditId %>">
-                        <img src="${pageContext.request.contextPath}/assets/imgs/icone-editar.png" alt="Editar" class="icone-acao"  />
+                        <img src="${pageContext.request.contextPath}/assets/imgs/icone-editar.png" alt="Editar" class="icone-acao" />
                     </label>
-
                     <label for="<%= modalDeleteId %>">
-                        <img src="${pageContext.request.contextPath}/assets/imgs/icone-lixeira.png" alt="Remover" class="icone-acao"  />
+                        <img src="${pageContext.request.contextPath}/assets/imgs/icone-lixeira.png" alt="Remover" class="icone-acao" />
                     </label>
                 </div>
             </div>
@@ -188,15 +258,19 @@
                     <h2>Editar Aluno</h2>
                     <form action="${pageContext.request.contextPath}/aluno-update" method="post">
                         <input type="hidden" name="id" value="<%= a.getId() %>" />
+                        <input type="hidden" name="idUsuario" value="<%= (a.getUsuario() != null) ? a.getUsuario().getId() : "" %>" />
+                        <input type="hidden" name="idTurma" value="<%= idTurmaAtual %>" />
 
                         <div class="campo">
-                            <label>Nome do Aluno</label>
-                            <input type="text" value="<%= nomeDisplay %>" disabled style="border:none;" />
+                            <label for="nome-edit-<%= a.getId() %>">Nome</label>
+                            <input type="text" id="nome-edit-<%= a.getId() %>" name="nome"
+                                   value="<%= (a.getUsuario() != null && a.getUsuario().getNome() != null) ? a.getUsuario().getNome() : "" %>" />
                         </div>
 
                         <div class="campo">
-                            <label for="matricula-edit-<%= a.getId() %>">Matrícula</label>
-                            <input type="text" id="matricula-edit-<%= a.getId() %>" name="matricula" value="<%= a.getMatricula() %>" />
+                            <label for="sobrenome-edit-<%= a.getId() %>">Sobrenome</label>
+                            <input type="text" id="sobrenome-edit-<%= a.getId() %>" name="sobrenome"
+                                   value="<%= (a.getUsuario() != null && a.getUsuario().getSobrenome() != null) ? a.getUsuario().getSobrenome() : "" %>" />
                         </div>
 
                         <div class="modal-botoes">
@@ -207,7 +281,6 @@
                 </div>
             </div>
 
-            <!-- Modal Excluir Aluno -->
             <input type="checkbox" id="<%= modalDeleteId %>" hidden />
             <div id="overlay-excluir-<%= a.getId() %>" class="overlay-dinamico">
                 <div class="modal">
@@ -215,6 +288,7 @@
                     <form action="${pageContext.request.contextPath}/turma-aluno-delete" method="post">
                         <input type="hidden" name="idTurma" value="<%= idTurmaAtual %>" />
                         <input type="hidden" name="idAluno" value="<%= a.getId() %>" />
+                        <input type="hidden" name="id" value="<%= a.getId() %>" />
 
                         <div class="campo">
                             <label>Aluno</label>
@@ -241,9 +315,8 @@
                 <p>Nenhum aluno matriculado nesta turma.</p>
                 <p style="font-size: 0.9em;">Use o botão "Matricular Aluno" no menu lateral.</p>
             </div>
-            <%  } %>
+            <% } %>
         </div>
-
     </div>
 </main>
 </body>
