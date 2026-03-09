@@ -64,7 +64,7 @@
     </div>
 </aside>
 
-<main>
+<main style="padding: 0">
 
     <header>
         Dashboard
@@ -105,10 +105,12 @@
                 <h2>Desempenho da Turma</h2>
 
                 <div class="filtros">
-                    <select id="alunoSelect">
-                        <option value="">Todos os alunos</option>
-                    </select>
-                    <button onclick="atualizarGrafico()">Filtrar</button>
+                    <div style="width: min-content; display: flex; gap: 1rem; align-items: center;">
+                        <select id="alunoSelect">
+                            <option value="">Todos os alunos</option>
+                        </select>
+                        <button onclick="atualizarGrafico()" style="margin-bottom: 0">Filtrar</button>
+                    </div>
                 </div>
 
                 <canvas id="grafico"></canvas>
