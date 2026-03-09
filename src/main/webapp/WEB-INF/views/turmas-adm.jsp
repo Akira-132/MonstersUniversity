@@ -70,7 +70,7 @@
 
             <div class="campo">
                 <label for="sala-new">Sala</label>
-                <input type="text" id="sala-new" name="sala" placeholder="Ex: Turma A" required />
+                <input type="text" id="sala-new" name="sala" placeholder="Ex: B1" required />
             </div>
 
             <div class="campo">
@@ -209,6 +209,10 @@
         <a href="${pageContext.request.contextPath}/professor-read">
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-professores.png" alt=""/>
             Professores
+        </a>
+        <a href="${pageContext.request.contextPath}/dashboard">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-boletim.png" alt="" />
+            Dashboards
         </a>
 
     </nav>

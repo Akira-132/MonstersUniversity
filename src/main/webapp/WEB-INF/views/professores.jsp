@@ -28,19 +28,28 @@
         <img src="${pageContext.request.contextPath}/assets/imgs/Logo.png" alt="" />
     </div>
     <nav>
+
         <a href="${pageContext.request.contextPath}/turma-read">
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-diciplinas.png" alt="" />
             Disciplina
         </a>
+
         <a href="${pageContext.request.contextPath}/adicionar-view">
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-adicionar.png" alt="" />
             Adicionar
         </a>
+
         <a href="${pageContext.request.contextPath}/professor-read" class="ativo">
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-professores.png" alt=""/>
             Professores
         </a>
+        <a href="${pageContext.request.contextPath}/dashboard">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-boletim.png" alt="" />
+            Dashboards
+        </a>
+
     </nav>
+
 
     <div id="info-usuario">
         <div id="avatar">
@@ -88,7 +97,6 @@
                 </div>
             </div>
 
-            <!-- Modal Editar Professor -->
             <input type="checkbox" id="<%= modalEditId %>" hidden>
             <div id="overlay-editar-<%= p.getId() %>" class="overlay-dinamico">
                 <div class="modal">
@@ -115,7 +123,6 @@
                 </div>
             </div>
 
-            <!-- Modal Excluir Professor -->
             <input type="checkbox" id="<%= modalDeleteId %>" hidden>
             <div id="overlay-excluir-<%= p.getId() %>" class="overlay-dinamico">
                 <div class="modal">

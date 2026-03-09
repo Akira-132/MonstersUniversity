@@ -58,6 +58,10 @@ String textoVal = (observacao != null && observacao.getComentario() != null) ? o
       <img src="${pageContext.request.contextPath}/assets/imgs/icone-professores.png" alt=""/>
       Professores
     </a>
+    <a href="${pageContext.request.contextPath}/dashboard">
+      <img src="${pageContext.request.contextPath}/assets/imgs/icone-boletim.png" alt="" />
+      Dashboards
+    </a>
   </nav>
 
   <div id="info-usuario" onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'" style="cursor: pointer;">
@@ -76,7 +80,7 @@ String textoVal = (observacao != null && observacao.getComentario() != null) ? o
 
   <div id="conteudo">
     <div id="topo">
-      <a href="${pageContext.request.contextPath}turma-read">
+      <a href="${pageContext.request.contextPath}/turma-read">
         <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" alt="voltar" width="50">
       </a>
 
@@ -138,29 +142,24 @@ String textoVal = (observacao != null && observacao.getComentario() != null) ? o
     <% } %>
 
     <form action="<%= actionUrl %>" method="post">
-      <% if (!observacaoIdVal.isEmpty()) { %>
-      <input type="hidden" name="id" value="<%= observacaoIdVal %>">
-      <% } %>
+    <h3>Escreva uma observação </h3>
 
-      <% if (!alunoIdVal.isEmpty()) { %>
-      <input type="hidden" name="fkAlunoId" value="<%= alunoIdVal %>">
-      <% } %>
+    <% if (!observacaoIdVal.isEmpty()) { %>
+    <input type="hidden" name="id" value="<%= observacaoIdVal %>">
+    <% } %>
 
-      <input type="hidden" name="fkProfessorId" value="<%= professorIdVal %>">
+    <% if (!alunoIdVal.isEmpty()) { %>
+    <input type="hidden" name="fkAlunoId" value="<%= alunoIdVal %>">
+    <% } %>
 
-      <div class="campo">
-        <label for="titulo">Título</label>
-        <input type="text" id="titulo" name="titulo" placeholder="Título">
-      </div>
+    <div class="campo">
+      <textarea id="texto" name="texto" minlength="10" required><%= textoVal %></textarea>
+    </div>
 
-      <div class="campo">
-        <label for="texto">Observação</label>
-        <textarea id="texto" name="texto" minlength="10" required><%= textoVal %></textarea>
-      </div>
+    <div class="modal-botoes">
+      <button type="submit" id="btn-enviar">Salvar</button>
+    </div>
 
-      <div class="modal-botoes" style="margin-top:12px;">
-        <button type="submit" id="btn-enviar" class="btn-confirmar" style="padding:8px 14px; border-radius:6px;">Salvar</button>
-      </div>
     </form>
   </div>
 </main>

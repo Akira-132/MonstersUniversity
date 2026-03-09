@@ -155,15 +155,28 @@
     </div>
 
     <nav>
+
         <a href="${pageContext.request.contextPath}/turma-read" class="ativo">
-            <img src="${pageContext.request.contextPath}/assets/imgs/icone-diciplinas.png"/>
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-diciplinas.png" alt="" />
             Disciplina
+        </a>
+
+        <a href="${pageContext.request.contextPath}/adicionar-view">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-adicionar.png" alt="" />
+            Adicionar
+        </a>
+
+        <a href="${pageContext.request.contextPath}/professor-read">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-professores.png" alt=""/>
+            Professores
         </a>
         <a href="${pageContext.request.contextPath}/dashboard">
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-boletim.png" alt="" />
             Dashboards
         </a>
+
     </nav>
+
 
     <div id="info-usuario" onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'" style="cursor: pointer;">
         <div id="avatar">

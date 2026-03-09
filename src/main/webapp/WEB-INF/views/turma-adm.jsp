@@ -112,6 +112,10 @@
             <img src="<%= request.getContextPath() %>/assets/imgs/icone-professores.png" alt=""/>
             Professores
         </a>
+        <a href="${pageContext.request.contextPath}/dashboard">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-boletim.png" alt="" />
+            Dashboards
+        </a>
     </nav>
 
     <div id="info-usuario" onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'" style="cursor: pointer;">
@@ -143,7 +147,7 @@
                 </button>
             </a>
 
-            <label for="modal-adicionar-aluno" id="modal-adicionar-aluno" >
+            <label for="modal-adicionar-aluno">
                 + Matricular Aluno
             </label>
         </div>

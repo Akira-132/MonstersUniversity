@@ -39,6 +39,10 @@
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-professores.png" alt=""/>
             Professores
         </a>
+        <a href="${pageContext.request.contextPath}/dashboard">
+            <img src="${pageContext.request.contextPath}/assets/imgs/icone-boletim.png" alt="" />
+            Dashboards
+        </a>
     </nav>
 
     <div id="info-usuario">
@@ -60,15 +64,12 @@
     <div id="conteudo">
         <h2>Criar usuário</h2>
 
-        <%
-            String mensagemSucesso = sucesso;
-        %>
 
-        <% if (mensagemSucesso != null) { %>
+        <% if (sucesso != null) { %>
         <script>
             window.addEventListener("load", function() {
                 const alertBox = document.createElement("div");
-                alertBox.innerText = "<%= mensagemSucesso %>";
+                alertBox.innerText = "<%= sucesso %>";
 
                 alertBox.style.position = "fixed";
                 alertBox.style.top = "20px";
@@ -87,10 +88,39 @@
 
                 document.body.appendChild(alertBox);
 
+                setTimeout(() => { alertBox.style.opacity = "1"; }, 100);
                 setTimeout(() => {
-                    alertBox.style.opacity = "1";
-                }, 100);
+                    alertBox.style.opacity = "0";
+                    setTimeout(() => alertBox.remove(), 400);
+                }, 4000);
+            });
+        </script>
+        <% } %>
 
+        <% if (erro != null) { %>
+        <script>
+            window.addEventListener("load", function() {
+                const alertBox = document.createElement("div");
+                alertBox.innerText = "<%= erro %>";
+
+                alertBox.style.position = "fixed";
+                alertBox.style.top = "20px";
+                alertBox.style.left = "50%";
+                alertBox.style.transform = "translateX(-50%)";
+                alertBox.style.backgroundColor = "#FDE8E8";
+                alertBox.style.color = "#7c1a1a";
+                alertBox.style.padding = "15px 25px";
+                alertBox.style.borderRadius = "8px";
+                alertBox.style.boxShadow = "0 4px 10px rgba(0,0,0,0.15)";
+                alertBox.style.fontFamily = "Montserrat";
+                alertBox.style.fontSize = "14px";
+                alertBox.style.zIndex = "9999";
+                alertBox.style.opacity = "0";
+                alertBox.style.transition = "opacity 0.4s ease";
+
+                document.body.appendChild(alertBox);
+
+                setTimeout(() => { alertBox.style.opacity = "1"; }, 100);
                 setTimeout(() => {
                     alertBox.style.opacity = "0";
                     setTimeout(() => alertBox.remove(), 400);
@@ -111,7 +141,11 @@
             <div id="campos">
                 <input type="text" name="nome" placeholder="nome" required value="<%= request.getAttribute("nome_previo") != null ? request.getAttribute("nome_previo") : "" %>">
 
-                <input type="text" name="cpf" placeholder="cpf" required maxlength="11" value="<%= request.getAttribute("cpf_previo") != null ? request.getAttribute("cpf_previo") : "" %>">
+                <input type="text" name="cpf" placeholder="cpf" required maxlength="14"
+                       pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}"
+                       title="CPF no formato 000.000.000-00 ou somente números"
+                       oninput="formatarCPF(this)"
+                       value="<%= request.getAttribute("cpf_previo") != null ? request.getAttribute("cpf_previo") : "" %>">
 
                 <input type="text" name="sobrenome" placeholder="sobrenome" required value="<%= request.getAttribute("sobrenome_previo") != null ? request.getAttribute("sobrenome_previo") : "" %>">
 

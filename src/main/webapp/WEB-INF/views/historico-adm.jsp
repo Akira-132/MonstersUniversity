@@ -41,6 +41,10 @@ DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:m
                 <img src="${pageContext.request.contextPath}/assets/imgs/icone-professores.png" alt=""/>
                 Professores
             </a>
+            <a href="${pageContext.request.contextPath}/dashboard">
+                <img src="${pageContext.request.contextPath}/assets/imgs/icone-boletim.png" alt="" />
+                Dashboards
+            </a>
         </nav>
 
         <div id="info-usuario" onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'" style="cursor: pointer;">
