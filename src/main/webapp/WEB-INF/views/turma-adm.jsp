@@ -251,7 +251,6 @@
                 </div>
             </div>
 
-            <!-- Modal Editar Aluno -->
             <input type="checkbox" id="<%= modalEditId %>" hidden />
             <div id="overlay-editar-<%= a.getId() %>" class="overlay-dinamico">
                 <div class="modal">
@@ -273,6 +272,13 @@
                                    value="<%= (a.getUsuario() != null && a.getUsuario().getSobrenome() != null) ? a.getUsuario().getSobrenome() : "" %>" />
                         </div>
 
+                        <div class="campo">
+                            <label for="email-edit-<%= a.getId() %>">Email</label>
+                            <input type="text" id="email-edit-<%= a.getId() %>"
+                                   value="<%= (a.getUsuario() != null && a.getUsuario().getEmail() != null) ? a.getUsuario().getEmail() : "" %>"
+                                   disabled style="border:none;background-color: #9ca3af" />
+                        </div>
+
                         <div class="modal-botoes">
                             <label for="<%= modalEditId %>" class="btn-cancelar">Cancelar</label>
                             <button type="submit" class="btn-confirmar">Confirmar</button>
@@ -292,7 +298,13 @@
 
                         <div class="campo">
                             <label>Aluno</label>
-                            <input type="text" value="<%= nomeDisplay %>" disabled style="border:none;" />
+                            <input type="text" value="<%= nomeDisplay %>" disabled style="border:none;background-color: #9ca3af" />
+                        </div>
+
+                        <div class="campo">
+                            <label>Email</label>
+                            <input type="text" value="<%= (a.getUsuario() != null && a.getUsuario().getEmail() != null) ? a.getUsuario().getEmail() : "" %>"
+                                   disabled style="border:none;" />
                         </div>
 
                         <div class="campo">

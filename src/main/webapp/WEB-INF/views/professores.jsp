@@ -152,7 +152,7 @@
                                 : "Professor ID: " + p.getId();
             %>
 
-            <div class="professor-card">
+            <div class="professor-card" style="cursor: default;">
                 <%= nomeDisplay %>
 
                 <div style="display: flex; gap: 10px; align-items: center;">
@@ -185,6 +185,13 @@
                                    value="<%= (p.getUsuario() != null && p.getUsuario().getSobrenome() != null) ? p.getUsuario().getSobrenome() : "" %>" />
                         </div>
 
+                        <div class="campo">
+                            <label for="email-edit-<%= p.getId() %>">Email</label>
+                            <input type="text" id="email-edit-<%= p.getId() %>"
+                                   value="<%= (p.getUsuario() != null && p.getUsuario().getEmail() != null) ? p.getUsuario().getEmail() : "" %>"
+                                   disabled style="border:none;background-color: #9ca3af" />
+                        </div>
+
                         <div class="modal-botoes">
                             <label for="<%= modalEditId %>" class="btn-cancelar">Cancelar</label>
                             <button type="submit" class="btn-confirmar">Confirmar</button>
@@ -202,7 +209,13 @@
 
                         <div class="campo">
                             <label>Nome</label>
-                            <input type="text" value="<%= nomeDisplay %>" disabled style="border:none;" />
+                            <input type="text" value="<%= nomeDisplay %>" disabled style="border:none;background-color: #9ca3af"/>
+                        </div>
+
+                        <div class="campo">
+                            <label>Email</label>
+                            <input type="text" value="<%= (p.getUsuario() != null && p.getUsuario().getEmail() != null) ? p.getUsuario().getEmail() : "" %>"
+                                   disabled style="border:none;background-color: #9ca3af" />
                         </div>
 
                         <div class="campo">
