@@ -60,14 +60,14 @@
     </nav>
 
 
-    <a href="${pageContext.request.contextPath}/perfil-professor" id="info-usuario">
+    <a href="${pageContext.request.contextPath}/perfil-read" id="info-usuario">
         <div id="avatar">
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png"/>
         </div>
 
         <span>
             <strong><%= usuarioLogado.getNome() %></strong>
-            Professor
+            Super Administrador
         </span>
     </a>
 </aside>

@@ -274,10 +274,10 @@
             </div>
 
             <div>
-                <label for="modal-adicionar-disciplina" id="btn-adicionar-turma" style="margin-right:10px;">
+                <label for="modal-adicionar-disciplina" id="btn-adicionar-disciplina" style="margin-right:10px;">
                     + Adicionar Disciplina
                 </label>
-                <label for="modal-adicionar" id="btn-adicionar-disciplina">
+                <label for="modal-adicionar" id="btn-adicionar-turma">
                     + Adicionar turma
                 </label>
             </div>

@@ -263,7 +263,7 @@
                         ? usuarioLogado.getNome() + " " + usuarioLogado.getSobrenome()
                         : "Professor" %>
             </strong>
-            Minha Disciplina
+            Super Administrador
         </span>
     </div>
 </aside>
@@ -273,7 +273,7 @@
 
     <div id="conteudo">
 
-        <a href="${pageContext.request.contextPath}/turma-read" id="btn-voltar">
+        <a href="${pageContext.request.contextPath}/turma-aluno-read?id=<%= idTurma %>" id="btn-voltar">
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" width="36"/>
         </a>
 

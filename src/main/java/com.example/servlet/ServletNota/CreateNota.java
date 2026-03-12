@@ -36,6 +36,11 @@ public class CreateNota extends HttpServlet {
                 throw new IllegalArgumentException("O campo nota não pode estar vazio.");
             }
             double valor = Double.parseDouble(notaValorStr.replace(",", "."));
+
+            if (valor < 0 || valor > 10) {
+                throw new IllegalArgumentException("O valor de nota é inválido");
+            }
+
             int fkAlunoId = Integer.parseInt(idAlunoStr);
             int fkDisciplinaId = Integer.parseInt(idDisciplinaStr);
 
@@ -50,8 +55,6 @@ public class CreateNota extends HttpServlet {
                 return;
             }
 
-        } catch (NumberFormatException e) {
-        } catch (IllegalArgumentException e) {
         } catch (Exception e) {
             e.printStackTrace();
         }

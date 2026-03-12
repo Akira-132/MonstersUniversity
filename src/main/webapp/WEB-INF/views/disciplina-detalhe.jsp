@@ -47,9 +47,9 @@
       <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png" alt="" />
     </div>
     <span>
-            <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() + " " + usuarioLogado.getSobrenome() : "Aluno" %></strong>
-            Aluno
-        </span>
+        <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() + " " + usuarioLogado.getSobrenome() : "Aluno" %></strong>
+        Aluno
+      </span>
   </a>
 </aside>
 
