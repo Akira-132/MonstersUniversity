@@ -124,10 +124,13 @@ header{
     border-bottom:0.1rem solid #e0e4ef;
 }
 
+
 #conteudo{
     flex:1;
     overflow-y:auto;
+    overflow-x:auto;
     padding:2rem 2.5rem;
+    width:100%;
 }
 
 @media(max-width:1024px){
