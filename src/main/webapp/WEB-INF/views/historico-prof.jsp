@@ -41,7 +41,7 @@ String foto = (usuarioLogado != null && usuarioLogado.getFoto() != null) ? usuar
       </a>
     </nav>
 
-    <<div id="info-usuario"
+    <div id="info-usuario"
           onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'"
           style="cursor: pointer;">
     <div id="avatar">
