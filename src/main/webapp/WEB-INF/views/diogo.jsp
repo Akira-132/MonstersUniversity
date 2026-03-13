@@ -185,6 +185,7 @@ Professor
 
             <% if (!alunoIdVal.isEmpty()) { %>
             <input type="hidden" name="fkAlunoId" value="<%= alunoIdVal %>">
+            <input type="hidden" name="fkProfessorId" value="<%= (usuarioLogado != null) ? String.valueOf(usuarioLogado.getId()) : "" %>">
             <% } %>
 
             <div class="campo">

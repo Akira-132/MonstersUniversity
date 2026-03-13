@@ -55,6 +55,6 @@ public class DeleteUsuario extends HttpServlet {
             }
         }
 
-        request.getRequestDispatcher("/WEB-INF/views/usuarios.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/adicionar.jsp").forward(request, response);
     }
 }

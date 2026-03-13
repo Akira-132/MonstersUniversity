@@ -56,7 +56,7 @@ public class AuthFilter implements Filter {
             if (session != null && session.getAttribute("emailRecuperacao") != null) {
                 chain.doFilter(request, response);
             } else {
-                res.sendRedirect(context + "/redefinir-senha.jsp");
+                res.sendRedirect(context + "/redefinir-senha");
             }
             return;
         }
