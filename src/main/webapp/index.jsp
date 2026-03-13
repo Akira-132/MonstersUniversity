@@ -39,7 +39,6 @@
             window.addEventListener("load", function() {
                 const alertBox = document.createElement("div");
                 alertBox.innerText = "<%= mensagem %>";
-
                 alertBox.style.position = "fixed";
                 alertBox.style.top = "20px";
                 alertBox.style.left = "50%";
@@ -54,9 +53,7 @@
                 alertBox.style.zIndex = "9999";
                 alertBox.style.opacity = "0";
                 alertBox.style.transition = "opacity 0.4s ease";
-
                 document.body.appendChild(alertBox);
-
                 setTimeout(() => { alertBox.style.opacity = "1"; }, 100);
                 setTimeout(() => {
                     alertBox.style.opacity = "0";
@@ -71,7 +68,6 @@
             window.addEventListener("load", function() {
                 const alertBox = document.createElement("div");
                 alertBox.innerText = "<%= erro %>";
-
                 alertBox.style.position = "fixed";
                 alertBox.style.top = "20px";
                 alertBox.style.left = "50%";
@@ -86,9 +82,7 @@
                 alertBox.style.zIndex = "9999";
                 alertBox.style.opacity = "0";
                 alertBox.style.transition = "opacity 0.4s ease";
-
                 document.body.appendChild(alertBox);
-
                 setTimeout(() => { alertBox.style.opacity = "1"; }, 100);
                 setTimeout(() => {
                     alertBox.style.opacity = "0";
@@ -115,5 +109,7 @@
 
     <img src="${pageContext.request.contextPath}/assets/imgs/Mical_login.png" alt="Mike" id="mical">
 </div>
+
+<script src="${pageContext.request.contextPath}/assets/scripts/loading.js"></script>
 </body>
 </html>

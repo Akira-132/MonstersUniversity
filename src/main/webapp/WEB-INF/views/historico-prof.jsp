@@ -96,5 +96,7 @@ String foto = (usuarioLogado != null && usuarioLogado.getFoto() != null) ? usuar
       </div>
     </div>
   </main>
+
+  <script src="${pageContext.request.contextPath}/assets/scripts/loading.js"></script>
   </body>
   </html>

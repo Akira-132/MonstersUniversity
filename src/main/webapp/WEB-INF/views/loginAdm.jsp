@@ -70,5 +70,7 @@
 
     <img src="${pageContext.request.contextPath}/assets/imgs/surpresa.png" alt="Surpresa" id="img_admin">
 </div>
+
+<script src="${pageContext.request.contextPath}/assets/scripts/loading.js"></script>
 </body>
 </html>

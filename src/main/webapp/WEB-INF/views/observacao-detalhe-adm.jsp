@@ -144,5 +144,6 @@
     </div>
 </main>
 
+<script src="${pageContext.request.contextPath}/assets/scripts/loading.js"></script>
 </body>
 </html>

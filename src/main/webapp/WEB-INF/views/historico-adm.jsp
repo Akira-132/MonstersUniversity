@@ -105,5 +105,7 @@ DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:m
             </div>
         </div>
     </main>
+
+    <script src="${pageContext.request.contextPath}/assets/scripts/loading.js"></script>
     </body>
     </html>

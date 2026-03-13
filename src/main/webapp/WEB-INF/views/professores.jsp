@@ -256,5 +256,7 @@
     }
     .overlay-dinamico { display: none; }
 </style>
+
+<script src="${pageContext.request.contextPath}/assets/scripts/loading.js"></script>
 </body>
 </html>
