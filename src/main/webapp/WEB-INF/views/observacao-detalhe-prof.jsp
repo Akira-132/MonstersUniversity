@@ -85,8 +85,8 @@
 
     <div id="topo">
 
-      <a href="<%= request.getContextPath() %>/observacao-read?idAluno=<%= alunoAtual != null ? alunoAtual.getId() : "" %>&idTurma=<%= idTurmaAtual %>">
-        <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" width="50">
+      <a href="${pageContext.request.contextPath}/observacao-read?idAluno=<%= alunoAtual != null ? alunoAtual.getId() : "" %>&idTurma=<%= idTurmaAtual %>">
+      <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" width="50">
       </a>
 
       <h1>

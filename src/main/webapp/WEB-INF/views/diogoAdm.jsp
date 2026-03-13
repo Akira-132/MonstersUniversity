@@ -30,6 +30,7 @@ String professorIdVal = String.valueOf(usuarioLogado.getId());
 String observacaoIdVal = (observacao != null && observacao.getId() > 0) ? String.valueOf(observacao.getId()) : "";
 String textoVal = (observacao != null && observacao.getComentario() != null) ? observacao.getComentario() : "";
 String foto = (usuarioLogado != null && usuarioLogado.getFoto() != null) ? usuarioLogado.getFoto() : "";
+String idTurmaAtual = request.getAttribute("idTurmaAtual") != null ? String.valueOf(request.getAttribute("idTurmaAtual")) : "";
 %>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -100,7 +101,7 @@ String foto = (usuarioLogado != null && usuarioLogado.getFoto() != null) ? usuar
         <%= alunoAtual.getUsuario().getNome() + " " + alunoAtual.getUsuario().getSobrenome() %>
       </h1>
 
-      <a href="${pageContext.request.contextPath}/observacao-read?idAluno=<%= alunoIdVal %>" id="btn-historico">
+      <a href="${pageContext.request.contextPath}/observacao-read?idAluno=<%= alunoIdVal %>&idTurma=<%= idTurmaAtual %>" id="btn-historico">
         Ver histórico
       </a>
     </div>
@@ -162,6 +163,7 @@ String foto = (usuarioLogado != null && usuarioLogado.getFoto() != null) ? usuar
 
     <% if (!alunoIdVal.isEmpty()) { %>
     <input type="hidden" name="fkAlunoId" value="<%= alunoIdVal %>">
+    <input type="hidden" name="fkProfessorId" value="<%= professorIdVal %>">
     <% } %>
 
     <div class="campo">
@@ -170,6 +172,7 @@ String foto = (usuarioLogado != null && usuarioLogado.getFoto() != null) ? usuar
 
     <div class="modal-botoes">
       <button type="submit" id="btn-enviar">Salvar</button>
+      <input type="hidden" name="idTurma" value="<%= idTurmaAtual %>">
     </div>
 
     </form>
