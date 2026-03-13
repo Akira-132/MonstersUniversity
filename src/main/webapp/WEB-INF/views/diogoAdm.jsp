@@ -4,32 +4,30 @@
 <%@ page import="com.example.models.Observacao" %>
 
 <%
-Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-Aluno alunoAtual = (Aluno) request.getAttribute("alunoAtual");
-System.out.println("DEBUG alunoAtual: " + alunoAtual);
-if(alunoAtual != null){
-System.out.println("DEBUG ID aluno: " + alunoAtual.getId());
-}
+  Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
+  Aluno alunoAtual = (Aluno) request.getAttribute("alunoAtual");
 
-Observacao observacao = (Observacao) request.getAttribute("observacao");
+  Observacao observacao = (Observacao) request.getAttribute("observacao");
 
-if (usuarioLogado == null) {
-response.sendRedirect(request.getContextPath() + "/login-admin");
-return;
-}
+  if (usuarioLogado == null) {
+  response.sendRedirect(request.getContextPath() + "/login-admin");
+  return;
+  }
 
-String actionUrl;
-if (observacao != null && observacao.getId() > 0) {
-actionUrl = request.getContextPath() + "/observacao-update";
-} else {
-actionUrl = request.getContextPath() + "/observacao-create";
-}
+  String actionUrl;
+  if (observacao != null && observacao.getId() > 0) {
+  actionUrl = request.getContextPath() + "/observacao-update";
+  } else {
+  actionUrl = request.getContextPath() + "/observacao-create";
+  }
 
-String alunoIdVal = (alunoAtual != null) ? String.valueOf(alunoAtual.getId()) : "";
-String professorIdVal = String.valueOf(usuarioLogado.getId());
-String observacaoIdVal = (observacao != null && observacao.getId() > 0) ? String.valueOf(observacao.getId()) : "";
-String textoVal = (observacao != null && observacao.getComentario() != null) ? observacao.getComentario() : "";
+  String alunoIdVal = (alunoAtual != null) ? String.valueOf(alunoAtual.getId()) : "";
+  String professorIdVal = String.valueOf(usuarioLogado.getId());
+  String observacaoIdVal = (observacao != null && observacao.getId() > 0) ? String.valueOf(observacao.getId()) : "";
+  String textoVal = (observacao != null && observacao.getComentario() != null) ? observacao.getComentario() : "";
+  String idTurmaAtual = request.getAttribute("idTurmaAtual") != null ? String.valueOf(request.getAttribute("idTurmaAtual")) : "";
 %>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -70,17 +68,17 @@ String textoVal = (observacao != null && observacao.getComentario() != null) ? o
     </div>
     <span>
             <strong><%= usuarioLogado.getNome() %></strong>
-            Professor
+            Super Administrador
         </span>
   </div>
 </aside>
 
 <main>
-  <header>Minha disciplina</header>
+  <header>Observação</header>
 
   <div id="conteudo">
     <div id="topo">
-      <a href="${pageContext.request.contextPath}/turma-read">
+      <a href="<%= request.getContextPath() %>/turma-aluno-read?id=<%= idTurmaAtual %>">
         <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" alt="voltar" width="50">
       </a>
 
@@ -88,9 +86,9 @@ String textoVal = (observacao != null && observacao.getComentario() != null) ? o
         <%= alunoAtual.getUsuario().getNome() + " " + alunoAtual.getUsuario().getSobrenome() %>
       </h1>
 
-      <a href="${pageContext.request.contextPath}/observacao-read?idAluno=<%= alunoIdVal %>&idTurma=<%= request.getAttribute("idTurmaAtual") != null ? request.getAttribute("idTurmaAtual") : "" %>
-" id="btn-historico">
-        Ver histórico
+      <a href="<%= request.getContextPath() %>/observacao-read?idAluno=<%= alunoIdVal %>&idTurma=<%= idTurmaAtual %>" id="btn-historico">
+
+      Ver histórico
       </a>
     </div>
 
@@ -161,6 +159,7 @@ String textoVal = (observacao != null && observacao.getComentario() != null) ? o
       <button type="submit" id="btn-enviar">Salvar</button>
     </div>
 
+      <input type="hidden" name="idTurma" value="<%= idTurmaAtual %>">
     </form>
   </div>
 </main>

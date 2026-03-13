@@ -61,6 +61,6 @@ public class ReadTelefone extends HttpServlet {
             request.setAttribute("erro", "Erro inesperado ao carregar dados.");
         }
 
-        request.getRequestDispatcher("/adicionar.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/adicionar.jsp").forward(request, response);
     }
 }

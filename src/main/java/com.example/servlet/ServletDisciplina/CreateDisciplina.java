@@ -20,9 +20,6 @@ public class CreateDisciplina extends HttpServlet {
         String nome = request.getParameter("nome");
         String idProfessorStr = request.getParameter("fkProfessorId");
 
-        System.out.println("DEBUG NOME: " + nome);
-        System.out.println("DEBUG FK PROFESSOR: " + idProfessorStr);
-
         DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
         String erro = null;
 

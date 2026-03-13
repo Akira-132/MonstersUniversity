@@ -29,7 +29,7 @@ public class ReadDisciplinaDetalhe extends HttpServlet {
         Usuario usuarioLogado = (session != null) ? (Usuario) session.getAttribute("usuarioLogado") : null;
 
         if (usuarioLogado == null) {
-            response.sendRedirect("login");
+            response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 

@@ -15,6 +15,7 @@
     }
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
+    String idTurmaAtual = request.getAttribute("idTurmaAtual") != null ? String.valueOf(request.getAttribute("idTurmaAtual")) : "";
 %>
 
 <!DOCTYPE html>
@@ -60,27 +61,27 @@
     </nav>
 
 
-    <a href="${pageContext.request.contextPath}/perfil-professor" id="info-usuario">
+    <a href="${pageContext.request.contextPath}/perfil-read" id="info-usuario">
         <div id="avatar">
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png"/>
         </div>
 
         <span>
             <strong><%= usuarioLogado.getNome() %></strong>
-            Professor
+            Super Administrador
         </span>
     </a>
 </aside>
 
 <main>
 
-    <header>Minha disciplina</header>
+    <header>Observação do Aluno</header>
 
     <div id="conteudo">
 
         <div id="topo">
 
-            <a href="${pageContext.request.contextPath}/observacao-read?idAluno=<%= alunoAtual != null ? alunoAtual.getId() : "" %>">
+            <a href="<%= request.getContextPath() %>/observacao-read?idAluno=<%= alunoAtual != null ? alunoAtual.getId() : "" %>&idTurma=<%= idTurmaAtual %>">
                 <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" width="50">
             </a>
 
@@ -95,13 +96,6 @@
         <% if(observacao != null){ %>
 
         <div class="campo">
-
-            <label>Título</label>
-
-            <input
-                    type="text"
-                    value="Registro de Observação"
-                    readonly>
 
         </div>
 

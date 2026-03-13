@@ -31,7 +31,7 @@
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-diciplinas.png" alt="" />
             Disciplina
         </a>
-        <a href="#" class="ativo">
+        <a href="${pageContext.request.contextPath}/adicionar-view" class="ativo">
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-adicionar.png" alt="" />
             Adicionar
         </a>
@@ -45,14 +45,20 @@
         </a>
     </nav>
 
-    <div id="info-usuario">
+    <div id="info-usuario"
+         onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'"
+         style="cursor: pointer;">
         <div id="avatar">
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png" alt="" />
         </div>
         <span>
-                <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() : "Admin" %></strong>
-                Administração
-            </span>
+        <strong>
+          <%= (usuarioLogado != null && usuarioLogado.getNome() != null)
+                  ? usuarioLogado.getNome()
+                  : "Admin" %>
+        </strong>
+        Super Administrador
+      </span>
     </div>
 </aside>
 

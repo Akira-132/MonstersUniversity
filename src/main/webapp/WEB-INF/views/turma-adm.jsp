@@ -36,9 +36,13 @@
         mensagemErro = erro;
     }
 
+
     int idTurmaAtual = (turmaAtual != null) ? turmaAtual.getId() : 0;
     String nomeTurma = (turmaAtual != null) ? turmaAtual.getSala() : "Turma";
+    String periodoRaw = (turmaAtual != null) ? turmaAtual.getPeriodo() : "";
+    String periodo = (periodoRaw != null) ? periodoRaw.substring(0,1).toUpperCase() + periodoRaw.substring(1) : "";
 %>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -51,7 +55,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/styles/globalApp.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/styles/modal.css">
 
-    <title>Gerenciar Turma - <%= nomeTurma %></title>
+    <title>Monsters University - <%= nomeTurma %></title>
 
     <style>
         #modal-adicionar-aluno:checked ~ #overlay-adicionar-aluno {
@@ -211,7 +215,7 @@
     <div id="conteudo">
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h1>TURMA <%= nomeTurma %></h1>
+            <h1>TURMA <%= nomeTurma %> - <%= periodo %></h1>
 
             <a href="${pageContext.request.contextPath}/nota-read?idTurma=<%= idTurmaAtual %>">
                 <button style="cursor: pointer; padding: 10px 20px; color: black; border: none; border-radius: 5px;">
@@ -236,7 +240,7 @@
             %>
 
             <div class="aluno-card">
-                <a href="${pageContext.request.contextPath}/aluno-read?id=<%= a.getId() %>"
+                <a href="${pageContext.request.contextPath}/aluno-read?id=<%= a.getId() %>&idTurma=<%= idTurmaAtual %>"
                    style="text-decoration: none; color: inherit; font-weight: bold; flex-grow: 1;">
                     <%= nomeDisplay %>
                 </a>
@@ -251,7 +255,6 @@
                 </div>
             </div>
 
-            <!-- Modal Editar Aluno -->
             <input type="checkbox" id="<%= modalEditId %>" hidden />
             <div id="overlay-editar-<%= a.getId() %>" class="overlay-dinamico">
                 <div class="modal">
@@ -273,6 +276,13 @@
                                    value="<%= (a.getUsuario() != null && a.getUsuario().getSobrenome() != null) ? a.getUsuario().getSobrenome() : "" %>" />
                         </div>
 
+                        <div class="campo">
+                            <label for="email-edit-<%= a.getId() %>">Email</label>
+                            <input type="text" id="email-edit-<%= a.getId() %>"
+                                   value="<%= (a.getUsuario() != null && a.getUsuario().getEmail() != null) ? a.getUsuario().getEmail() : "" %>"
+                                   disabled style="border:none;background-color: #9ca3af" />
+                        </div>
+
                         <div class="modal-botoes">
                             <label for="<%= modalEditId %>" class="btn-cancelar">Cancelar</label>
                             <button type="submit" class="btn-confirmar">Confirmar</button>
@@ -292,7 +302,13 @@
 
                         <div class="campo">
                             <label>Aluno</label>
-                            <input type="text" value="<%= nomeDisplay %>" disabled style="border:none;" />
+                            <input type="text" value="<%= nomeDisplay %>" disabled style="border:none;background-color: #9ca3af" />
+                        </div>
+
+                        <div class="campo">
+                            <label>Email</label>
+                            <input type="text" value="<%= (a.getUsuario() != null && a.getUsuario().getEmail() != null) ? a.getUsuario().getEmail() : "" %>"
+                                   disabled style="border:none;background-color: #9ca3af" />
                         </div>
 
                         <div class="campo">
