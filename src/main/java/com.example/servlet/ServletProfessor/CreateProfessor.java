@@ -51,7 +51,7 @@ public class CreateProfessor extends HttpServlet {
             }
 
             request.setAttribute("sucesso", "Professor " + nome + " cadastrado com sucesso!");
-            request.getRequestDispatcher("/adicionar.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/adicionar.jsp").forward(request, response);
             return;
 
         } catch (IllegalArgumentException e) {
@@ -82,6 +82,6 @@ public class CreateProfessor extends HttpServlet {
         request.setAttribute("sobrenome_previo", sobrenome);
         request.setAttribute("email_previo", email);
 
-        request.getRequestDispatcher("/adicionar.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/adicionar.jsp").forward(request, response);
     }
 }

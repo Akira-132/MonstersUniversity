@@ -32,7 +32,7 @@
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-diciplinas.png" alt="" />
             Disciplina
         </a>
-        <a href="#" class="ativo">
+        <a href="${pageContext.request.contextPath}/adicionar-view" class="ativo">
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-adicionar.png" alt="" />
             Adicionar
         </a>
@@ -62,9 +62,13 @@
             <% } %>
         </div>
         <span>
-                <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() : "Admin" %></strong>
-                Administração
-            </span>
+        <strong>
+          <%= (usuarioLogado != null && usuarioLogado.getNome() != null)
+                  ? usuarioLogado.getNome()
+                  : "Admin" %>
+        </strong>
+        Super Administrador
+      </span>
     </div>
 </aside>
 

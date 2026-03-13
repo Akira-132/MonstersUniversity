@@ -20,8 +20,8 @@
                 return false;
             }
 
-            if (senha.length < 6) {
-                erro.innerText = "A senha deve ter no mínimo 6 caracteres.";
+            if (senha.length < 8) {
+                erro.innerText = "A senha deve ter no mínimo 8 caracteres.";
                 return false;
             }
 

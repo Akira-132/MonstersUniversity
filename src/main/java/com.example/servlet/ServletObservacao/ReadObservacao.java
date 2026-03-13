@@ -50,6 +50,10 @@ public class ReadObservacao extends HttpServlet {
                 if (obs != null) {
                     request.setAttribute("observacao", obs);
                     request.setAttribute("alunoAtual", alunoDAO.readById(obs.getFkAlunoId()));
+                    String idTurmaStr = request.getParameter("idTurma");
+                    if (idTurmaStr != null && !idTurmaStr.isEmpty()) {
+                        request.setAttribute("idTurmaAtual", idTurmaStr);
+                    }
                 }
 
                 if (isProfessor) {
@@ -68,6 +72,10 @@ public class ReadObservacao extends HttpServlet {
 
                 request.setAttribute("alunoAtual", aluno);
                 request.setAttribute("listaObservacoes", doAluno);
+                String idTurmaStr = request.getParameter("idTurma");
+                if (idTurmaStr != null && !idTurmaStr.isEmpty()) {
+                    request.setAttribute("idTurmaAtual", idTurmaStr);
+                }
 
                 if (isProfessor) {
                     request.getRequestDispatcher("/WEB-INF/views/historico-prof.jsp").forward(request, response);

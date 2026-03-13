@@ -286,11 +286,11 @@
             </div>
 
             <div>
-                <label for="modal-adicionar-disciplina" id="btn-adicionar-turma" style="margin-right:10px;">
+                <label for="modal-adicionar-disciplina" id="btn-adicionar-disciplina" style="margin-right:10px;">
                     + Adicionar Disciplina
                 </label>
-                <label for="modal-adicionar" id="btn-adicionar-disciplina">
-                    + Adicionar turma
+                <label for="modal-adicionar" id="btn-adicionar-turma">
+                    + Adicionar Turma
                 </label>
             </div>
         </div>
@@ -300,7 +300,7 @@
                 if (listaTurmas != null && !listaTurmas.isEmpty()) {
                     int contador = 0;
                     for (Turma t : listaTurmas) {
-                        String corBarra = (contador % 2 == 0) ? "verde" : "roxo";
+                        String corBarra = (contador % 2 == 0) ? "azulEscuro" : "azulClaro";
                         contador++;
                         String modalEditId = "modal-editar-" + t.getId();
                         String modalDeleteId = "modal-excluir-" + t.getId();

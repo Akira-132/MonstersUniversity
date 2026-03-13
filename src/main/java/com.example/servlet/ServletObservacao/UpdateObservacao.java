@@ -43,7 +43,8 @@ public class UpdateObservacao extends HttpServlet {
             observacao.setDataEnvio(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 
             if (observacaoDAO.update(observacao) > 0) {
-                response.sendRedirect(request.getContextPath() + "/observacao-read?idAluno=" + fkAlunoId);
+                response.sendRedirect(request.getContextPath() + "/observacao-read?idAluno=" + fkAlunoId
+                + (request.getParameter("idTurma") != null ? "&idTurma=" + request.getParameter("idTurma") : ""));
                 return;
             } else {
                 erro = "Erro ao atualizar observação no banco.";

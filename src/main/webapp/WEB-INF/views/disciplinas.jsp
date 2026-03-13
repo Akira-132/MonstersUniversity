@@ -80,7 +80,7 @@
 <main>
   <header>Minhas disciplinas</header>
 
-  <div style="display:flex;gap:10px;margin-bottom:1.5rem;padding:20px">
+  <div style="display:flex;gap:10px;padding:20px">
     <a href="?filtro=minhas"
        style="padding:8px 20px;border-radius:20px;font-weight:700;text-decoration:none;
                background:<%= "minhas".equals(filtro) ? "#0d47a1" : "#e0e4ef" %>;
@@ -101,37 +101,37 @@
     <div class="msg-erro"><%= erro %></div>
     <% } %>
 
+      <%
+          if (listaExibida != null && !listaExibida.isEmpty()) {
+              int count = 0;
+              for (Disciplina d : listaExibida) {
+                  String corCard = (count % 2 == 0) ? "verde" : "roxo";
+                  count++;
 
-    <%
-      if (listaExibida != null && !listaExibida.isEmpty()) {
-        int count = 0;
-        for (Disciplina d : listaExibida) {
-          String corCard = (count % 2 == 0) ? "verde" : "roxo";
-          count++;
+                  boolean matriculado = idsDoAluno.contains(d.getId());
+      %>
 
-          boolean matriculado = idsDoAluno.contains(d.getId());
-    %>
-
-    <% if (matriculado) { %>
-    <a href="${pageContext.request.contextPath}/disciplina-detalhe-read?id=<%= d.getId() %>">
-      <div class="card <%= corCard %>">
-        <span><%= d.getNome() %></span>
+      <% if (matriculado) { %>
+      <a class="card <%= corCard %>" href="${pageContext.request.contextPath}/disciplina-detalhe-read?id=<%= d.getId() %>">
+          <span><%= d.getNome() %></span>
+      </a>
+      <% } else { %>
+      <div class="card" style="opacity:0.45;cursor:not-allowed;filter:grayscale(1);">
+          <span><%= d.getNome() %></span>
+          <span style="margin-left:auto;font-size:0.75rem;color:#888;white-space:nowrap;">
+    Não matriculado
+  </span>
       </div>
-    </a>
-    <% } else { %>
-    <div class="card" style="opacity:0.45;cursor:not-allowed;filter:grayscale(1);">
-      <span><%= d.getNome() %></span>
-      <span style="margin-left:auto;font-size:0.75rem;color:#888;white-space:nowrap;">Não matriculado</span>
-    </div>
-    <% } %>
+      <% } %>
 
-    <%
-      }
-    } else {
-    %>
-    <p>Nenhuma disciplina encontrada.</p>
-    <% } %>
-
+      <%
+          }
+      } else {
+      %>
+      <p>Nenhuma disciplina encontrada.</p>
+      <%
+          }
+      %>
   </div>
 </main>
 

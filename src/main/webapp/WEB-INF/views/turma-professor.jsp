@@ -9,7 +9,9 @@
     Turma turmaAtual = (Turma) request.getAttribute("turmaAtual");
     List<Aluno> listaAlunos = (List<Aluno>) request.getAttribute("listaAlunos");
 
-    String nomeTurma = (turmaAtual != null) ? turmaAtual.getSala() : "Turma não identificada";
+    String nomeTurma = (turmaAtual != null)
+            ? turmaAtual.getSala() + " - " + turmaAtual.getPeriodo()
+            : "Turma não identificada";
     int idTurma = (turmaAtual != null) ? turmaAtual.getId() : 0;
     String erro = (String) request.getAttribute("erro");
     String foto = (usuarioLogado != null && usuarioLogado.getFoto() != null) ? usuarioLogado.getFoto() : "";
@@ -93,7 +95,8 @@
                                 ? a.getUsuario().getNome() + " " + a.getUsuario().getSobrenome()
                                 : "Aluno Matrícula: " + a.getMatricula();
             %>
-            <a href="${pageContext.request.contextPath}/aluno-read?id=<%= a.getId() %>" class="aluno-card">
+            <a href="${pageContext.request.contextPath}/aluno-read?id=<%= a.getId() %>&idTurma=<%= idTurma %>"
+               class="aluno-card">
                 <%= nomeAluno %>
             </a>
             <%

@@ -75,8 +75,8 @@
         <tr>
           <th>Disciplina</th>
           <th>Período</th>
-          <th>P1</th>
-          <th>P2</th>
+          <th>N1</th>
+          <th>N2</th>
           <th>Média Final</th>
           <th>Situação</th>
         </tr>

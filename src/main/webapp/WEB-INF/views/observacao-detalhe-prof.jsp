@@ -16,6 +16,7 @@
   }
 
   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
+  String idTurmaAtual = request.getAttribute("idTurmaAtual") != null ? String.valueOf(request.getAttribute("idTurmaAtual")) : "";
 %>
 
 <!DOCTYPE html>
@@ -84,7 +85,7 @@
 
     <div id="topo">
 
-      <a href="${pageContext.request.contextPath}/observacao-read?idAluno=<%= alunoAtual != null ? alunoAtual.getId() : "" %>">
+      <a href="<%= request.getContextPath() %>/observacao-read?idAluno=<%= alunoAtual != null ? alunoAtual.getId() : "" %>&idTurma=<%= idTurmaAtual %>">
         <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" width="50">
       </a>
 

@@ -87,7 +87,7 @@ if (disciplinasJson == null)  disciplinasJson = "[]";
   </div>
 </aside>
 
-<main>
+<main style="padding: 0;">
   <header>Dashboard</header>
 
   <div id="conteudo">
@@ -131,16 +131,18 @@ if (disciplinasJson == null)  disciplinasJson = "[]";
       <div class="card grafico">
         <h2>Desempenho Geral</h2>
 
-        <div class="filtros">
-          <select id="alunoSelect">
-            <option value="">Todos os alunos</option>
-          </select>
+        <div class="filtros" >
+            <div style="display:flex; flex-wrap:wrap; gap:1rem; align-items:center;">
+            <select id="alunoSelect">
+              <option value="">Todos os alunos</option>
+            </select>
 
-          <select id="disciplinaSelect">
-            <option value="">Todas as disciplinas</option>
-          </select>
+            <select id="disciplinaSelect">
+              <option value="">Todas as disciplinas</option>
+            </select>
 
-          <button onclick="atualizarGrafico()">Filtrar</button>
+            <button onclick="atualizarGrafico()" style="margin-bottom: 0">Filtrar</button>
+          </div>
         </div>
 
         <canvas id="grafico"></canvas>

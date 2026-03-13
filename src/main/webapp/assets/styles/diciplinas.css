@@ -1,86 +1,83 @@
 #conteudo {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  padding: 2rem;
-  align-content: center;
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    width: 100%;
 }
 
-.card a {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  text-decoration: none;
+#conteudo a {
+    width: 100%;
+    text-decoration: none;
 }
 
 .card {
-  background: #fff;
-  border-radius: 1rem;
-  display: flex;
-  align-items: center;
-  width: 90%;
-  gap: 3rem;
-  padding: 1.5rem;
-  cursor: pointer;
-  box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.349);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.2s;
+    background: #fff;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    height: 90px;
+
+    padding: 1.5rem;
+
+    cursor: pointer;
+
+    box-shadow: 0 0.3rem 0.6rem rgba(0,0,0,0.2);
+
+    position: relative;
+    overflow: hidden;
+
+    transition: transform .2s ease, box-shadow .2s ease;
 }
 
 .card:hover {
-  transform: translateY(-0.2rem);
-  box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.349);
+    transform: translateY(-4px);
+    box-shadow: 0 0.6rem 1rem rgba(0,0,0,0.25);
 }
 
 .card::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  height: 100%;
-  width: 3rem;
-  border-radius: 0.1rem;
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    width: 40px;
+    height: 100%;
 }
 
 .verde::after {
-  background: #c5e320;
+    background: #c5e320;
 }
 
 .roxo::after {
-  background: #7c4dff;
+    background: #7c4dff;
 }
 
 .card span {
-  font-size: 1.6rem;
-  font-weight: 400;
-  color: #1a1a2e;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #1a1a2e;
+    max-width: 85%;
 }
 
-/* tela média */
 @media (max-width: 1024px) {
 
-  #conteudo {
-    gap: 2rem;
-    padding: 1.5rem;
-  }
-
-  .card {
-    gap: 2rem;
-  }
+    #conteudo {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 1.5rem;
+    }
 
 }
 
 @media (max-width: 768px) {
 
-  #conteudo {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-
-    justify-items: center;
-  }
-
-  .card {
-    width: 100%;
-  }
+    #conteudo {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+    }
 
 }
