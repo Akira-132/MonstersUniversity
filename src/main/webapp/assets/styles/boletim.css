@@ -1,130 +1,92 @@
 #conteudo {
-  overflow-y: auto;
-  padding: 2rem 2.5rem;
-  display: flex;
-  gap: 3rem;
-  flex-direction: column;
+    padding: 2rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-h1 {
-  align-self: center;
-}
-
-h1 span {
-  font-size: 2.5rem;
-  color: #18ae4f;
+#view-notas {
+    width: 100%;
+    overflow-x: auto;
 }
 
 #view-notas table {
-  margin-top: 0.8rem;
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 0.6rem;
-  background: #ededef;
-  border-radius: 1rem;
-  padding: 0.3rem 0.8rem;
+    width: 100%;
+    min-width: 900px; /* evita cortar colunas */
+    border-collapse: separate;
+    border-spacing: 0 0.6rem;
+    background: #ededef;
+    border-radius: 1rem;
+    padding: 0.5rem;
 }
 
 #view-notas thead th {
-  font-weight: 800;
-  color: #1a1a2e;
-  font-size: 0.95rem;
-  padding: 0.6rem 1.3rem;
-  text-align: left;
-  border-bottom: 0.1rem solid #e8edf3;
+    font-weight: 800;
+    color: #1a1a2e;
+    font-size: 0.95rem;
+    padding: 0.8rem 1.4rem;
+    text-align: left;
+    border-bottom: 0.1rem solid #e8edf3;
+    white-space: nowrap;
 }
 
 #view-notas tbody tr {
-  background: #ffffff;
-  box-shadow: 0 0.1rem 0.3rem rgba(0,0,0,0.07);
+    background: #ffffff;
+    box-shadow: 0 0.15rem 0.4rem rgba(0,0,0,0.08);
 }
 
 #view-notas tbody td {
-  padding: 0.9rem 1.3rem;
-  font-weight: 600;
-  color: #4a5568;
-  font-size: 0.9rem;
+    padding: 1rem 1.4rem;
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 0.9rem;
+    white-space: nowrap;
 }
 
 #view-notas tbody td:first-child {
-  font-weight: 700;
-  color: #1a1a2e;
-  font-size: 0.95rem;
-  border-radius: 0.8rem 0 0 0.8rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    border-radius: 0.8rem 0 0 0.8rem;
 }
 
 #view-notas tbody td:last-child {
-  border-radius: 0 0.8rem 0.8rem 0;
+    border-radius: 0 0.8rem 0.8rem 0;
 }
 
 
 .nota {
-  background: #e8edf3;
-  border-radius: 0.5rem;
-  padding: 0.4rem 0.8rem;
-  font-weight: 700;
-  color: #1a1a2e;
-  font-size: 0.95rem;
-  text-align: center;
-  display: inline-block;
-}
-
-.nota.pendente {
-  color: #4a5568;
-  letter-spacing: 0.1rem;
+    background: #e8edf3;
+    border-radius: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    font-size: 0.95rem;
+    display: inline-block;
+    text-align: center;
 }
 
 .nota.baixa {
-  color: red;
+    color: red;
 }
 
-
-/* tela media */
 @media (max-width: 768px) {
 
-  #conteudo {
-    padding: 1rem;
-    gap: 2rem;
-  }
+    #conteudo {
+        padding: 1rem;
+    }
 
-  h1 span {
-    font-size: 1.7rem;
-    text-align: center;
-  }
+    #view-notas table {
+        min-width: 750px;
+    }
 
-  /* Permite rolagem horizontal na tabela */
-  #view-notas {
-    overflow-x: auto;
-  }
-
-  #view-notas table {
-    min-width: 600px;
-  }
-
-  #view-notas thead th,
-  #view-notas tbody td {
-    padding: 0.7rem 0.8rem;
-    font-size: 0.85rem;
-  }
-
-  .nota {
-    font-size: 0.85rem;
-    padding: 0.3rem 0.6rem;
-  }
 }
 
 @media (max-width: 480px) {
 
-  h1 span {
-    font-size: 1.4rem;
-  }
+    #view-notas table {
+        min-width: 650px;
+    }
 
-  #view-notas thead th,
-  #view-notas tbody td {
-    font-size: 0.8rem;
-  }
-
-  .nota {
-    font-size: 0.8rem;
-  }
 }

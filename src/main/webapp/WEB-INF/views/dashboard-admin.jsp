@@ -122,7 +122,7 @@ if (disciplinasJson == null)  disciplinasJson = "[]";
         <h2>Desempenho Geral</h2>
 
         <div class="filtros" >
-          <div style="width: min-content; display: flex; gap: 1rem; align-items: center;">
+            <div style="display:flex; flex-wrap:wrap; gap:1rem; align-items:center;">
             <select id="alunoSelect">
               <option value="">Todos os alunos</option>
             </select>
