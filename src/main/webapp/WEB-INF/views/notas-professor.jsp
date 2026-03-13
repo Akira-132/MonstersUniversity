@@ -10,6 +10,7 @@
     List<Nota> listaNotas   = (List<Nota>) request.getAttribute("listaNotas");
     List<Aluno> listaAlunos = (List<Aluno>) request.getAttribute("listaAlunos");
     List<Disciplina> listaDisciplinas = (List<Disciplina>) request.getAttribute("listaDisciplinas");
+    String foto = (usuarioLogado != null && usuarioLogado.getFoto() != null) ? usuarioLogado.getFoto() : "";
 
     String erro = (String) request.getAttribute("erro");
     if (erro == null) {
@@ -30,7 +31,6 @@
             ? String.valueOf(request.getAttribute("idDisciplinaAtual"))
             : "0";
 
-    // Mensagens padronizadas via query param
     String sucessoParam = request.getParameter("sucesso");
     String erroParam    = request.getParameter("erro");
 
@@ -88,7 +88,6 @@
 
 <body>
 
-<%-- Toast de sucesso --%>
 <% if (mensagemSucesso != null) { %>
 <script>
     window.addEventListener("load", function () {
@@ -239,7 +238,16 @@
          onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'"
          style="cursor: pointer;">
         <div id="avatar">
-            <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png"/>
+            <% if (!foto.isEmpty()) { %>
+            <img id="avatar-img"
+                 src="<%= request.getContextPath() + "/assets/imgs/perfil/" + foto %>"
+                 alt=""
+                 style="filter: none; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
+            <% } else { %>
+            <img id="avatar-img"
+                 src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png"
+                 alt="" />
+            <% } %>
         </div>
         <span>
             <strong>

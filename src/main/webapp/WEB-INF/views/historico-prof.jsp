@@ -9,6 +9,7 @@
 Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
 Aluno alunoAtual = (Aluno) request.getAttribute("alunoAtual");
 List<Observacao> listaObservacoes = (List<Observacao>) request.getAttribute("listaObservacoes");
+String foto = (usuarioLogado != null && usuarioLogado.getFoto() != null) ? usuarioLogado.getFoto() : "";
 
   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
   %>
@@ -39,10 +40,21 @@ List<Observacao> listaObservacoes = (List<Observacao>) request.getAttribute("lis
       </a>
     </nav>
 
-    <div id="info-usuario" onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'" style="cursor: pointer;">
-      <div id="avatar">
-        <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png" alt="" />
-      </div>
+    <<div id="info-usuario"
+          onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'"
+          style="cursor: pointer;">
+    <div id="avatar">
+      <% if (!foto.isEmpty()) { %>
+      <img id="avatar-img"
+           src="<%= request.getContextPath() + "/assets/imgs/perfil/" + foto %>"
+           alt=""
+           style="filter: none; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
+      <% } else { %>
+      <img id="avatar-img"
+           src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png"
+           alt="" />
+      <% } %>
+    </div>
       <span>
         <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() : "Professor" %></strong>
         Professor

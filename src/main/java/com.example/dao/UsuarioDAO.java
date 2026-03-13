@@ -10,7 +10,7 @@ import java.util.List;
 public class UsuarioDAO {
 
     public boolean create(Usuario usuario) throws SQLException {
-        String sql = "INSERT INTO usuario (nome, sobrenome, email, senha) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO usuario (nome, sobrenome, email, senha, foto, sobre_mim) VALUES (?, ?, ?, ?, ?, ?)";
 
         Conexao conexao = new Conexao();
 
@@ -21,13 +21,15 @@ public class UsuarioDAO {
             pstmt.setString(2, usuario.getSobrenome());
             pstmt.setString(3, usuario.getEmail());
             pstmt.setString(4, usuario.getSenha());
+            pstmt.setString(5, usuario.getFoto());
+            pstmt.setString(6, usuario.getSobreMim());
 
             return pstmt.executeUpdate() > 0;
         }
     }
 
     public List<Usuario> read() throws SQLException {
-        String sql = "SELECT id_usuario, nome, sobrenome, email, senha FROM usuario ORDER BY nome ASC";
+        String sql = "SELECT id_usuario, nome, sobrenome, email, senha, foto, sobre_mim FROM usuario ORDER BY nome ASC";
 
         Conexao conexao = new Conexao();
         List<Usuario> lista = new LinkedList<>();
@@ -37,20 +39,23 @@ public class UsuarioDAO {
              ResultSet rset = pstmt.executeQuery()) {
 
             while (rset.next()) {
-                lista.add(new Usuario(
+                Usuario usuario = new Usuario(
                         rset.getInt("id_usuario"),
                         rset.getString("nome"),
                         rset.getString("sobrenome"),
                         rset.getString("email"),
                         rset.getString("senha")
-                ));
+                );
+                usuario.setFoto(rset.getString("foto"));
+                usuario.setSobreMim(rset.getString("sobre_mim"));
+                lista.add(usuario);
             }
         }
         return lista;
     }
 
     public Usuario readById(int id) throws SQLException {
-        String sql = "SELECT id_usuario, nome, sobrenome, email, senha FROM usuario WHERE id_usuario = ?";
+        String sql = "SELECT id_usuario, nome, sobrenome, email, senha, foto, sobre_mim FROM usuario WHERE id_usuario = ?";
 
         Conexao conexao = new Conexao();
 
@@ -61,13 +66,16 @@ public class UsuarioDAO {
 
             try (ResultSet rset = pstmt.executeQuery()) {
                 if (rset.next()) {
-                    return new Usuario(
+                    Usuario usuario = new Usuario(
                             rset.getInt("id_usuario"),
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
                             rset.getString("senha")
                     );
+                    usuario.setFoto(rset.getString("foto"));
+                    usuario.setSobreMim(rset.getString("sobre_mim"));
+                    return usuario;
                 }
             }
         }
@@ -75,7 +83,7 @@ public class UsuarioDAO {
     }
 
     public Usuario readByEmail(String email) throws SQLException {
-        String sql = "SELECT id_usuario, nome, sobrenome, email, senha FROM usuario WHERE email = ?";
+        String sql = "SELECT id_usuario, nome, sobrenome, email, senha, foto, sobre_mim FROM usuario WHERE email = ?";
 
         Conexao conexao = new Conexao();
 
@@ -86,13 +94,16 @@ public class UsuarioDAO {
 
             try (ResultSet rset = pstmt.executeQuery()) {
                 if (rset.next()) {
-                    return new Usuario(
+                    Usuario usuario = new Usuario(
                             rset.getInt("id_usuario"),
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
                             rset.getString("senha")
                     );
+                    usuario.setFoto(rset.getString("foto"));
+                    usuario.setSobreMim(rset.getString("sobre_mim"));
+                    return usuario;
                 }
             }
         }
@@ -100,7 +111,7 @@ public class UsuarioDAO {
     }
 
     public Usuario login(String email, String senha) throws SQLException {
-        String sql = "SELECT id_usuario, nome, sobrenome, email, senha FROM usuario WHERE email = ? AND senha = ?";
+        String sql = "SELECT id_usuario, nome, sobrenome, email, senha, foto, sobre_mim FROM usuario WHERE email = ? AND senha = ?";
 
         Conexao conexao = new Conexao();
 
@@ -112,13 +123,16 @@ public class UsuarioDAO {
 
             try (ResultSet rset = pstmt.executeQuery()) {
                 if (rset.next()) {
-                    return new Usuario(
+                    Usuario usuario = new Usuario(
                             rset.getInt("id_usuario"),
                             rset.getString("nome"),
                             rset.getString("sobrenome"),
                             rset.getString("email"),
                             rset.getString("senha")
                     );
+                    usuario.setFoto(rset.getString("foto"));
+                    usuario.setSobreMim(rset.getString("sobre_mim"));
+                    return usuario;
                 }
             }
         }
@@ -126,7 +140,7 @@ public class UsuarioDAO {
     }
 
     public int update(Usuario usuario) throws SQLException {
-        String sql = "UPDATE usuario SET nome = ?, sobrenome = ?, email = ?, senha = ? WHERE id_usuario = ?";
+        String sql = "UPDATE usuario SET nome = ?, sobrenome = ?, email = ?, senha = ?, foto = ?, sobre_mim = ? WHERE id_usuario = ?";
 
         Conexao conexao = new Conexao();
 
@@ -137,7 +151,9 @@ public class UsuarioDAO {
             pstmt.setString(2, usuario.getSobrenome());
             pstmt.setString(3, usuario.getEmail());
             pstmt.setString(4, usuario.getSenha());
-            pstmt.setInt(5, usuario.getId());
+            pstmt.setString(5, usuario.getFoto());
+            pstmt.setString(6, usuario.getSobreMim());
+            pstmt.setInt(7, usuario.getId());
 
             return pstmt.executeUpdate();
         }

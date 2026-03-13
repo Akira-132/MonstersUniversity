@@ -32,6 +32,10 @@ public class ReadBoletim extends HttpServlet {
                 Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
                 Aluno aluno = new AlunoDAO().readByUsuarioId(usuarioLogado.getId());
 
+                if (aluno != null && aluno.getUsuario() != null) {
+                    session.setAttribute("usuarioLogado", aluno.getUsuario());
+                }
+
                 idAlunoParaBuscar = (aluno != null) ? aluno.getId() : -1;
             }
 

@@ -99,46 +99,10 @@ public class AlunoDAO {
         return aluno;
     }
 
-    public Aluno readByMatricula(String matricula) throws SQLException {
-        String sql = "SELECT a.id_aluno, a.cpf, a.matricula, a.id_usuario, u.id_usuario, u.nome, u.sobrenome, u.email, u.senha FROM aluno a INNER JOIN usuario u ON a.id_usuario = u.id_usuario WHERE a.matricula = ?";
-
-        Conexao conexao = new Conexao();
-        Aluno aluno = null;
-
-        try (Connection conn = conexao.conectar();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, matricula);
-
-            try (ResultSet rset = pstmt.executeQuery()) {
-
-                if (rset.next()) {
-
-                    Usuario usuario = new Usuario(
-                            rset.getInt("id_usuario"),
-                            rset.getString("nome"),
-                            rset.getString("sobrenome"),
-                            rset.getString("email"),
-                            rset.getString("senha")
-                    );
-
-                    aluno = new Aluno(
-                            rset.getInt("id_aluno"),
-                            rset.getString("cpf"),
-                            rset.getString("matricula"),
-                            rset.getInt("id_usuario")
-                    );
-
-                    aluno.setUsuario(usuario);
-                }
-            }
-        }
-
-        return aluno;
-    }
-
     public Aluno readByUsuarioId(int usuarioId) throws SQLException {
-        String sql = "SELECT a.id_aluno, a.cpf, a.matricula, a.id_usuario, u.nome, u.sobrenome, u.email, u.senha FROM aluno a INNER JOIN usuario u ON a.id_usuario = u.id_usuario WHERE a.id_usuario = ?";
+        String sql = "SELECT a.id_aluno, a.cpf, a.matricula, a.id_usuario, u.nome, u.sobrenome, u.email, u.senha, u.foto, u.sobre_mim " +
+            "FROM aluno a INNER JOIN usuario u ON a.id_usuario = u.id_usuario WHERE a.id_usuario = ?";
+
 
         Conexao conexao = new Conexao();
         Aluno aluno = null;
@@ -157,6 +121,8 @@ public class AlunoDAO {
                             rset.getString("email"),
                             rset.getString("senha")
                     );
+                    usuario.setFoto(rset.getString("foto"));
+                    usuario.setSobreMim(rset.getString("sobre_mim"));
 
                     aluno = new Aluno(
                             rset.getInt("id_aluno"),
@@ -210,7 +176,7 @@ public class AlunoDAO {
     }
 
     public Usuario loginPorMatricula(String matricula, String senha) throws SQLException {
-        String sql = "SELECT u.id_usuario, u.nome, u.sobrenome, u.email, u.senha " +
+        String sql = "SELECT u.id_usuario, u.nome, u.sobrenome, u.email, u.senha, u.foto, u.sobre_mim " +
                 "FROM aluno a " +
                 "INNER JOIN usuario u ON a.id_usuario = u.id_usuario " +
                 "WHERE a.matricula = ? AND u.senha = ?";
@@ -233,6 +199,8 @@ public class AlunoDAO {
                             rset.getString("email"),
                             rset.getString("senha")
                     );
+                    usuario.setFoto(rset.getString("foto"));
+                    usuario.setSobreMim(rset.getString("sobre_mim"));
                 }
             }
         }

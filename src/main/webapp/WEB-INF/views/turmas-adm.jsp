@@ -11,6 +11,7 @@
     List<Disciplina> listaDisciplinas = (List<Disciplina>) request.getAttribute("listaDisciplinas");
     List<Professor> listaProfessores = (List<Professor>) request.getAttribute("listaProfessores");
     String erro = (String) request.getAttribute("erro");
+    String foto = (usuarioLogado != null && usuarioLogado.getFoto() != null) ? usuarioLogado.getFoto() : "";
 
     String contextPath = request.getContextPath();
 
@@ -231,9 +232,20 @@
         </a>
     </nav>
 
-    <div id="info-usuario" onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'" style="cursor: pointer;">
+    <div id="info-usuario"
+         onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'"
+         style="cursor: pointer;">
         <div id="avatar">
-            <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png" alt="" />
+            <% if (!foto.isEmpty()) { %>
+            <img id="avatar-img"
+                 src="<%= request.getContextPath() + "/assets/imgs/perfil/" + foto %>"
+                 alt=""
+                 style="filter: none; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
+            <% } else { %>
+            <img id="avatar-img"
+                 src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png"
+                 alt="" />
+            <% } %>
         </div>
         <span>
             <strong>

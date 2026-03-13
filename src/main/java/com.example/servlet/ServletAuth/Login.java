@@ -49,16 +49,22 @@ public class Login extends HttpServlet {
                     return;
                 }
             } else {
-                usuarioLogado = usuarioDAO.login(username, senha);
+            usuarioLogado = usuarioDAO.login(username, senha);
 
-                if (usuarioLogado != null && professorDAO.readByUsuarioId(usuarioLogado.getId()) != null) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("usuarioLogado", usuarioLogado);
+            if (usuarioLogado != null) {
+                HttpSession session = request.getSession();
+                session.setAttribute("usuarioLogado", usuarioLogado);
+
+                if (professorDAO.readByUsuarioId(usuarioLogado.getId()) != null) {
                     session.setAttribute("role", "professor");
                     response.sendRedirect(request.getContextPath() + "/turma-read");
-                    return;
+                } else {
+                    session.setAttribute("role", "admin");
+                    response.sendRedirect(request.getContextPath() + "/turma-read");
                 }
+                return;
             }
+        }
 
             request.setAttribute("erro", "Usuário ou senha incorretos.");
 

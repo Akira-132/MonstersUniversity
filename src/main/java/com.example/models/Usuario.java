@@ -9,6 +9,8 @@ public class Usuario {
     private String email;
     private String sobrenome;
     private String senha;
+    private String foto;
+    private String sobreMim;
 
     public Usuario(int id, String nome, String sobrenome, String email, String senha) {
         this.setId(id);
@@ -84,6 +86,23 @@ public class Usuario {
         }
         validateSenha(senha);
         this.senha = senha;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+    public void setFoto(String foto) {
+        if (foto != null && foto.trim().isEmpty()) {
+            throw new IllegalArgumentException("O caminho da foto não pode estar em branco.");
+        }
+        this.foto = foto;
+    }
+
+    public String getSobreMim() {
+        return sobreMim;
+    }
+    public void setSobreMim(String sobreMim) {
+        this.sobreMim = sobreMim;
     }
 
     private static final Pattern PATTERN_EMAIL = Pattern.compile(
