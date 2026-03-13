@@ -26,6 +26,7 @@ public class CreateNota extends HttpServlet {
         String idAlunoStr = request.getParameter("fkAlunoId");
         String idDisciplinaStr = request.getParameter("fkDisciplinaId");
         String idTurmaStr = request.getParameter("idTurma");
+        String urlMensagem = "";
 
         NotaDAO notaDAO = new NotaDAO();
 
@@ -55,6 +56,10 @@ public class CreateNota extends HttpServlet {
                 return;
             }
 
+        } catch (NumberFormatException e) {
+            urlMensagem = "&mensagem=Valor+de+nota+inválido.";
+        } catch (IllegalArgumentException e) {
+            urlMensagem = "&mensagem=" + java.net.URLEncoder.encode(e.getMessage(), "UTF-8");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,6 +67,6 @@ public class CreateNota extends HttpServlet {
         String urlErro = request.getContextPath() + "/nota-read?erro=create&acao=prepararCreate";
         if (idDisciplinaStr != null) urlErro += "&idDisciplina=" + idDisciplinaStr;
         if (idTurmaStr != null && !idTurmaStr.equals("0")) urlErro += "&idTurma=" + idTurmaStr;
-        response.sendRedirect(urlErro);
+        response.sendRedirect(urlErro + urlMensagem);
     }
 }

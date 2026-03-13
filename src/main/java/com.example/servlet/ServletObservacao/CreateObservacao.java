@@ -63,8 +63,9 @@ public class CreateObservacao extends HttpServlet {
 
                 response.sendRedirect(
                         request.getContextPath() +
-                                "/aluno-read?id=" + fkAlunoId +
-                                "&sucesso=observacaoCriada"
+                                "/aluno-read?id=" + fkAlunoId + "&sucesso=observacaoCriada"
+                                + (request.getParameter("idTurma") != null ? "&idTurma="
+                                + request.getParameter("idTurma") : "")
                 );
 
                 return;
@@ -77,7 +78,8 @@ public class CreateObservacao extends HttpServlet {
         response.sendRedirect(
                 request.getContextPath() +
                         "/aluno-read?id=" + idAlunoStr +
-                        "&erro=observacao"
+                        "&erro=observacao" +
+                        (request.getParameter("idTurma") != null ? "&idTurma=" + request.getParameter("idTurma") : "")
         );
     }
 }

@@ -52,7 +52,7 @@ public class CreateAluno extends HttpServlet {
             }
 
             request.setAttribute("sucesso", "Aluno " + nome + " cadastrado com sucesso!");
-            request.getRequestDispatcher("/adicionar.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/adicionar.jsp").forward(request, response);
             return;
 
         } catch (IllegalArgumentException e) {
@@ -88,6 +88,6 @@ public class CreateAluno extends HttpServlet {
         request.setAttribute("email_previo", email);
         request.setAttribute("cpf_previo", cpf);
 
-        request.getRequestDispatcher("/adicionar.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/adicionar.jsp").forward(request, response);
     }
 }

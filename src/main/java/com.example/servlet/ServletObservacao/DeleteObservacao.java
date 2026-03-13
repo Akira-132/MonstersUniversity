@@ -24,7 +24,10 @@ public class DeleteObservacao extends HttpServlet {
             int id = Integer.parseInt(idStr);
 
             if (observacaoDAO.deleteById(id) > 0) {
-                response.sendRedirect(request.getContextPath() + "/turma-read");
+                String idAlunoRetorno = request.getParameter("fkAlunoId");
+                String urlRetorno = request.getContextPath() + "/observacao-read";
+                if (idAlunoRetorno != null) urlRetorno += "?idAluno=" + idAlunoRetorno + "&sucesso=obsExcluida";
+                response.sendRedirect(urlRetorno);
                 return;
             } else {
                 erro = "Não foi possível excluir a observação.";

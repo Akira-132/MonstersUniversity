@@ -278,7 +278,7 @@
                     + Adicionar Disciplina
                 </label>
                 <label for="modal-adicionar" id="btn-adicionar-turma">
-                    + Adicionar turma
+                    + Adicionar Turma
                 </label>
             </div>
         </div>

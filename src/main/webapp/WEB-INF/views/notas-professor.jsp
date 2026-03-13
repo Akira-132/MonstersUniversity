@@ -23,6 +23,11 @@
         if (sucesso != null) session.removeAttribute("sucesso");
     }
 
+    String mensagemUrl = request.getParameter("mensagem");
+    if (mensagemUrl != null && !mensagemUrl.isEmpty()) {
+        erro = mensagemUrl;
+    }
+
     String idTurma = request.getParameter("idTurma");
     if (idTurma == null) idTurma = "0";
 

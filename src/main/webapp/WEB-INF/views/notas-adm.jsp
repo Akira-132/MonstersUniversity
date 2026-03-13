@@ -18,6 +18,12 @@
         erro = (String) session.getAttribute("erro");
         if (erro != null) session.removeAttribute("erro");
     }
+
+    String mensagemUrl = request.getParameter("mensagem");
+    if (mensagemUrl != null && !mensagemUrl.isEmpty()) {
+        erro = mensagemUrl;
+    }
+
     String idTurma = request.getParameter("idTurma");
     if(idTurma == null) idTurma = "0";
 
@@ -222,8 +228,8 @@
             </div>
 
             <div class="modal-botoes">
-                <label for="modal-adicionar" id="btn-cancelar">Cancelar</label>
-                <button type="submit" id="btn-adicionar">Salvar</button>
+                <label for="modal-adicionar" class="btn-cancelar">Cancelar</label>
+                <button type="submit" class="btn-adicionar">Salvar</button>
             </div>
         </form>
     </div>
@@ -279,7 +285,7 @@
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h1>NOTAS</h1>
-            <label for="modal-adicionar" id="btn-adicionar">
+            <label for="modal-adicionar" class="btn-adicionar">
                 + Lançar Nota
             </label>
         </div>
@@ -385,8 +391,8 @@
                             </div>
 
                             <div class="modal-botoes">
-                                <label for="<%= modalEditId %>" id="btn-cancelar">Cancelar</label>
-                                <button type="submit" id="btn-adicionar">Salvar</button>
+                                <label for="<%= modalEditId %>" class="btn-cancelar">Cancelar</label>
+                                <button type="submit" class="btn-adicionar">Salvar</button>
                             </div>
                         </form>
                     </div>
@@ -422,8 +428,8 @@
                             </div>
 
                             <div class="modal-botoes">
-                                <label for="<%= modalDeleteId %>" id="btn-cancelar">Cancelar</label>
-                                <button type="submit" id="btn-adicionar">Confirmar</button>
+                                <label for="<%= modalDeleteId %>" class="btn-cancelar">Cancelar</label>
+                                <button type="submit" class="btn-adicionar">Confirmar</button>
                             </div>
                         </form>
                     </div>
@@ -444,109 +450,6 @@
         </div>
     </div>
 </main>
-
-<% if ("update".equals(modalAtivo) || "create".equals(modalAtivo)) { %>
-<div id="modal-overlay">
-    <div class="modal">
-        <p class="modal-titulo">
-            <%= "update".equals(modalAtivo) ? "Editar Nota" : "Lançar Nota" %>
-        </p>
-        <hr>
-
-        <form action="${pageContext.request.contextPath}/nota-<%= "update".equals(modalAtivo) ? "update" : "create" %>" method="post">
-            <input type="hidden" name="idTurma" value="<%= idTurma %>"/>
-
-            <% if ("update".equals(modalAtivo) && notaModal != null) { %>
-            <input type="hidden" name="id" value="<%= notaModal.getId() %>"/>
-            <% } %>
-
-            <div class="modal-campos">
-                <div class="modal-campo">
-                    <label>Aluno</label>
-                    <div class="input-content">
-                        <% if ("update".equals(modalAtivo) && notaModal != null) { %>
-                        <input type="text" value="<%= notaModal.getAluno().getUsuario().getNome() + " " + notaModal.getAluno().getUsuario().getSobrenome() %>" style="background-color: #999CA1FF" disabled/>
-                        <input type="hidden" name="fkAlunoId" value="<%= notaModal.getFkAlunoId() %>"/>
-                        <% } else { %>
-                        <select name="fkAlunoId" required>
-                            <option value="">Selecione...</option>
-                            <% if (listaAlunos != null) {
-                                for (Aluno a : listaAlunos) { %>
-                            <option value="<%= a.getId() %>">
-                                <%= a.getUsuario().getNome() %> <%= a.getUsuario().getSobrenome() %>
-                            </option>
-                            <% } } %>
-                        </select>
-                        <% } %>
-                    </div>
-                </div>
-
-                <div class="modal-campo">
-                    <label>Disciplina</label>
-                    <div class="input-content">
-                        <% if ("update".equals(modalAtivo) && notaModal != null) { %>
-                        <input type="text" value="<%= notaModal.getDisciplina().getNome() %>" style="background-color: #999CA1FF" disabled/>
-                        <input type="hidden" name="fkDisciplinaId" value="<%= notaModal.getFkDisciplinaId() %>"/>
-                        <% } else { %>
-                        <select name="fkDisciplinaId" required>
-                            <option value="">Selecione...</option>
-                            <% if (listaDisciplinas != null) {
-                                for (Disciplina d : listaDisciplinas) { %>
-                            <option value="<%= d.getId() %>"><%= d.getNome() %></option>
-                            <% } } %>
-                        </select>
-                        <% } %>
-                    </div>
-                </div>
-
-                <div class="modal-campo">
-                    <label>Tipo</label>
-                    <div class="input-content">
-                        <select name="tipo" required>
-                            <option value="">Selecione...</option>
-                            <option value="N1" <%= (notaModal != null && "N1".equals(notaModal.getTipo())) ? "selected" : "" %>>N1</option>
-                            <option value="N2" <%= (notaModal != null && "N2".equals(notaModal.getTipo())) ? "selected" : "" %>>N2</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="modal-campo">
-                    <label>Semestre</label>
-                    <div class="input-content">
-                        <select name="semestre" required>
-                            <option value="">Selecione...</option>
-                            <option value="1" <%= (notaModal != null && notaModal.getSemestre()==1) ? "selected" : "" %>>1º Semestre</option>
-                            <option value="2" <%= (notaModal != null && notaModal.getSemestre()==2) ? "selected" : "" %>>2º Semestre</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="modal-campo">
-                    <label>Ano</label>
-                    <div class="input-content">
-                        <input type="number" name="ano" value="<%= (notaModal != null) ? notaModal.getAno() : "" %>" required/>
-                    </div>
-                </div>
-
-                <div class="modal-campo">
-                    <label>Nota</label>
-                    <div class="input-content">
-                        <input type="text" name="nota" value="<%= (notaModal != null) ? notaModal.getNota() : "" %>" required/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-botoes">
-                <button type="button" id="btn-cancelar"
-                        onclick="window.location.href='${pageContext.request.contextPath}/nota-read?idTurma=<%= idTurma %>'">
-                    Cancelar
-                </button>
-                <button type="submit" id="btn-adicionar">Salvar</button>
-            </div>
-        </form>
-    </div>
-</div>
-<% } %>
 
 </body>
 </html>

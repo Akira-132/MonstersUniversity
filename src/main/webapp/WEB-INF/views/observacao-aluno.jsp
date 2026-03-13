@@ -7,6 +7,9 @@
     Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
     Aluno alunoAtual = (Aluno) request.getAttribute("alunoAtual");
     Observacao observacao = (Observacao) request.getAttribute("observacao");
+    String observacaoIdVal = (observacao != null) ? String.valueOf(observacao.getId()) : "";
+    String alunoIdVal = (alunoAtual != null) ? String.valueOf(alunoAtual.getId()) : "";
+
 %>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -53,8 +56,8 @@
 
         <form action="${pageContext.request.contextPath}/observacao-update" method="post">
 
-            <input type="hidden" name="id" value="<%= (observacao != null) ? observacao.getId() : "" %>">
-            <input type="hidden" name="fkAlunoId" value="<%= (alunoAtual != null) ? alunoAtual.getId() : "" %>">
+            <input type="hidden" name="id" value="<%= observacaoIdVal %>">
+            <input type="hidden" name="fkAlunoId" value="<%= alunoIdVal %>">
             <input type="hidden" name="fkProfessorId" value="<%= (usuarioLogado != null) ? usuarioLogado.getId() : "" %>">
 
             <textarea name="texto" minlength="10" required><%= (observacao != null) ? observacao.getComentario() : "" %></textarea>

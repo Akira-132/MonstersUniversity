@@ -50,6 +50,10 @@ public class ReadObservacao extends HttpServlet {
                 if (obs != null) {
                     request.setAttribute("observacao", obs);
                     request.setAttribute("alunoAtual", alunoDAO.readById(obs.getFkAlunoId()));
+                    String idTurmaStr = request.getParameter("idTurma");
+                    if (idTurmaStr != null && !idTurmaStr.isEmpty()) {
+                        request.setAttribute("idTurmaAtual", idTurmaStr);
+                    }
                 }
 
                 if (isProfessor) {

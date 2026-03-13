@@ -30,6 +30,7 @@
                 ? alunoAtual.getUsuario().getNome() + " " + alunoAtual.getUsuario().getSobrenome()
                 : "Aluno #" + alunoAtual.getId();
     }
+    String idTurmaAtual = request.getAttribute("idTurmaAtual") != null ? String.valueOf(request.getAttribute("idTurmaAtual")) : "";
 %>
 
 <!DOCTYPE html>
@@ -88,7 +89,7 @@ Professor
 
         <div id="topo">
 
-            <a href="${pageContext.request.contextPath}/turma-aluno-read?id=<%= request.getAttribute("idTurmaAtual") != null ? request.getAttribute("idTurmaAtual") : "" %>">
+            <a href="<%= request.getContextPath() %>/turma-aluno-read?id=<%= idTurmaAtual %>">
                 <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" width="50"/>
             </a>
 
@@ -96,8 +97,7 @@ Professor
                 <%= nomeCompletoAluno %>
             </h1>
 
-            <a href="${pageContext.request.contextPath}/observacao-read?idAluno=<%= alunoIdVal %>&idTurma=<%= request.getAttribute("idTurmaAtual") != null ? request.getAttribute("idTurmaAtual") : "" %>
-" id="btn-historico">
+            <a href="<%= request.getContextPath() %>/observacao-read?idAluno=<%= alunoIdVal %>&idTurma=<%= idTurmaAtual %>" id="btn-historico">
                 Ver histórico
             </a>
 
@@ -184,6 +184,7 @@ Professor
                 <button type="submit" id="btn-enviar">Salvar</button>
             </div>
 
+            <input type="hidden" name="idTurma" value="<%= idTurmaAtual %>">
         </form>
 
     </div>

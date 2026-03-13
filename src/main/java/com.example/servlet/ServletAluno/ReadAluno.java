@@ -61,6 +61,10 @@ public class ReadAluno extends HttpServlet {
             boolean ehProfessor = professorDAO.readByUsuarioId(usuarioLogado.getId()) != null;
 
             if (ehAdmin) {
+                String idTurmaStr = request.getParameter("idTurma");
+                if (idTurmaStr != null && !idTurmaStr.isEmpty()) {
+                    request.setAttribute("idTurmaAtual", idTurmaStr);
+                }
                 request.getRequestDispatcher("/WEB-INF/views/diogoAdm.jsp")
                         .forward(request, response);
 

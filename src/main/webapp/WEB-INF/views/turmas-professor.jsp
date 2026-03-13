@@ -99,19 +99,19 @@
                         String corBarra = (contador % 2 == 0) ? "verde" : "roxo";
                         contador++;
             %>
-            <div class="turma-card">
-                <a href="${pageContext.request.contextPath}/turma-aluno-read?id=<%= t.getId() %>" class="turma-link"
+            <a href="${pageContext.request.contextPath}/turma-aluno-read?id=<%= t.getId() %>" class="turma-link"
                    style="width: 100%; height: 100%">
+                <div class="turma-card">
                             <span style="padding-left:20px; font-weight:bold;">
                                 <%= (t.getSala() != null) ? t.getSala() : "Turma" %>
                             </span>
                         <div class="barra <%= corBarra %>"></div>
-                </a>
-            </div>
+                </div>
+            </a>
 
 
 
-        <%
+            <%
                 }
             } else {
             %>
