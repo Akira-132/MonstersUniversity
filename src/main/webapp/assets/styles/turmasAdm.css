@@ -67,6 +67,7 @@ select {
 }
 
 #turmas-lista {
+    margin-top: 2rem;
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -131,13 +132,13 @@ select {
     border-radius: 0 1rem 1rem 0;
     flex-shrink: 0;
 }
-
-.barra.verde {
-    background: #c5e320;
+.barra.azulEscuro {
+    background: #024491;
 }
 
-.barra.roxo {
-    background: #7c4dff;
+
+.barra.azulClaro {
+        background: #82CDFF;
 }
 
 @media (max-width: 900px) {
