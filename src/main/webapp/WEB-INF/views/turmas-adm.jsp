@@ -288,7 +288,7 @@
                 if (listaTurmas != null && !listaTurmas.isEmpty()) {
                     int contador = 0;
                     for (Turma t : listaTurmas) {
-                        String corBarra = (contador % 2 == 0) ? "verde" : "roxo";
+                        String corBarra = (contador % 2 == 0) ? "azulEscuro" : "azulClaro";
                         contador++;
                         String modalEditId = "modal-editar-" + t.getId();
                         String modalDeleteId = "modal-excluir-" + t.getId();

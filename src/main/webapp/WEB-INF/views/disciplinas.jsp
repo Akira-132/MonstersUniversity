@@ -68,7 +68,7 @@
 <main>
   <header>Minhas disciplinas</header>
 
-  <div style="display:flex;gap:10px;margin-bottom:1.5rem;padding:20px">
+  <div style="display:flex;gap:10px;padding:20px">
     <a href="?filtro=minhas"
        style="padding:8px 20px;border-radius:20px;font-weight:700;text-decoration:none;
                background:<%= "minhas".equals(filtro) ? "#0d47a1" : "#e0e4ef" %>;

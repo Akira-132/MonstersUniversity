@@ -71,10 +71,10 @@ span {
   flex-shrink: 0;
 }
 
-.barra.verde {
-  background: #c5e320;
+.barra.azulEscuro {
+  background: #024491;
 }
 
-.barra.roxo {
-  background: #7c4dff;
+.barra.azulClaro {
+  background: #82CDFF;
 }
