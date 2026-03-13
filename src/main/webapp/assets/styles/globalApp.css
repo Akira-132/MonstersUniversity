@@ -73,7 +73,7 @@ aside nav a:hover img {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-right: 3rem;
+  margin-right: 1rem;
   color: #a0b4e0;
   font-size: 0.8rem;
 }

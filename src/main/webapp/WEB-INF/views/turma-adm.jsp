@@ -219,7 +219,7 @@
                 </button>
             </a>
 
-            <label for="modal-adicionar-aluno">
+            <label for="modal-adicionar-aluno" id="btn-adicionar-matricula">
                 + Matricular Aluno
             </label>
         </div>

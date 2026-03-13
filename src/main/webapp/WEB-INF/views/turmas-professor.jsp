@@ -96,7 +96,7 @@
 
                         if (t == null) continue;
 
-                        String corBarra = (contador % 2 == 0) ? "verde" : "roxo";
+                        String corBarra = (contador % 2 == 0) ? "azulEscuro" : "azulClaro";
                         contador++;
             %>
             <a href="${pageContext.request.contextPath}/turma-aluno-read?id=<%= t.getId() %>" class="turma-link">
