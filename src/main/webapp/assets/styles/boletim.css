@@ -7,13 +7,11 @@
     box-sizing: border-box;
 }
 
-/* container da tabela */
 #view-notas {
     width: 100%;
     overflow-x: auto;
 }
 
-/* tabela */
 #view-notas table {
     width: 100%;
     min-width: 900px; /* evita cortar colunas */
@@ -24,7 +22,6 @@
     padding: 0.5rem;
 }
 
-/* cabeçalho */
 #view-notas thead th {
     font-weight: 800;
     color: #1a1a2e;
@@ -35,13 +32,11 @@
     white-space: nowrap;
 }
 
-/* linhas */
 #view-notas tbody tr {
     background: #ffffff;
     box-shadow: 0 0.15rem 0.4rem rgba(0,0,0,0.08);
 }
 
-/* células */
 #view-notas tbody td {
     padding: 1rem 1.4rem;
     font-weight: 600;
@@ -50,20 +45,17 @@
     white-space: nowrap;
 }
 
-/* primeira coluna */
 #view-notas tbody td:first-child {
     font-weight: 700;
     color: #1a1a2e;
     border-radius: 0.8rem 0 0 0.8rem;
 }
 
-/* última coluna */
 #view-notas tbody td:last-child {
     border-radius: 0 0.8rem 0.8rem 0;
 }
 
 
-/* notas */
 .nota {
     background: #e8edf3;
     border-radius: 0.5rem;
@@ -79,7 +71,6 @@
     color: red;
 }
 
-/* tablet */
 @media (max-width: 768px) {
 
     #conteudo {
@@ -92,7 +83,6 @@
 
 }
 
-/* celular */
 @media (max-width: 480px) {
 
     #view-notas table {
