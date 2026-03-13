@@ -16,7 +16,6 @@ body{
     background-size:cover;
 }
 
-/* FONTES */
 
 h1,h2,h3{
     font-family:"Montserrat";
@@ -26,7 +25,6 @@ p,a,input,button{
     font-family:"Geologica";
 }
 
-/* HEADER */
 
 header{
     position:absolute;
@@ -39,8 +37,6 @@ header img{
     width:7rem;
 }
 
-/* FUNDO */
-
 #fundo{
     display:flex;
     justify-content:center;
@@ -51,7 +47,6 @@ header img{
     padding:2rem;
 }
 
-/* LOGIN BOX */
 
 #login-box{
     border:0.2rem solid #C6BEBE;
@@ -65,7 +60,6 @@ header img{
     z-index:5;
 }
 
-/* TITULO */
 
 h1{
     background:linear-gradient(to right,#0F66F1,#0491FC,#12E9DB);
@@ -76,7 +70,6 @@ h1{
     margin-top:1.5rem;
 }
 
-/* FORM */
 
 form{
     display:flex;
@@ -99,7 +92,6 @@ input:focus{
     border-color:#0491FC;
 }
 
-/* LINKS */
 
 #links_principais{
     display:flex;
@@ -118,7 +110,6 @@ input:focus{
     text-decoration:underline;
 }
 
-/* BOTAO */
 
 #btn-login{
     background:#4289F9;
@@ -135,7 +126,6 @@ input:focus{
     box-shadow:0 0.3rem 0.8rem rgba(66,137,249,0.4);
 }
 
-/* RESPONSIVO */
 
 @media (max-width:768px){
 
