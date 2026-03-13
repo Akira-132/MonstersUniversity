@@ -95,5 +95,7 @@
 
     });
 </script>
+
+<script src="${pageContext.request.contextPath}/assets/scripts/loading.js"></script>
 </body>
 </html>

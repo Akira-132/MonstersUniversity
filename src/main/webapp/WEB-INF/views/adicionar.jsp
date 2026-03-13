@@ -5,6 +5,7 @@
     Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
     String erro = (String) request.getAttribute("erro");
     String sucesso = (String) session.getAttribute("sucesso");
+    String foto = (usuarioLogado != null && usuarioLogado.getFoto() != null) ? usuarioLogado.getFoto() : "";
     if (sucesso != null) {
         session.removeAttribute("sucesso");
     }
@@ -49,7 +50,16 @@
          onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'"
          style="cursor: pointer;">
         <div id="avatar">
-            <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png" alt="" />
+            <% if (!foto.isEmpty()) { %>
+            <img id="avatar-img"
+                 src="<%= request.getContextPath() + "/assets/imgs/perfil/" + foto %>"
+                 alt=""
+                 style="filter: none; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
+            <% } else { %>
+            <img id="avatar-img"
+                 src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png"
+                 alt="" />
+            <% } %>
         </div>
         <span>
         <strong>
@@ -183,5 +193,7 @@
         inputHidden.value = this.checked ? 'professor' : 'aluno';
     });
 </script>
+
+<script src="${pageContext.request.contextPath}/assets/scripts/loading.js"></script>
 </body>
 </html>

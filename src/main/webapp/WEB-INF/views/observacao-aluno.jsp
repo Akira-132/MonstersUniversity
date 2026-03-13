@@ -7,9 +7,7 @@
     Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
     Aluno alunoAtual = (Aluno) request.getAttribute("alunoAtual");
     Observacao observacao = (Observacao) request.getAttribute("observacao");
-    String observacaoIdVal = (observacao != null) ? String.valueOf(observacao.getId()) : "";
-    String alunoIdVal = (alunoAtual != null) ? String.valueOf(alunoAtual.getId()) : "";
-
+    String foto = (usuarioLogado != null && usuarioLogado.getFoto() != null) ? usuarioLogado.getFoto() : "";
 %>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -33,9 +31,20 @@
         </a>
     </nav>
 
-    <div id="info-usuario">
+    <div id="info-usuario"
+         onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'"
+         style="cursor: pointer;">
         <div id="avatar">
-            <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png" alt="" />
+            <% if (!foto.isEmpty()) { %>
+            <img id="avatar-img"
+                 src="<%= request.getContextPath() + "/assets/imgs/perfil/" + foto %>"
+                 alt=""
+                 style="filter: none; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
+            <% } else { %>
+            <img id="avatar-img"
+                 src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png"
+                 alt="" />
+            <% } %>
         </div>
         <span>
         <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() : "Professor" %></strong>
@@ -56,8 +65,8 @@
 
         <form action="${pageContext.request.contextPath}/observacao-update" method="post">
 
-            <input type="hidden" name="id" value="<%= observacaoIdVal %>">
-            <input type="hidden" name="fkAlunoId" value="<%= alunoIdVal %>">
+            <input type="hidden" name="id" value="<%= (observacao != null) ? observacao.getId() : "" %>">
+            <input type="hidden" name="fkAlunoId" value="<%= (alunoAtual != null) ? alunoAtual.getId() : "" %>">
             <input type="hidden" name="fkProfessorId" value="<%= (usuarioLogado != null) ? usuarioLogado.getId() : "" %>">
 
             <textarea name="texto" minlength="10" required><%= (observacao != null) ? observacao.getComentario() : "" %></textarea>
@@ -66,5 +75,7 @@
         </form>
     </div>
 </main>
+
+<script src="${pageContext.request.contextPath}/assets/scripts/loading.js"></script>
 </body>
 </html>

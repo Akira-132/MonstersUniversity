@@ -74,5 +74,7 @@
         </div>
     </div>
 </div>
+
+<script src="${pageContext.request.contextPath}/assets/scripts/loading.js"></script>
 </body>
 </html>

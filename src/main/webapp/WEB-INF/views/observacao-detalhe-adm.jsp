@@ -8,6 +8,7 @@
     Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
     Aluno alunoAtual = (Aluno) request.getAttribute("alunoAtual");
     Observacao observacao = (Observacao) request.getAttribute("observacao");
+    String foto = (usuarioLogado != null && usuarioLogado.getFoto() != null) ? usuarioLogado.getFoto() : "";
 
     if(usuarioLogado == null){
         response.sendRedirect(request.getContextPath() + "/login-admin");
@@ -15,7 +16,6 @@
     }
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
-    String idTurmaAtual = request.getAttribute("idTurmaAtual") != null ? String.valueOf(request.getAttribute("idTurmaAtual")) : "";
 %>
 
 <!DOCTYPE html>
@@ -61,27 +61,37 @@
     </nav>
 
 
-    <a href="${pageContext.request.contextPath}/perfil-read" id="info-usuario">
+    <div id="info-usuario"
+         onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'"
+         style="cursor: pointer;">
         <div id="avatar">
-            <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png"/>
+            <% if (!foto.isEmpty()) { %>
+            <img id="avatar-img"
+                 src="<%= request.getContextPath() + "/assets/imgs/perfil/" + foto %>"
+                 alt=""
+                 style="filter: none; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
+            <% } else { %>
+            <img id="avatar-img"
+                 src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png"
+                 alt="" />
+            <% } %>
         </div>
-
         <span>
-            <strong><%= usuarioLogado.getNome() %></strong>
+            <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() : "Admin" %></strong>
             Super Administrador
         </span>
-    </a>
+    </div>
 </aside>
 
 <main>
 
-    <header>Observação do Aluno</header>
+    <header>Minha disciplina</header>
 
     <div id="conteudo">
 
         <div id="topo">
 
-            <a href="<%= request.getContextPath() %>/observacao-read?idAluno=<%= alunoAtual != null ? alunoAtual.getId() : "" %>&idTurma=<%= idTurmaAtual %>">
+            <a href="${pageContext.request.contextPath}/observacao-read?idAluno=<%= alunoAtual != null ? alunoAtual.getId() : "" %>">
                 <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" width="50">
             </a>
 
@@ -96,6 +106,13 @@
         <% if(observacao != null){ %>
 
         <div class="campo">
+
+            <label>Título</label>
+
+            <input
+                    type="text"
+                    value="Registro de Observação"
+                    readonly>
 
         </div>
 
@@ -127,5 +144,6 @@
     </div>
 </main>
 
+<script src="${pageContext.request.contextPath}/assets/scripts/loading.js"></script>
 </body>
 </html>

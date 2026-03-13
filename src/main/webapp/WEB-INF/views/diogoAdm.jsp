@@ -4,30 +4,33 @@
 <%@ page import="com.example.models.Observacao" %>
 
 <%
-  Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-  Aluno alunoAtual = (Aluno) request.getAttribute("alunoAtual");
+Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
+Aluno alunoAtual = (Aluno) request.getAttribute("alunoAtual");
+System.out.println("DEBUG alunoAtual: " + alunoAtual);
+if(alunoAtual != null){
+System.out.println("DEBUG ID aluno: " + alunoAtual.getId());
+}
 
-  Observacao observacao = (Observacao) request.getAttribute("observacao");
+Observacao observacao = (Observacao) request.getAttribute("observacao");
 
-  if (usuarioLogado == null) {
-  response.sendRedirect(request.getContextPath() + "/login-admin");
-  return;
-  }
+if (usuarioLogado == null) {
+response.sendRedirect(request.getContextPath() + "/login-admin");
+return;
+}
 
-  String actionUrl;
-  if (observacao != null && observacao.getId() > 0) {
-  actionUrl = request.getContextPath() + "/observacao-update";
-  } else {
-  actionUrl = request.getContextPath() + "/observacao-create";
-  }
+String actionUrl;
+if (observacao != null && observacao.getId() > 0) {
+actionUrl = request.getContextPath() + "/observacao-update";
+} else {
+actionUrl = request.getContextPath() + "/observacao-create";
+}
 
-  String alunoIdVal = (alunoAtual != null) ? String.valueOf(alunoAtual.getId()) : "";
-  String professorIdVal = String.valueOf(usuarioLogado.getId());
-  String observacaoIdVal = (observacao != null && observacao.getId() > 0) ? String.valueOf(observacao.getId()) : "";
-  String textoVal = (observacao != null && observacao.getComentario() != null) ? observacao.getComentario() : "";
-  String idTurmaAtual = request.getAttribute("idTurmaAtual") != null ? String.valueOf(request.getAttribute("idTurmaAtual")) : "";
+String alunoIdVal = (alunoAtual != null) ? String.valueOf(alunoAtual.getId()) : "";
+String professorIdVal = String.valueOf(usuarioLogado.getId());
+String observacaoIdVal = (observacao != null && observacao.getId() > 0) ? String.valueOf(observacao.getId()) : "";
+String textoVal = (observacao != null && observacao.getComentario() != null) ? observacao.getComentario() : "";
+String foto = (usuarioLogado != null && usuarioLogado.getFoto() != null) ? usuarioLogado.getFoto() : "";
 %>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -62,23 +65,34 @@
     </a>
   </nav>
 
-  <div id="info-usuario" onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'" style="cursor: pointer;">
+  <div id="info-usuario"
+       onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'"
+       style="cursor: pointer;">
     <div id="avatar">
-      <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png" alt="" />
+      <% if (!foto.isEmpty()) { %>
+      <img id="avatar-img"
+           src="<%= request.getContextPath() + "/assets/imgs/perfil/" + foto %>"
+           alt=""
+           style="filter: none; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
+      <% } else { %>
+      <img id="avatar-img"
+           src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png"
+           alt="" />
+      <% } %>
     </div>
     <span>
             <strong><%= usuarioLogado.getNome() %></strong>
-            Super Administrador
+            Professor
         </span>
   </div>
 </aside>
 
 <main>
-  <header>Observação</header>
+  <header>Minha disciplina</header>
 
   <div id="conteudo">
     <div id="topo">
-      <a href="<%= request.getContextPath() %>/turma-aluno-read?id=<%= idTurmaAtual %>">
+      <a href="${pageContext.request.contextPath}/turma-read">
         <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" alt="voltar" width="50">
       </a>
 
@@ -86,9 +100,8 @@
         <%= alunoAtual.getUsuario().getNome() + " " + alunoAtual.getUsuario().getSobrenome() %>
       </h1>
 
-      <a href="<%= request.getContextPath() %>/observacao-read?idAluno=<%= alunoIdVal %>&idTurma=<%= idTurmaAtual %>" id="btn-historico">
-
-      Ver histórico
+      <a href="${pageContext.request.contextPath}/observacao-read?idAluno=<%= alunoIdVal %>" id="btn-historico">
+        Ver histórico
       </a>
     </div>
 
@@ -159,9 +172,10 @@
       <button type="submit" id="btn-enviar">Salvar</button>
     </div>
 
-      <input type="hidden" name="idTurma" value="<%= idTurmaAtual %>">
     </form>
   </div>
 </main>
+
+<script src="${pageContext.request.contextPath}/assets/scripts/loading.js"></script>
 </body>
 </html>

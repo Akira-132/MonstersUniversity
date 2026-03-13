@@ -1,8 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.example.models.Observacao" %>
+<%@ page import="com.example.models.Usuario" %>
 
 <%
+  Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
   Observacao observacao = (Observacao) request.getAttribute("observacao");
+  String foto = (usuarioLogado != null && usuarioLogado.getFoto() != null) ? usuarioLogado.getFoto() : "";
 %>
 
 
@@ -34,15 +37,27 @@
       </a>
     </nav>
 
-    <a href="perfil-professor.jsp" id="info-usuario">
+    <div id="info-usuario"
+         onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'"
+         style="cursor: pointer;">
       <div id="avatar">
-        <img src="../../assets/imgs/icone-usuario.png" alt="" />
+        <% if (!foto.isEmpty()) { %>
+        <img id="avatar-img"
+             src="<%= request.getContextPath() + "/assets/imgs/perfil/" + foto %>"
+             alt=""
+             style="filter: none; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
+        <% } else { %>
+        <img id="avatar-img"
+             src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png"
+             alt="" />
+        <% } %>
       </div>
       <span>
-        <strong>Felipe Augusto</strong>
-        Camuflagem
-      </span>
-    </a>
+            <strong><%= usuarioLogado.getNome() %></strong>
+            Perfil
+        </span>
+
+    </div>
   </aside>
 
   <main>
@@ -63,6 +78,8 @@
       </form>
     </div>
   </main>
+
+  <script src="${pageContext.request.contextPath}/assets/scripts/loading.js"></script>
 </body>
 
 </html>

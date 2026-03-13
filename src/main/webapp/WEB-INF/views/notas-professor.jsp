@@ -6,10 +6,11 @@
 <%@ page import="java.util.List" %>
 
 <%
-    Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-    List<Nota> listaNotas = (List<Nota>) request.getAttribute("listaNotas");
+    Usuario usuarioLogado   = (Usuario) session.getAttribute("usuarioLogado");
+    List<Nota> listaNotas   = (List<Nota>) request.getAttribute("listaNotas");
     List<Aluno> listaAlunos = (List<Aluno>) request.getAttribute("listaAlunos");
     List<Disciplina> listaDisciplinas = (List<Disciplina>) request.getAttribute("listaDisciplinas");
+    String foto = (usuarioLogado != null && usuarioLogado.getFoto() != null) ? usuarioLogado.getFoto() : "";
 
     String erro = (String) request.getAttribute("erro");
     if (erro == null) {
@@ -23,19 +24,39 @@
         if (sucesso != null) session.removeAttribute("sucesso");
     }
 
-    String mensagemUrl = request.getParameter("mensagem");
-    if (mensagemUrl != null && !mensagemUrl.isEmpty()) {
-        erro = mensagemUrl;
-    }
-
     String idTurma = request.getParameter("idTurma");
     if (idTurma == null) idTurma = "0";
 
     String idDisciplina = (request.getAttribute("idDisciplinaAtual") != null)
             ? String.valueOf(request.getAttribute("idDisciplinaAtual"))
             : "0";
-%>
 
+    String sucessoParam = request.getParameter("sucesso");
+    String erroParam    = request.getParameter("erro");
+
+    String mensagemSucesso = null;
+    String mensagemErro    = null;
+
+    if ("notaCriada".equals(sucessoParam)) {
+        mensagemSucesso = "Nota lançada com sucesso!";
+    } else if ("notaAtualizada".equals(sucessoParam)) {
+        mensagemSucesso = "Nota atualizada com sucesso!";
+    } else if ("notaExcluida".equals(sucessoParam)) {
+        mensagemSucesso = "Nota excluída com sucesso!";
+    } else if (sucesso != null) {
+        mensagemSucesso = sucesso;
+    }
+
+    if ("create".equals(erroParam)) {
+        mensagemErro = "Erro ao lançar nota.";
+    } else if ("update".equals(erroParam)) {
+        mensagemErro = "Erro ao atualizar nota.";
+    } else if ("delete".equals(erroParam)) {
+        mensagemErro = "Erro ao excluir nota.";
+    } else if (erro != null) {
+        mensagemErro = erro;
+    }
+%>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -66,6 +87,65 @@
 </head>
 
 <body>
+
+<% if (mensagemSucesso != null) { %>
+<script>
+    window.addEventListener("load", function () {
+        const alertBox = document.createElement("div");
+        alertBox.innerText = "<%= mensagemSucesso %>";
+        alertBox.style.position        = "fixed";
+        alertBox.style.top             = "20px";
+        alertBox.style.left            = "50%";
+        alertBox.style.transform       = "translateX(-50%)";
+        alertBox.style.backgroundColor = "#E8F0FE";
+        alertBox.style.color           = "#1a3c7c";
+        alertBox.style.padding         = "15px 25px";
+        alertBox.style.borderRadius    = "8px";
+        alertBox.style.boxShadow       = "0 4px 10px rgba(0,0,0,0.15)";
+        alertBox.style.fontFamily      = "Montserrat";
+        alertBox.style.fontSize        = "14px";
+        alertBox.style.zIndex          = "9999";
+        alertBox.style.opacity         = "0";
+        alertBox.style.transition      = "opacity 0.4s ease";
+        document.body.appendChild(alertBox);
+        setTimeout(() => { alertBox.style.opacity = "1"; }, 100);
+        setTimeout(() => {
+            alertBox.style.opacity = "0";
+            setTimeout(() => alertBox.remove(), 400);
+        }, 4000);
+    });
+</script>
+<% } %>
+
+<%-- Toast de erro --%>
+<% if (mensagemErro != null) { %>
+<script>
+    window.addEventListener("load", function () {
+        const alertBox = document.createElement("div");
+        alertBox.innerText = "<%= mensagemErro %>";
+        alertBox.style.position        = "fixed";
+        alertBox.style.top             = "20px";
+        alertBox.style.left            = "50%";
+        alertBox.style.transform       = "translateX(-50%)";
+        alertBox.style.backgroundColor = "#FDE8E8";
+        alertBox.style.color           = "#7c1a1a";
+        alertBox.style.padding         = "15px 25px";
+        alertBox.style.borderRadius    = "8px";
+        alertBox.style.boxShadow       = "0 4px 10px rgba(0,0,0,0.15)";
+        alertBox.style.fontFamily      = "Montserrat";
+        alertBox.style.fontSize        = "14px";
+        alertBox.style.zIndex          = "9999";
+        alertBox.style.opacity         = "0";
+        alertBox.style.transition      = "opacity 0.4s ease";
+        document.body.appendChild(alertBox);
+        setTimeout(() => { alertBox.style.opacity = "1"; }, 100);
+        setTimeout(() => {
+            alertBox.style.opacity = "0";
+            setTimeout(() => alertBox.remove(), 400);
+        }, 4000);
+    });
+</script>
+<% } %>
 
 <input type="checkbox" id="modal-adicionar" hidden />
 
@@ -154,18 +234,29 @@
         </a>
     </nav>
 
-    <div id="info-usuario" onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'" style="cursor: pointer;">
+    <div id="info-usuario"
+         onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'"
+         style="cursor: pointer;">
         <div id="avatar">
-            <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png"/>
+            <% if (!foto.isEmpty()) { %>
+            <img id="avatar-img"
+                 src="<%= request.getContextPath() + "/assets/imgs/perfil/" + foto %>"
+                 alt=""
+                 style="filter: none; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
+            <% } else { %>
+            <img id="avatar-img"
+                 src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png"
+                 alt="" />
+            <% } %>
         </div>
         <span>
-<strong>
-<%= (usuarioLogado != null)
-        ? usuarioLogado.getNome()+" "+usuarioLogado.getSobrenome()
-        : "Professor" %>
-</strong>
-Professor
-</span>
+            <strong>
+                <%= (usuarioLogado != null)
+                        ? usuarioLogado.getNome() + " " + usuarioLogado.getSobrenome()
+                        : "Professor" %>
+            </strong>
+            Professor
+        </span>
     </div>
 </aside>
 
@@ -175,22 +266,10 @@ Professor
 
     <div id="conteudo">
 
-        <a href="${pageContext.request.contextPath}/turma-aluno-read?id=<%= idTurma %>" id="btn-voltar"
-           style="position: absolute">
+        <a href="${pageContext.request.contextPath}/turma-aluno-read?id=<%= idTurma %>"
+           id="btn-voltar" style="position: absolute">
             <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" width="36"/>
         </a>
-
-        <% if (erro != null) { %>
-        <div style="color:#ff4d4d;margin-bottom:15px;text-align:center;">
-            <%= erro %>
-        </div>
-        <% } %>
-
-        <% if (sucesso != null) { %>
-        <div style="color:#2e7d32;margin-bottom:15px;text-align:center;">
-            <%= sucesso %>
-        </div>
-        <% } %>
 
         <div style="display:flex;justify-content:flex-end;align-items:center;margin-bottom:20px;">
             <label for="modal-adicionar" class="btn-adicionar">+ Lançar Nota</label>
@@ -210,7 +289,6 @@ Professor
                 </thead>
 
                 <tbody>
-
                 <%
                     if (listaNotas != null && !listaNotas.isEmpty()) {
                         for (Nota n : listaNotas) {
@@ -233,10 +311,12 @@ Professor
                     </td>
                     <td style="display:flex;gap:10px;justify-content:center;">
                         <label for="<%= modalEditId %>">
-                            <img src="${pageContext.request.contextPath}/assets/imgs/icone-editar.png" class="icone-editar" style="cursor:pointer;"/>
+                            <img src="${pageContext.request.contextPath}/assets/imgs/icone-editar.png"
+                                 class="icone-editar" style="cursor:pointer;"/>
                         </label>
                         <label for="<%= modalDeleteId %>">
-                            <img src="${pageContext.request.contextPath}/assets/imgs/icone-lixeira.png" class="icone-lixeira" style="cursor:pointer;"/>
+                            <img src="${pageContext.request.contextPath}/assets/imgs/icone-lixeira.png"
+                                 class="icone-lixeira" style="cursor:pointer;"/>
                         </label>
                     </td>
                 </tr>
@@ -248,18 +328,28 @@ Professor
                         <p class="modal-titulo">Editar Nota</p>
                         <hr>
                         <form action="${pageContext.request.contextPath}/nota-update" method="post">
-                            <input type="hidden" name="id" value="<%= n.getId() %>"/>
-                            <input type="hidden" name="idTurma" value="<%= idTurma %>"/>
-                            <input type="hidden" name="fkAlunoId" value="<%= n.getFkAlunoId() %>"/>
+                            <input type="hidden" name="id"            value="<%= n.getId() %>"/>
+                            <input type="hidden" name="idTurma"       value="<%= idTurma %>"/>
+                            <input type="hidden" name="fkAlunoId"     value="<%= n.getFkAlunoId() %>"/>
                             <input type="hidden" name="fkDisciplinaId" value="<%= n.getFkDisciplinaId() %>"/>
                             <div class="modal-campos">
-                                <div class="modal-campo"><label>Aluno</label>
-                                    <div class="input-content"><input type="text" value="<%= n.getAluno().getUsuario().getNome() + " " + n.getAluno().getUsuario().getSobrenome() %>" disabled style="background-color:#999CA1FF;"/></div>
+                                <div class="modal-campo">
+                                    <label>Aluno</label>
+                                    <div class="input-content">
+                                        <input type="text"
+                                               value="<%= n.getAluno().getUsuario().getNome() + " " + n.getAluno().getUsuario().getSobrenome() %>"
+                                               disabled style="background-color:#999CA1FF;"/>
+                                    </div>
                                 </div>
-                                <div class="modal-campo"><label>Disciplina</label>
-                                    <div class="input-content"><input type="text" value="<%= n.getDisciplina().getNome() %>" disabled style="background-color:#999CA1FF;"/></div>
+                                <div class="modal-campo">
+                                    <label>Disciplina</label>
+                                    <div class="input-content">
+                                        <input type="text" value="<%= n.getDisciplina().getNome() %>"
+                                               disabled style="background-color:#999CA1FF;"/>
+                                    </div>
                                 </div>
-                                <div class="modal-campo"><label>Tipo</label>
+                                <div class="modal-campo">
+                                    <label>Tipo</label>
                                     <div class="input-content">
                                         <select name="tipo" required>
                                             <option value="">Selecione...</option>
@@ -268,7 +358,8 @@ Professor
                                         </select>
                                     </div>
                                 </div>
-                                <div class="modal-campo"><label>Semestre</label>
+                                <div class="modal-campo">
+                                    <label>Semestre</label>
                                     <div class="input-content">
                                         <select name="semestre" required>
                                             <option value="">Selecione...</option>
@@ -277,11 +368,17 @@ Professor
                                         </select>
                                     </div>
                                 </div>
-                                <div class="modal-campo"><label>Ano</label>
-                                    <div class="input-content"><input type="number" name="ano" value="<%= n.getAno() %>" required/></div>
+                                <div class="modal-campo">
+                                    <label>Ano</label>
+                                    <div class="input-content">
+                                        <input type="number" name="ano" value="<%= n.getAno() %>" required/>
+                                    </div>
                                 </div>
-                                <div class="modal-campo"><label>Nota</label>
-                                    <div class="input-content"><input type="text" name="nota" value="<%= n.getNota() %>" required/></div>
+                                <div class="modal-campo">
+                                    <label>Nota</label>
+                                    <div class="input-content">
+                                        <input type="text" name="nota" value="<%= n.getNota() %>" required/>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-botoes">
@@ -302,17 +399,29 @@ Professor
                         <p class="modal-titulo">Excluir Nota</p>
                         <hr>
                         <form action="${pageContext.request.contextPath}/nota-delete" method="post">
-                            <input type="hidden" name="id" value="<%= n.getId() %>"/>
-                            <input type="hidden" name="idTurma" value="<%= idTurma %>"/>
+                            <input type="hidden" name="id"          value="<%= n.getId() %>"/>
+                            <input type="hidden" name="idTurma"     value="<%= idTurma %>"/>
                             <input type="hidden" name="idDisciplina" value="<%= idDisciplina %>"/>
                             <div class="modal-campos">
-                                <div class="modal-campo"><label>Aluno</label>
-                                    <div class="input-content"><input type="text" value="<%= n.getAluno().getUsuario().getNome() + " " + n.getAluno().getUsuario().getSobrenome() %>" disabled style="background-color:#f0f4f8;border:none;"/></div>
+                                <div class="modal-campo">
+                                    <label>Aluno</label>
+                                    <div class="input-content">
+                                        <input type="text"
+                                               value="<%= n.getAluno().getUsuario().getNome() + " " + n.getAluno().getUsuario().getSobrenome() %>"
+                                               disabled style="background-color:#f0f4f8;border:none;"/>
+                                    </div>
                                 </div>
-                                <div class="modal-campo"><label>Nota</label>
-                                    <div class="input-content"><input type="text" value="<%= String.format("%.1f", n.getNota()) %>" disabled style="background-color:#f0f4f8;border:none;"/></div>
+                                <div class="modal-campo">
+                                    <label>Nota</label>
+                                    <div class="input-content">
+                                        <input type="text"
+                                               value="<%= String.format("%.1f", n.getNota()) %>"
+                                               disabled style="background-color:#f0f4f8;border:none;"/>
+                                    </div>
                                 </div>
-                                <div class="modal-campo"><label>Tem certeza que deseja excluir esta nota?</label></div>
+                                <div class="modal-campo">
+                                    <label>Tem certeza que deseja excluir esta nota?</label>
+                                </div>
                             </div>
                             <div class="modal-botoes">
                                 <button type="button" class="btn-cancelar"
@@ -329,22 +438,18 @@ Professor
                     }
                 } else {
                 %>
-
                 <tr>
                     <td colspan="6" style="text-align:center;padding:20px;">
                         Nenhuma nota lançada em suas turmas.
                     </td>
                 </tr>
-
-                <%
-                    }
-                %>
-
+                <% } %>
                 </tbody>
             </table>
         </div>
     </div>
 </main>
 
+<script src="${pageContext.request.contextPath}/assets/scripts/loading.js"></script>
 </body>
 </html>

@@ -6,14 +6,13 @@
 <%@ page import="java.time.format.DateTimeFormatter" %>
 
 <%
-  Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-  Aluno alunoAtual = (Aluno) request.getAttribute("alunoAtual");
-  List<Observacao> listaObservacoes = (List<Observacao>) request.getAttribute("listaObservacoes");
+Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
+Aluno alunoAtual = (Aluno) request.getAttribute("alunoAtual");
+List<Observacao> listaObservacoes = (List<Observacao>) request.getAttribute("listaObservacoes");
+String foto = (usuarioLogado != null && usuarioLogado.getFoto() != null) ? usuarioLogado.getFoto() : "";
 
   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
-  String idTurmaAtual = request.getAttribute("idTurmaAtual") != null ? String.valueOf(request.getAttribute("idTurmaAtual")) : "";
-
-%>
+  %>
   <!DOCTYPE html>
   <html lang="pt-BR">
   <head>
@@ -41,10 +40,21 @@
       </a>
     </nav>
 
-    <div id="info-usuario" onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'" style="cursor: pointer;">
-      <div id="avatar">
-        <img src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png" alt="" />
-      </div>
+    <<div id="info-usuario"
+          onclick="window.location.href='${pageContext.request.contextPath}/perfil-read'"
+          style="cursor: pointer;">
+    <div id="avatar">
+      <% if (!foto.isEmpty()) { %>
+      <img id="avatar-img"
+           src="<%= request.getContextPath() + "/assets/imgs/perfil/" + foto %>"
+           alt=""
+           style="filter: none; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
+      <% } else { %>
+      <img id="avatar-img"
+           src="${pageContext.request.contextPath}/assets/imgs/icone-usuario.png"
+           alt="" />
+      <% } %>
+    </div>
       <span>
         <strong><%= (usuarioLogado != null) ? usuarioLogado.getNome() : "Professor" %></strong>
         Professor
@@ -57,7 +67,7 @@
 
     <div id="conteudo">
       <div id="topo">
-        <a href="<%= request.getContextPath() %>/aluno-read?id=<%= (alunoAtual != null) ? alunoAtual.getId() : "" %>&idTurma=<%= idTurmaAtual %>" id="btn-voltar">
+        <a href="${pageContext.request.contextPath}/aluno-read?id=<%= (alunoAtual != null) ? alunoAtual.getId() : "" %>" id="btn-voltar">
         <img src="${pageContext.request.contextPath}/assets/imgs/icone-voltar.png" alt="" width="50">
         </a>
         <h1><%= (alunoAtual != null && alunoAtual.getUsuario() != null) ? alunoAtual.getUsuario().getNome() + " " + alunoAtual.getUsuario().getSobrenome() : "Nome do Aluno" %></h1>
@@ -68,7 +78,7 @@
             if (listaObservacoes != null && !listaObservacoes.isEmpty()) {
                 for (Observacao obs : listaObservacoes) {
         %>
-        <a href="<%= request.getContextPath() %>/observacao-read?id=<%= obs.getId() %>&idTurma=<%= idTurmaAtual %>">
+        <a href="${pageContext.request.contextPath}/observacao-read?id=<%= obs.getId() %>">
           <div class="historico-item">
             <div class="item-conteudo">
               <p><%= obs.getComentario() %></p>
@@ -86,5 +96,7 @@
       </div>
     </div>
   </main>
+
+  <script src="${pageContext.request.contextPath}/assets/scripts/loading.js"></script>
   </body>
   </html>
